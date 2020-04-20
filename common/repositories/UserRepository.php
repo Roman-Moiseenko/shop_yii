@@ -29,6 +29,11 @@ class UserRepository
         return $this->getBy(['password_reset_token' => $token]);
     }
 
+    public function getByUsernameEmail($value):? User
+    {
+        return User::find()->andWhere(['or', ['username' => $value], ['email' => $value]])->one();
+    }
+
     public function getByUsername($username): User
     {
         return $this->getBy(['username' => $username]);
