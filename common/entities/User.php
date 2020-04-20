@@ -58,7 +58,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function resetPassword($password): void
     {
         if (empty($this->password_reset_token)) {
-            throw new \DomainException('Сброшенный пароль на подтвержден');
+            throw new \DomainException('Сброшенный пароль не подтвержден');
         }
         $this->setPassword($password);
         $this->password_reset_token = null;
@@ -95,6 +95,8 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
+
+    /** Repository => */
     public static function findIdentity($id)
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
@@ -166,6 +168,8 @@ class User extends ActiveRecord implements IdentityInterface
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
     }
+/** <=============== */
+
 
     /**
      * {@inheritdoc}
