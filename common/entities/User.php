@@ -37,7 +37,7 @@ class User extends ActiveRecord implements IdentityInterface
         $user->created_at = time();
         $user->setPassword($password);
         $user->generateAuthKey();
-            //$this->generateEmailVerificationToken();
+            //$user->generateEmailVerificationToken();
         return $user;
     }
 
@@ -47,11 +47,21 @@ class User extends ActiveRecord implements IdentityInterface
         return false;
     }
 
-    public function requestPasswordReset()
+    public function requestPasswordReset(): void
     {
-        if (!User::isPasswordResetTokenValid($this->password_reset_token)) {
-            $this->generatePasswordResetToken();
+        if (!empty($this->password_reset_token) && self::isPasswordResetTokenValid($this->password_reset_token)) {
+            throw new \DomainException('Пароль уже был сброшен');
         }
+        $this->generatePasswordResetToken();
+    }
+
+    public function resetPassword($password): void
+    {
+        if (empty($this->password_reset_token)) {
+            throw new \DomainException('Сброшенный пароль на подтвержден');
+        }
+        $this->setPassword($password);
+        $this->password_reset_token = null;
     }
     /**
      * {@inheritdoc}
@@ -92,6 +102,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * {@inheritdoc}
+     * @throws NotSupportedException
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
@@ -151,7 +162,6 @@ class User extends ActiveRecord implements IdentityInterface
         if (empty($token)) {
             return false;
         }
-
         $timestamp = (int) substr($token, strrpos($token, '_') + 1);
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();

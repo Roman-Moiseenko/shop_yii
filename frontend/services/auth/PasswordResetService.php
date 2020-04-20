@@ -8,7 +8,6 @@ use common\entities\User;
 use frontend\forms\PasswordResetRequestForm;
 use frontend\forms\ResetPasswordForm;
 use Yii;
-use yii\base\InvalidArgumentException;
 
 class PasswordResetService
 {
@@ -59,8 +58,7 @@ class PasswordResetService
         $user = User::findByPasswordResetToken($token);
         if (!$user)
             throw new \DomainException('Пользователь не найден');
-        $user->setPassword($form->password);
-        $user->removePasswordResetToken();
+        $user->resetPassword($form->password);
         if (!$user->save(false)) {
             throw new \DomainException('Ошибка сброса пароля');
         }
