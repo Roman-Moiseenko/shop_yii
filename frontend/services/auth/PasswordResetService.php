@@ -6,22 +6,37 @@ namespace frontend\services\auth;
 
 use common\entities\User;
 use frontend\forms\PasswordResetRequestForm;
+use frontend\forms\ResendVerificationEmailForm;
 use frontend\forms\ResetPasswordForm;
 use Yii;
 
 class PasswordResetService
 {
-    public function request(PasswordResetRequestForm $form)
+    private $supportEmail;
+
+    public function __construct($supportEmail)
+    {
+        $this->supportEmail = $supportEmail;
+    }
+
+    private function findByEmail($email): User
     {
         /* @var $user User */
         $user = User::findOne([
             'status' => User::STATUS_ACTIVE,
-            'email' => $form->email,
+            'email' => $email,
         ]);
 
         if (!$user) {
             throw new \DomainException('Пользователь не найден');
         }
+        return $user;
+    }
+
+    public function request(PasswordResetRequestForm $form)
+    {
+        /* @var $user User */
+        $user = $this->findByEmail($form->email);
 
         $user->requestPasswordReset();
         if (!$user->save()) {
@@ -34,12 +49,12 @@ class PasswordResetService
                 ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
                 ['user' => $user]
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setFrom($this->supportEmail/*[Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot']*/)
             ->setTo($user->email)
             ->setSubject('Password reset for ' . Yii::$app->name)
             ->send();
         if (!$sent) {
-            throw new \RuntimeException('Ошибка отправки');
+            throw new \RuntimeException('Письмо не отправлено, проверьте правильность заполнения поля Email');
         }
 
     }
@@ -61,6 +76,34 @@ class PasswordResetService
         $user->resetPassword($form->password);
         if (!$user->save(false)) {
             throw new \DomainException('Ошибка сброса пароля');
+        }
+    }
+    public function verifyEmail($token): User
+    {
+        $user = User::findByPasswordResetToken($token);
+        if (!$user)
+            throw new \DomainException('Пользователь не найден');
+        if ($user->status === User::STATUS_ACTIVE)
+            throw new \DomainException('Пользователь не активен');
+        return $user;
+    }
+
+    public function VerificationEmail(ResendVerificationEmailForm $form): void
+    {
+        $user = $this->findByEmail($form->email);
+
+        $send = Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
+                ['user' => $user]
+            )
+            ->setFrom($this->supportEmail)
+            ->setTo($user->email)
+            ->setSubject('Account registration at ' . Yii::$app->name)
+            ->send();
+        if (!$send) {
+            throw new \RuntimeException('Письмо не отправлено, проверьте правильность заполнения поля Email');
         }
     }
 

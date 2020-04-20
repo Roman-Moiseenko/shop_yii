@@ -25,6 +25,17 @@ use frontend\forms\ContactForm;
 class SiteController extends Controller
 {
     /**
+     * @var PasswordResetService
+     */
+    /*private $service;
+
+    public function __construct($id, $module, PasswordResetService $service, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->service = $service;
+    }*/
+
+    /**
      * {@inheritdoc}
      */
     public function behaviors()
@@ -124,8 +135,12 @@ class SiteController extends Controller
     public function actionContact()
     {
         $form = new ContactForm();
-        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+
+        if ($form->load(Yii::$app->request->post()) /*&& $form->validate()*/) {
             try {
+                echo '<pre>';
+                print_r($form);
+                die();
                 (new ContactService())->contact($form);
                 Yii::$app->session->setFlash('success', 'Спасибо за Ваш запрос, мы обязательно решим Вашу проблему и сообщим Вам.');
             } catch (\RuntimeException $e) {
@@ -202,7 +217,9 @@ class SiteController extends Controller
      */
     public function actionResetPassword($token)
     {
-        $service = new PasswordResetService();
+        $service = Yii::$container->get(PasswordResetService::class);
+
+        //$service = new PasswordResetService([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot']);
 
         try {
             $service->validateToken($token);
@@ -235,16 +252,18 @@ class SiteController extends Controller
      */
     public function actionVerifyEmail($token)
     {
-        $service = new VerificationService();
+        $service = Yii::$container->get(PasswordResetService::class);
+        //$service = new PasswordResetService([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot']);
+        //$service = new VerificationService();
         try {
-            (new PasswordResetService())->validateToken($token);
+            $service->validateToken($token);
 
         } catch (\DomainException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
         //$form = new VerifyEmailForm();
         try {
-        $user = (new VerificationService)->verifyEmail($token);
+        $user = $service->verifyEmail($token);
             if (Yii::$app->user->login($user)) {
                 Yii::$app->session->setFlash('success', 'Ваша почта подтверждена!');
                 return $this->goHome();
@@ -267,10 +286,11 @@ class SiteController extends Controller
      */
     public function actionResendVerificationEmail()
     {
+        $service = Yii::$container->get(PasswordResetService::class);
         $form = new ResendVerificationEmailForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
-                (new VerificationService())->VerificationEmail($form);
+                $service->VerificationEmail($form);
                 Yii::$app->session->setFlash('success', 'Проверьте почту, мы Вам выслали инструкцию дальнейших действий.');
                 return $this->goHome();
             } catch (\RuntimeException $e)

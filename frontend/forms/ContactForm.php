@@ -14,7 +14,7 @@ class ContactForm extends Model
     public $email;
     public $subject;
     public $body;
-    public $verifyCode;
+    public $verifyCodeMy;
 
 
     /**
@@ -28,7 +28,7 @@ class ContactForm extends Model
             // email has to be a valid email address
             ['email', 'email'],
             // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha'],
+          //  ['verifyCodeMy', 'captcha'],
         ];
     }
 
@@ -38,15 +38,8 @@ class ContactForm extends Model
     public function attributeLabels()
     {
         return [
-            'verifyCode' => 'Verification Code',
+            'verifyCodeMy' => 'Verification Code',
         ];
     }
-
-    /**
-     * Sends an email to the specified email address using the information collected by this model.
-     *
-     * @param string $email the target email address
-     * @return bool whether the email was sent
-     */
 
 }
