@@ -5,6 +5,7 @@ namespace frontend\services\auth;
 
 
 use common\entities\User;
+use common\repositories\UserRepository;
 use frontend\forms\PasswordResetRequestForm;
 use frontend\forms\ResendVerificationEmailForm;
 use frontend\forms\ResetPasswordForm;
@@ -18,11 +19,16 @@ class PasswordResetService
      * @var MailerInterface
      */
     private $mailer;
+    /**
+     * @var UserRepository
+     */
+    private $repository;
 
-    public function __construct($supportEmail, MailerInterface $mailer)
+    public function __construct($supportEmail, MailerInterface $mailer, UserRepository $repository)
     {
         $this->supportEmail = $supportEmail;
         $this->mailer = $mailer;
+        $this->repository = $repository;
     }
 
     private function findByEmail($email): User
@@ -42,13 +48,11 @@ class PasswordResetService
     public function request(PasswordResetRequestForm $form)
     {
         /* @var $user User */
-        $user = $this->findByEmail($form->email);
+        $user = $this->repository->getByEmail($form->email);
 
         $user->requestPasswordReset();
 
-        if (!$user->save()) {
-            throw new \RuntimeException('Ошибка сохранения');
-        }
+        $this->repository->save($user);
 
         $sent = $this->mailer
             ->compose(
@@ -69,7 +73,8 @@ class PasswordResetService
         if (empty($token) || !is_string($token)) {
             throw new \DomainException('Password reset token cannot be blank.');
         }
-        if (!User::findByVerificationToken($token)) {
+        $user = $this->repository->getByEmailConfirmToken($token);
+        if ($user->isActive()) {
             throw new \DomainException('Пользователь уже авторизован');
         }
     }
@@ -79,37 +84,32 @@ class PasswordResetService
         if (empty($token) || !is_string($token)) {
             throw new \DomainException('Password reset token cannot be blank.');
         }
-        if (!User::findByPasswordResetToken($token)) {
+        $this->repository->existsByPasswordResetToken($token);
+        /*if (!User::findByPasswordResetToken($token)) {
             throw new \DomainException('Wrong password reset token.');
-        }
+        } */
     }
 
     public function reset($token, ResetPasswordForm $form): void
     {
-        $user = User::findByPasswordResetToken($token);
-        if (!$user)
-            throw new \DomainException('Пользователь не найден');
+        $user = $this->repository->getByPasswordResetToken($token);
         $user->resetPassword($form->password);
-        if (!$user->save(false)) {
-            throw new \DomainException('Ошибка сброса пароля');
-        }
+        $this->repository->save($user, false);
     }
+
     public function verifyEmail($token): User
     {
-        $user = User::findByVerificationToken($token);
-        if (!$user)
-            throw new \DomainException('Пользователь не найден');
+        $user = $this->repository->getByEmailConfirmToken($token);
 
         $user->status = User::STATUS_ACTIVE;
         $user->removeVerificationToken();
-        if (!$user->save())
-            throw new \DomainException('Ошибка активации');
+        $this->repository->save($user);
         return $user;
     }
 
     public function VerificationEmail(ResendVerificationEmailForm $form): void
     {
-        $user = $this->findByEmail($form->email);
+        $user = $this->repository->getByEmail($form->email);
 
         $send =  $this->mailer
             ->compose(

@@ -226,7 +226,6 @@ class SiteController extends Controller
      */
     public function actionResetPassword($token)
     {
-        //$service = Yii::$container->get(PasswordResetService::class);
         try {
             $this->passwordResetService->validateToken($token);
         } catch (\DomainException $e) {
@@ -257,7 +256,6 @@ class SiteController extends Controller
      */
     public function actionVerifyEmail($token)
     {
-        //$service = Yii::$container->get(PasswordResetService::class);
         try {
             $this->passwordResetService->verifyToken($token);
         } catch (\DomainException $e) {
@@ -287,7 +285,6 @@ class SiteController extends Controller
      */
     public function actionResendVerificationEmail()
     {
-        //$service = Yii::$container->get(PasswordResetService::class);
         $form = new ResendVerificationEmailForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
