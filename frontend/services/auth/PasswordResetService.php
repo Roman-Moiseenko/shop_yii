@@ -45,6 +45,7 @@ class PasswordResetService
         $user = $this->findByEmail($form->email);
 
         $user->requestPasswordReset();
+
         if (!$user->save()) {
             throw new \RuntimeException('Ошибка сохранения');
         }
@@ -54,7 +55,7 @@ class PasswordResetService
                 ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
                 ['user' => $user]
             )
-            ->setFrom($this->supportEmail/*[Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot']*/)
+            ->setFrom($this->supportEmail)
             ->setTo($user->email)
             ->setSubject('Password reset for ' . $user->username)
             ->send();
@@ -82,7 +83,6 @@ class PasswordResetService
             throw new \DomainException('Wrong password reset token.');
         }
     }
-
 
     public function reset($token, ResetPasswordForm $form): void
     {
