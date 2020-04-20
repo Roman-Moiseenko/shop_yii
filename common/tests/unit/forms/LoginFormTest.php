@@ -1,9 +1,9 @@
 <?php
 
-namespace common\tests\unit\models;
+namespace common\tests\unit\forms;
 
 use Yii;
-use common\models\LoginForm;
+use common\forms\LoginForm;
 use common\fixtures\UserFixture;
 
 /**
@@ -56,8 +56,8 @@ class LoginFormTest extends \Codeception\Test\Unit
     public function testLoginCorrect()
     {
         $model = new LoginForm([
-            'username' => 'bayer.hudson',
-            'password' => 'password_0',
+            'username' => 'admin',
+            'password' => '111111',
         ]);
 
         expect('model should login user', $model->login())->true();

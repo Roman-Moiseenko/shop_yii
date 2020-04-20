@@ -11,4 +11,5 @@ return [
     'mailChimpKey' => '',
     'mailChimpListId' => '',
     'smsRuKey' => '',
+    'supportEmail' => 'admin@example.com',
 ];
