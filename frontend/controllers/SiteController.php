@@ -27,13 +27,13 @@ class SiteController extends Controller
     /**
      * @var PasswordResetService
      */
-    /*private $service;
+    private $service;
 
     public function __construct($id, $module, PasswordResetService $service, $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->service = $service;
-    }*/
+    }
 
     /**
      * {@inheritdoc}
@@ -135,13 +135,12 @@ class SiteController extends Controller
     public function actionContact()
     {
         $form = new ContactForm();
+        $contact = \Yii::$container->get(ContactService::class);
 
-        if ($form->load(Yii::$app->request->post()) /*&& $form->validate()*/) {
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 echo '<pre>';
-                print_r($form);
-                die();
-                (new ContactService())->contact($form);
+                $contact->contact($form);
                 Yii::$app->session->setFlash('success', 'Спасибо за Ваш запрос, мы обязательно решим Вашу проблему и сообщим Вам.');
             } catch (\RuntimeException $e) {
                 Yii::$app->session->setFlash('error', $e->getMessage());

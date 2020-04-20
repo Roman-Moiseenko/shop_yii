@@ -9,14 +9,20 @@ use frontend\forms\PasswordResetRequestForm;
 use frontend\forms\ResendVerificationEmailForm;
 use frontend\forms\ResetPasswordForm;
 use Yii;
+use yii\mail\MailerInterface;
 
 class PasswordResetService
 {
     private $supportEmail;
+    /**
+     * @var MailerInterface
+     */
+    private $mailer;
 
-    public function __construct($supportEmail)
+    public function __construct($supportEmail, MailerInterface $mailer)
     {
         $this->supportEmail = $supportEmail;
+        $this->mailer = $mailer;
     }
 
     private function findByEmail($email): User
@@ -43,15 +49,14 @@ class PasswordResetService
             throw new \RuntimeException('Ошибка сохранения');
         }
 
-        $sent = Yii::$app
-            ->mailer
+        $sent = $this->mailer
             ->compose(
                 ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
                 ['user' => $user]
             )
             ->setFrom($this->supportEmail/*[Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot']*/)
             ->setTo($user->email)
-            ->setSubject('Password reset for ' . Yii::$app->name)
+            ->setSubject('Password reset for ' . $user->username)
             ->send();
         if (!$sent) {
             throw new \RuntimeException('Письмо не отправлено, проверьте правильность заполнения поля Email');
@@ -92,15 +97,14 @@ class PasswordResetService
     {
         $user = $this->findByEmail($form->email);
 
-        $send = Yii::$app
-            ->mailer
+        $send =  $this->mailer
             ->compose(
                 ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
                 ['user' => $user]
             )
             ->setFrom($this->supportEmail)
             ->setTo($user->email)
-            ->setSubject('Account registration at ' . Yii::$app->name)
+            ->setSubject('Account registration at ' . $user->username)
             ->send();
         if (!$send) {
             throw new \RuntimeException('Письмо не отправлено, проверьте правильность заполнения поля Email');
