@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\tests\unit\services;
+namespace shop\tests\unit\services;
 use Codeception\Test\Unit;
 use shop\services\auth\ContactService;
 use yii\mail\MailerInterface;
