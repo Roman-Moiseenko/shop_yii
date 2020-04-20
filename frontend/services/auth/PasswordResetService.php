@@ -61,7 +61,18 @@ class PasswordResetService
         if (!$sent) {
             throw new \RuntimeException('Письмо не отправлено, проверьте правильность заполнения поля Email');
         }
+    }
 
+    public function verifyToken($token): void
+    {
+        if (empty($token) || !is_string($token)) {
+            throw new \DomainException('Password reset token cannot be blank.');
+        }
+        if (!User::findByPasswordResetToken($token)) {
+            echo $token;
+            die();
+            throw new \DomainException('Wrong password reset token.');
+        }
     }
 
     public function validateToken($token): void
@@ -70,9 +81,13 @@ class PasswordResetService
             throw new \DomainException('Password reset token cannot be blank.');
         }
         if (!User::findByPasswordResetToken($token)) {
+            echo $token;
+            die();
             throw new \DomainException('Wrong password reset token.');
         }
     }
+
+
     public function reset($token, ResetPasswordForm $form): void
     {
         $user = User::findByPasswordResetToken($token);
