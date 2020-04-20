@@ -8,4 +8,8 @@ return [
     'mailChimpKey' => '',
     'mailChimpListId' => '',
     'smsRuKey' => '',
+    'adminEmail' => 'admin@kupi41.ru',
+    'supportEmail' => 'admin@kupi41.ru',
+    'senderEmail' => 'admin@kupi41.ru',
+    'senderName' => 'admin',
 ];

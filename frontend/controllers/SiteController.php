@@ -4,8 +4,10 @@ namespace frontend\controllers;
 use common\forms\LoginForm;
 use frontend\forms\ResendVerificationEmailForm;
 use frontend\forms\VerifyEmailForm;
+use frontend\services\auth\ContactService;
 use frontend\services\auth\PasswordResetService;
 use frontend\services\auth\SignupService;
+use frontend\services\auth\VerificationService;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
@@ -121,18 +123,18 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
+        $form = new ContactForm();
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                (new ContactService())->contact($form);
+                Yii::$app->session->setFlash('success', 'Спасибо за Ваш запрос, мы обязательно решим Вашу проблему и сообщим Вам.');
+            } catch (\RuntimeException $e) {
+                Yii::$app->session->setFlash('error', $e->getMessage());
             }
-
             return $this->refresh();
         } else {
             return $this->render('contact', [
-                'model' => $model,
+                'model' => $form,
             ]);
         }
     }
@@ -233,19 +235,28 @@ class SiteController extends Controller
      */
     public function actionVerifyEmail($token)
     {
+        $service = new VerificationService();
         try {
-            $model = new VerifyEmailForm($token);
-        } catch (InvalidArgumentException $e) {
+            (new PasswordResetService())->validateToken($token);
+
+        } catch (\DomainException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
-        if ($user = $model->verifyEmail()) {
+        //$form = new VerifyEmailForm();
+        try {
+        $user = (new VerificationService)->verifyEmail($token);
             if (Yii::$app->user->login($user)) {
-                Yii::$app->session->setFlash('success', 'Your email has been confirmed!');
+                Yii::$app->session->setFlash('success', 'Ваша почта подтверждена!');
                 return $this->goHome();
+            } {
+                throw new \DomainException('Ошибка входа в систему');
             }
+        } catch (\DomainException $e)
+        {
+            Yii::$app->session->setFlash('error', $e->getMessage());
         }
 
-        Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
+
         return $this->goHome();
     }
 
@@ -256,17 +267,21 @@ class SiteController extends Controller
      */
     public function actionResendVerificationEmail()
     {
-        $model = new ResendVerificationEmailForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+        $form = new ResendVerificationEmailForm();
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                (new VerificationService())->VerificationEmail($form);
+                Yii::$app->session->setFlash('success', 'Проверьте почту, мы Вам выслали инструкцию дальнейших действий.');
                 return $this->goHome();
+            } catch (\RuntimeException $e)
+            {
+                Yii::$app->session->setFlash('error', $e->getMessage());
             }
-            Yii::$app->session->setFlash('error', 'Sorry, we are unable to resend verification email for the provided email address.');
+
         }
 
         return $this->render('resendVerificationEmail', [
-            'model' => $model
+            'model' => $form
         ]);
     }
 }

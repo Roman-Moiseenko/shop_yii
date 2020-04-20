@@ -1,6 +1,6 @@
 <?php
 return [
-    'adminEmail' => 'admin@example.com',
+   // 'adminEmail' => 'admin@kupi41.ru',
     'user.passwordResetTokenExpire' => 3600,
     'user.rememberMeDuration' => 3600 * 24 * 30,
     'cookieDomain' => '.example.com',
@@ -11,5 +11,5 @@ return [
     'mailChimpKey' => '',
     'mailChimpListId' => '',
     'smsRuKey' => '',
-    'supportEmail' => 'admin@example.com',
+
 ];

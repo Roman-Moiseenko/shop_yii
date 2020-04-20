@@ -37,26 +37,5 @@ class ResendVerificationEmailForm extends Model
      *
      * @return bool whether the email was sent
      */
-    public function sendEmail()
-    {
-        $user = User::findOne([
-            'email' => $this->email,
-            'status' => User::STATUS_INACTIVE
-        ]);
 
-        if ($user === null) {
-            return false;
-        }
-
-        return Yii::$app
-            ->mailer
-            ->compose(
-                ['html' => 'emailVerify-html', 'text' => 'emailVerify-text'],
-                ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($user->email)
-            ->setSubject('Account registration at ' . Yii::$app->name)
-            ->send();
-    }
 }
