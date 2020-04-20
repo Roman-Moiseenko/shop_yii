@@ -68,10 +68,8 @@ class PasswordResetService
         if (empty($token) || !is_string($token)) {
             throw new \DomainException('Password reset token cannot be blank.');
         }
-        if (!User::findByPasswordResetToken($token)) {
-            echo $token;
-            die();
-            throw new \DomainException('Wrong password reset token.');
+        if (!User::findByVerificationToken($token)) {
+            throw new \DomainException('Пользователь уже авторизован');
         }
     }
 
@@ -81,8 +79,6 @@ class PasswordResetService
             throw new \DomainException('Password reset token cannot be blank.');
         }
         if (!User::findByPasswordResetToken($token)) {
-            echo $token;
-            die();
             throw new \DomainException('Wrong password reset token.');
         }
     }
@@ -100,11 +96,14 @@ class PasswordResetService
     }
     public function verifyEmail($token): User
     {
-        $user = User::findByPasswordResetToken($token);
+        $user = User::findByVerificationToken($token);
         if (!$user)
             throw new \DomainException('Пользователь не найден');
-        if ($user->status === User::STATUS_ACTIVE)
-            throw new \DomainException('Пользователь не активен');
+
+        $user->status = User::STATUS_ACTIVE;
+        $user->removeVerificationToken();
+        if (!$user->save())
+            throw new \DomainException('Ошибка активации');
         return $user;
     }
 

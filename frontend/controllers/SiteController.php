@@ -259,9 +259,7 @@ class SiteController extends Controller
     {
         //$service = Yii::$container->get(PasswordResetService::class);
         try {
-
             $this->passwordResetService->verifyToken($token);
-
         } catch (\DomainException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
