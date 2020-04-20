@@ -2,7 +2,7 @@
 
 namespace frontend\tests\unit\services;
 use Codeception\Test\Unit;
-use frontend\services\auth\ContactService;
+use shop\services\auth\ContactService;
 use yii\mail\MailerInterface;
 use yii\mail\MessageInterface;
 

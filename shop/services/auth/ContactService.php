@@ -1,10 +1,10 @@
 <?php
 
 
-namespace frontend\services\auth;
+namespace shop\services\auth;
 
 
-use frontend\forms\ContactForm;
+use shop\forms\ContactForm;
 use Yii;
 use yii\mail\MailerInterface;
 

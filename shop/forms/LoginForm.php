@@ -1,7 +1,7 @@
 <?php
-namespace common\forms;
+namespace shop\forms;
 
-use common\entities\User;
+use shop\entities\User;
 use Yii;
 use yii\base\Model;
 

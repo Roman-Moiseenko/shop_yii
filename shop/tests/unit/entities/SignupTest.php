@@ -1,7 +1,7 @@
 <?php
 
 
-namespace common\tests\unit\entities;
+namespace shop\tests\unit\entities;
 
 
 use Codeception\Test\Unit;

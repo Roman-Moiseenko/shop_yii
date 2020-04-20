@@ -1,13 +1,13 @@
 <?php
 namespace frontend\controllers;
 
-use common\forms\LoginForm;
-use common\services\AuthService;
-use frontend\forms\ResendVerificationEmailForm;
-use frontend\forms\VerifyEmailForm;
-use frontend\services\auth\ContactService;
-use frontend\services\auth\PasswordResetService;
-use frontend\services\auth\SignupService;
+use shop\forms\LoginForm;
+use shop\services\AuthService;
+use shop\forms\ResendVerificationEmailForm;
+use shop\forms\VerifyEmailForm;
+use shop\services\auth\ContactService;
+use shop\services\auth\PasswordResetService;
+use shop\services\auth\SignupService;
 //use frontend\services\auth\VerificationService;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -15,10 +15,10 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use frontend\forms\PasswordResetRequestForm;
-use frontend\forms\ResetPasswordForm;
-use frontend\forms\SignupForm;
-use frontend\forms\ContactForm;
+use shop\forms\PasswordResetRequestForm;
+use shop\forms\ResetPasswordForm;
+use shop\forms\SignupForm;
+use shop\forms\ContactForm;
 
 /**
  * Site controller
@@ -241,7 +241,8 @@ class SiteController extends Controller
         } catch (\DomainException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
-        $form = new ResetPasswordForm($token);
+
+        $form = new ResetPasswordForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $this->passwordResetService->reset($token, $form);

@@ -4,9 +4,9 @@
 namespace common\bootstrap;
 
 
-use common\repositories\UserRepository;
-use frontend\services\auth\ContactService;
-use frontend\services\auth\PasswordResetService;
+use shop\repositories\UserRepository;
+use shop\services\auth\ContactService;
+use shop\services\auth\PasswordResetService;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 

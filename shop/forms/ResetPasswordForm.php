@@ -1,7 +1,7 @@
 <?php
-namespace frontend\forms;
+namespace shop\forms;
 
-use common\entities\User;
+use shop\entities\User;
 use yii\base\InvalidArgumentException;
 use yii\base\Model;
 
@@ -18,8 +18,8 @@ class ResetPasswordForm extends Model
     public function rules()
     {
         return [
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            [['password'], 'required'],
+            ['password', 'string', 'min' => 4],
         ];
     }
 
