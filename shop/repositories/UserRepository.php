@@ -4,6 +4,7 @@
 namespace shop\repositories;
 
 
+use shop\entities\Network;
 use shop\entities\User;
 use shop\repositories\NotFoundException;
 
@@ -50,6 +51,22 @@ class UserRepository
             throw new \RuntimeException('Ошибка сохранения.');
         }
         //$this->dispatcher->dispatchAll($user->releaseEvents());
+    }
+
+    public function findByNetworkIdentity($network, $identity)
+    {
+        return User::find()
+            ->joinWith(Network::tableName() . ' n')
+            ->andWhere(['n.identity' => $identity, 'n.network' => $network])
+            ->one();
+
+        /*if (!$network = Network::findOne(['identity' => $identity, 'network' => $network])) {
+            return false;
+        }
+        if (!$user = User::findOne(['id' => $network->user_id])) {
+            return false;
+        }
+        return $user;*/
     }
 
     private function getBy(array $condition): User
