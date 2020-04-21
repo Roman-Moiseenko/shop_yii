@@ -32,9 +32,22 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+    public static function create(string $username, string $email, string $password): self
+    {
+        $user = new User();
+        $user->username = $username;
+        $user->email = $email;
+        $user->status = self::STATUS_ACTIVE;
+        $user->created_at = time();
+        $user->setPassword(!empty($password) ? $password : Yii::$app->security->generateRandomString());
+        $user->generateAuthKey();
+        //$user->generateEmailVerificationToken();
+        return $user;
+    }
+
     public static function signup(string $username, string $email, string $password): self
     {
-        $user = new static();
+        $user = new User();
         $user->username = $username;
         $user->email = $email;
         $user->status = self::STATUS_INACTIVE;
@@ -122,16 +135,7 @@ class User extends ActiveRecord implements IdentityInterface
             self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
-        return [
-            ['status', 'default', 'value' => self::STATUS_INACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
-        ];
-    }
+
 
     /**
      * {@inheritdoc}

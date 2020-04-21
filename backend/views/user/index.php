@@ -1,7 +1,10 @@
 <?php
 
+use kartik\widgets\DatePicker;
+use shop\entities\user\User;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use \shop\helpers\UserHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\forms\UserSearch */
@@ -11,11 +14,8 @@ $this->title = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать пользователя', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -26,18 +26,48 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
-            'username',
-            //'auth_key',
-            //'password_hash',
-            //'password_reset_token',
-            'email:email',
-            'status',
-            'created_at:datetime',
-            'updated_at:datetime',
-            //'verification_token',
-
+            [
+                'attribute' => 'username',
+                'format' => 'text',
+                'label' => 'Логин'
+            ],
+            [
+                'attribute' => 'email',
+                'format' => 'email',
+                'label' => 'Почта'
+            ],
+            [
+                'attribute' => 'status',
+                'filter' => UserHelper::statusList(),
+                'value' => function (User $user) {
+                    return UserHelper::statusLabel($user->status);
+                },
+                'format' => 'raw',
+                'label' => 'Статус',
+            ],
+            [
+                'attribute' =>'created_at',
+                'filter' => DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'date_from',
+                    'attribute2' => 'date_to',
+                    'type' => DatePicker::TYPE_RANGE,
+                    'separator' => '-',
+                    'pluginOptions' => [
+                        'todayHighLight' => true,
+                        'autoclose' => true,
+                        'format' => 'yyyy-mm-dd',
+                    ],
+                ]),
+                'format' => 'datetime',
+                'label' => 'Создан',
+            ],
+            [
+                'attribute' =>'updated_at',
+                'format' => 'datetime',
+                'label' => 'Изменен'
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
