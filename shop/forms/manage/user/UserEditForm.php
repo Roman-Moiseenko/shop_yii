@@ -16,7 +16,6 @@ class UserEditForm extends Model
 
     public function __construct(User $user, $config = [])
     {
-
         $this->username = $user->username;
         $this->email = $user->email;
         $this->_user = $user;
@@ -30,8 +29,6 @@ class UserEditForm extends Model
             ['email', 'email'],
             [['username', 'email'], 'string', 'max' => 255],
             [['username', 'email'], 'unique', 'targetClass' => User::class, 'filter' => ['<>', 'id', $this->_user->id]],
-
         ];
     }
-
 }
