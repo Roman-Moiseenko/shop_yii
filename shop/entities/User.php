@@ -4,6 +4,7 @@ namespace shop\entities;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -47,6 +48,11 @@ class User extends ActiveRecord implements IdentityInterface
         return false;
     }
 
+    public function getNetworks(): ActiveQuery
+    {
+        return $this->hasMany(Network::className(), ['user_id' => 'id']);
+    }
+
     public function requestPasswordReset(): void
     {
         if (!empty($this->password_reset_token) && self::isPasswordResetTokenValid($this->password_reset_token)) {
@@ -68,7 +74,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return '{{%user}}';
+        return '{{%users}}';
     }
 
     /**
@@ -78,6 +84,9 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             TimestampBehavior::className(),
+            [
+                'class' =>
+            ],
         ];
     }
 
