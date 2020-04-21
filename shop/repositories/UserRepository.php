@@ -4,8 +4,8 @@
 namespace shop\repositories;
 
 
-use shop\entities\Network;
-use shop\entities\User;
+use shop\entities\user\Network;
+use shop\entities\user\User;
 use shop\repositories\NotFoundException;
 
 class UserRepository

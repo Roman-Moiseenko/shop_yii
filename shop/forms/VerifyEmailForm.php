@@ -3,7 +3,7 @@
 namespace shop\forms;
 
 
-use shop\entities\User;
+use shop\entities\user\User;
 use yii\base\InvalidArgumentException;
 use yii\base\Model;
 

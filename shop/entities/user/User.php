@@ -1,6 +1,7 @@
 <?php
-namespace shop\entities;
+namespace shop\entities\user;
 
+use shop\entities\user\Network;
 use Yii;
 use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
 use yii\base\NotSupportedException;
@@ -23,7 +24,7 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property Network[] $networks
- * @property string $password write-only password
+ * property string $password write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -53,6 +54,19 @@ class User extends ActiveRecord implements IdentityInterface
         $user->networks = [Network::create($network, $identity)];
         return $user;
     }
+
+    public function attachNetwork($network, $identity)
+    {
+        $networks = $this->networks;
+        foreach ($networks as $current) {
+            if ($current->isFor($network, $identity)) {
+                throw new \DomainException('Соцсеть уже подключена');
+            }
+        }
+        $networks[] = [Network::create($network, $identity)];
+        $this->networks = $networks;
+    }
+
     public function isActive(): bool
     {
         if ($this->status === self::STATUS_ACTIVE) return true;

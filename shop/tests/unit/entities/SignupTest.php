@@ -5,7 +5,7 @@ namespace shop\tests\unit\entities;
 
 
 use Codeception\Test\Unit;
-use shop\entities\User;
+use shop\entities\user\User;
 
 class SignupTest extends Unit
 {

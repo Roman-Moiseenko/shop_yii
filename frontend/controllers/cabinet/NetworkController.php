@@ -1,17 +1,14 @@
 <?php
 
 
-namespace frontend\controllers\auth;
-
-
-//use common\auth\Identity;
+namespace frontend\controllers\cabinet;
 
 use shop\services\NetworkService;
 use Yii;
+use yii\authclient\AuthAction;
 use yii\authclient\ClientInterface;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
-use yii\authclient\AuthAction;
 
 class NetworkController extends Controller
 {
@@ -29,7 +26,7 @@ class NetworkController extends Controller
     public function actions()
     {
         return [
-            'auth' => [
+            'attach' => [
                 'class' => AuthAction::class,
                 'successCallback' => [$this, 'onAuthSuccess'],
             ],
@@ -43,8 +40,8 @@ class NetworkController extends Controller
         $identity = ArrayHelper::getValue($attributes, 'id');
 
         try {
-            $user = $this->networkService->auth($network, $identity);
-            Yii::$app->user->login($user, Yii::$app->params['user.rememberMeDuration']);
+            $this->networkService->attach(Yii::$app->user->id, $network, $identity);
+            Yii::$app->session->setFlash('success', 'Соцсеть присоединена');
         } catch (\DomainException $e) {
             Yii::$app->errorHandler->logException($e);
             Yii::$app->session->setFlash('error', $e->getMessage());

@@ -4,7 +4,7 @@
 namespace shop\services;
 
 
-use shop\entities\User;
+use shop\entities\user\User;
 use shop\forms\LoginForm;
 use shop\repositories\UserRepository;
 
