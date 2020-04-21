@@ -7,6 +7,7 @@ namespace common\bootstrap;
 use shop\repositories\UserRepository;
 use shop\services\auth\ContactService;
 use shop\services\auth\PasswordResetService;
+use shop\services\auth\SignupService;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 
@@ -33,6 +34,10 @@ class SetUp implements BootstrapInterface
                 $app->params['adminEmail'],
                 $app->mailer
             );
+        });
+
+        $container->setSingleton(SignupService::class, function () {
+            return new SignupService();
         });
     }
 }
