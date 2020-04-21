@@ -4,6 +4,7 @@
 namespace frontend\controllers\cabinet;
 
 
+use yii\filters\AccessControl;
 use yii\web\Controller;
 
 class DefaultController extends Controller
@@ -12,7 +13,7 @@ class DefaultController extends Controller
     {
         return [
             'class' => AccessControl::className(),
-            'rule' => [
+            'rules' => [
                 [
                     'allow' => true,
                     'roles' => ['@'],
