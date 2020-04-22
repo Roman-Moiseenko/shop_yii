@@ -1,15 +1,15 @@
 namespace: shop\tests
-actor_suffix: Tester
+actor: Tester
 paths:
     tests: tests
-    output: tests/_output
+    log: tests/_output
     data: tests/_data
-    support: tests/_support
-bootstrap: _bootstrap.php
+    helpers: tests/_support
 settings:
+    bootstrap: _bootstrap.php
     colors: true
     memory_limit: 1024M
 modules:
     config:
         Yii2:
-            configFile: 'common/config/codeception-local.php'
+            configFile: '../common/config/test-local.php'

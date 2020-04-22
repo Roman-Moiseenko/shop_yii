@@ -1,5 +1,5 @@
 <?php
-namespace shop\forms;
+namespace shop\forms\auth;
 
 use shop\entities\user\User;
 use yii\base\InvalidArgumentException;

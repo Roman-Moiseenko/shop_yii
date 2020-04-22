@@ -76,7 +76,7 @@ class User extends ActiveRecord implements IdentityInterface
         return $user;
     }
 
-    public function attachNetwork($network, $identity)
+    public function attachNetwork($network, $identity): void
     {
         $networks = $this->networks;
         foreach ($networks as $current) {

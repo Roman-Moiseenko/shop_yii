@@ -1,7 +1,7 @@
 <?php
 namespace backend\controllers;
 
-use shop\forms\LoginForm;
+use shop\forms\auth\LoginForm;
 use shop\services\AuthService;
 use Yii;
 use yii\web\Controller;

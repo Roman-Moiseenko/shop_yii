@@ -1,17 +1,19 @@
 <?php
-namespace shop\forms;
+
+
+namespace shop\forms\auth;
 
 use shop\entities\user\User;
 use Yii;
 use yii\base\Model;
 
-
-/**
- * Password reset request form
- */
-class PasswordResetRequestForm extends Model
+class ResendVerificationEmailForm extends Model
 {
+    /**
+     * @var string
+     */
     public $email;
+
 
     /**
      * {@inheritdoc}
@@ -24,7 +26,7 @@ class PasswordResetRequestForm extends Model
             ['email', 'email'],
             ['email', 'exist',
                 'targetClass' => '\shop\entities\user\User',
-                'filter' => ['status' => User::STATUS_ACTIVE],
+                'filter' => ['status' => User::STATUS_INACTIVE],
                 'message' => 'There is no user with this email address.'
             ],
         ];

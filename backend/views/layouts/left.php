@@ -34,7 +34,7 @@
                     ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['/user/index'], 'active' => $this->context->id == 'user'],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     [
-                        'label' => 'Админка',
+                        'label' => 'Разработчику',
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [

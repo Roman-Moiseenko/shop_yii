@@ -5,7 +5,7 @@ namespace shop\services\auth;
 
 
 use shop\entities\user\User;
-use shop\forms\SignupForm;
+use shop\forms\auth\SignupForm;
 use Yii;
 
 class SignupService
