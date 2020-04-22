@@ -96,7 +96,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getNetworks(): ActiveQuery
     {
-        return $this->hasMany(Network::className(), ['user_id' => 'id']);
+        return $this->hasMany(Network::class, ['user_id' => 'id']);
     }
 
     public function requestPasswordReset(): void
@@ -129,9 +129,9 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            TimestampBehavior::class,
             [
-                'class' => SaveRelationsBehavior::className(),
+                'class' => SaveRelationsBehavior::class,
                 'relations' => ['networks', 'wishlistItems'],
             ],
         ];

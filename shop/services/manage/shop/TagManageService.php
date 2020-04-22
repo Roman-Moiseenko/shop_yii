@@ -7,6 +7,7 @@ namespace shop\services\manage\shop;
 use shop\entities\shop\Tag;
 use shop\forms\manage\shop\TagForm;
 use shop\repositories\shop\TagRepository;
+use yii\helpers\Inflector;
 
 class TagManageService
 {
@@ -22,7 +23,10 @@ class TagManageService
 
     public function create(TagForm $form): Tag
     {
-        $tag = Tag::create($form->name, $form->slug);
+        $tag = Tag::create(
+            $form->name,
+            $form->slug ?: Inflector::slug($form->name)
+        );
         $this->tags->save($tag);
         return $tag;
     }
@@ -30,7 +34,10 @@ class TagManageService
     public function edit($id, TagForm $form): void
     {
         $tag = $this->tags->get($id);
-        $tag->edit($form->name, $form->slug);
+        $tag->edit(
+            $form->name,
+            $form->slug ?: Inflector::slug($form->name)
+        );
         $this->tags->save($tag);
     }
 

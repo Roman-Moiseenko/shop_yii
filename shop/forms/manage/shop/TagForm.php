@@ -11,10 +11,10 @@ use yii\base\Model;
 
 class TagForm extends Model
 {
-    public string $name;
-    public string $slug;
+    public $name;
+    public $slug;
    // private int $id;
-    private Tag $_tag;
+    private $_tag;
 
     public function __construct(Tag $tag = null, $config = [])
     {
@@ -28,7 +28,7 @@ class TagForm extends Model
     public function rules()
     {
         return [
-            [['name', 'slug'], 'required'],
+            [['name'], 'required'],
             [['name', 'slug'], 'string', 'max' => 255],
             ['slug', 'match', 'pattern' => '#^[0-9a-z_-]+$#s'],
             [['name', 'slug'], 'unique', 'targetClass' => Tag::class, 'filter' => $this->_tag ? ['<>', 'id', $this->_tag->id] : null],
