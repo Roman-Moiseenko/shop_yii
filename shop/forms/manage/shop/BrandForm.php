@@ -6,15 +6,20 @@ namespace shop\forms\manage\shop;
 
 use shop\entities\Meta;
 use shop\entities\shop\Brand;
+use shop\forms\CompositForm;
 use shop\forms\manage\MetaForm;
+use shop\validators\SlugValidator;
 use yii\base\Model;
 
-class BrandForm extends Model
+/**
+ * @property MetaForm $meta
+ */
+
+class BrandForm extends CompositForm
 {
     public $name;
     public $slug;
     /** @var Meta $meta */
-    public $meta;
 
     private $_brand;
 
@@ -36,15 +41,11 @@ class BrandForm extends Model
         return [
             [['name', 'slug'], 'required'],
             [['name', 'slug'], 'string', 'max' => 255],
-            ['slug', 'match', 'pattern' => '#^[a-z0-9_-]+$#s'],
+            ['slug', SlugValidator::class],
             [['name', 'slug'], 'unique', 'targetClass' => Brand::class, 'filter' => $this->_brand ? ['<>', 'id', $this->_brand->id] : null]
         ];
     }
 
-    public function load($data, $formName = null)
-    {
-        return parent::load($data, $formName) and $this->meta->load($data, $formName);
-    }
 
     public function internalForms(): array
     {
