@@ -6,7 +6,7 @@ namespace shop\forms\manage\shop;
 
 use shop\entities\Meta;
 use shop\entities\shop\Brand;
-use shop\forms\CompositForm;
+use shop\forms\CompositeForm;
 use shop\forms\manage\MetaForm;
 use shop\validators\SlugValidator;
 use yii\base\Model;
@@ -15,7 +15,7 @@ use yii\base\Model;
  * @property MetaForm $meta
  */
 
-class BrandForm extends CompositForm
+class BrandForm extends CompositeForm
 {
     public $name;
     public $slug;

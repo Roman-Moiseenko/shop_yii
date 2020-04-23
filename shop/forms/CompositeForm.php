@@ -7,7 +7,7 @@ namespace shop\forms;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 
-abstract class CompositForm extends Model
+abstract class CompositeForm extends Model
 {
     private $forms = [];
 

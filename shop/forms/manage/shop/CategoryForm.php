@@ -5,11 +5,11 @@ namespace shop\forms\manage\shop;
 
 
 use shop\entities\shop\Category;
-use shop\forms\CompositForm;
+use shop\forms\CompositeForm;
 use shop\forms\manage\MetaForm;
 use shop\validators\SlugValidator;
 
-class CategoryForm extends CompositForm
+class CategoryForm extends CompositeForm
 {
     public $name;
     public $slug;
