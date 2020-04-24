@@ -4,6 +4,7 @@
 namespace shop\forms\manage\shop\product;
 
 
+use shop\entities\shop\product\Product;
 use shop\forms\manage\MetaForm;
 use yii\base\Model;
 

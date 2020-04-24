@@ -6,6 +6,7 @@ namespace shop\forms\manage\shop\product;
 
 use shop\entities\shop\Brand;
 use shop\entities\shop\Characteristic;
+use shop\entities\shop\product\Product;
 use shop\forms\CompositeForm;
 use shop\forms\manage\MetaForm;
 use yii\helpers\ArrayHelper;

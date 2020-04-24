@@ -5,6 +5,7 @@ namespace shop\forms\manage\shop\product;
 
 
 use shop\entities\shop\Category;
+use shop\entities\shop\product\Product;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 

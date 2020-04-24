@@ -27,7 +27,7 @@ class MetaBehavior extends Behavior
 
     public function onAfterFind(Event $event): void
     {
-        /** @var Brand $brand */
+        /** @var ActiveRecord $brand */
         $brand = $event->sender;
         $meta = Json::decode($brand->getAttribute($this->jsonAttribute));
         $brand->{$this->jsonAttribute} = new Meta(
@@ -39,7 +39,7 @@ class MetaBehavior extends Behavior
 
     public function onBeforeSave(Event $event): void
     {
-        /** @var Brand $brand */
+        /** @var ActiveRecord $brand */
         $brand = $event->sender;
         $brand->setAttribute($this->jsonAttribute, Json::encode([
             'title' => $brand->{$this->jsonAttribute}->title,

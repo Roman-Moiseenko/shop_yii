@@ -19,6 +19,8 @@ class m170519_181139_create_shop_products_table extends Migration
             'price_new' => $this->integer(),
             'rating' => $this->decimal(3, 2),
             'meta_json' => $this->text(),
+            'code1C' => $this->string(),
+            //'unit_id' => $this->string(), //TODO Переделать в последующем на class Units(id, name, discription) //(5, шт, штуки)
         ], $tableOptions);
 
         $this->createIndex('{{%idx-shop_products-code}}', '{{%shop_products}}', 'code', true);
