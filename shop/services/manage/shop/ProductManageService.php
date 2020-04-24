@@ -63,6 +63,10 @@ class ProductManageService
             $product->setValue($value->id, $value->value);
         }
 
+        foreach ($form->photos->files as $file) {
+            $product->addPhoto($file);
+        }
+
         $this->products->save($product);
     }
 

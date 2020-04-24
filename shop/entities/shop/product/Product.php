@@ -11,6 +11,7 @@ use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\web\UploadedFile;
 
 /**
  * @property integer $id
@@ -29,6 +30,8 @@ use yii\db\ActiveRecord;
  * @property Category $category
  * @property CategoryAssignment[] $categoryAssignments
  * @property Value[] $values
+ * @property Photo[] $photos
+ * @property Photo $mainPhoto
  */
 class Product extends ActiveRecord
 {
@@ -73,7 +76,8 @@ class Product extends ActiveRecord
                 'relations' => [
                     'categoryAssignments',
                     'values',
-                    /*'tagAssignments', 'relatedAssignments', 'modifications', 'photos', 'reviews'*/
+                    'photos',
+                    /*'tagAssignments', 'relatedAssignments', 'modifications',  'reviews'*/
                 ],
             ],
         ];
@@ -108,6 +112,75 @@ class Product extends ActiveRecord
         }
         return Value::blank($id);
     }
+
+    // Photos
+
+    public function addPhoto(UploadedFile $file): void
+    {
+        $photos = $this->photos;
+        $photos[] = Photo::create($file);
+        $this->updatePhotos($photos);
+    }
+
+    public function removePhoto($id): void
+    {
+        $photos = $this->photos;
+        foreach ($photos as $i => $photo) {
+            if ($photo->isIdEqualTo($id)) {
+                unset($photos[$i]);
+                $this->updatePhotos($photos);
+                return;
+            }
+        }
+        throw new \DomainException('Фото не найдено.');
+    }
+
+    public function removePhotos(): void
+    {
+        $this->updatePhotos([]);
+    }
+
+    public function movePhotoUp($id): void
+    {
+        $photos = $this->photos;
+        foreach ($photos as $i => $photo) {
+            if ($photo->isIdEqualTo($id)) {
+                if ($prev = $photos[$i - 1] ?? null) {
+                    $photos[$i - 1] = $photo;
+                    $photos[$i] = $prev;
+                    $this->updatePhotos($photos);
+                }
+                return;
+            }
+        }
+        throw new \DomainException('Фото не найдено.');
+    }
+
+    public function movePhotoDown($id): void
+    {
+        $photos = $this->photos;
+        foreach ($photos as $i => $photo) {
+            if ($photo->isIdEqualTo($id)) {
+                if ($next = $photos[$i + 1] ?? null) {
+                    $photos[$i] = $next;
+                    $photos[$i + 1] = $photo;
+                    $this->updatePhotos($photos);
+                }
+                return;
+            }
+        }
+        throw new \DomainException('Фото не найдено.');
+    }
+
+    private function updatePhotos(array $photos): void
+    {
+        foreach ($photos as $i => $photo) {
+            $photo->setSort($i);
+        }
+        $this->photos = $photos;
+        $this->populateRelation('mainPhoto', reset($photos));
+    }
+
     // Categories
 
     public function assignCategory($id): void
@@ -140,7 +213,11 @@ class Product extends ActiveRecord
         $this->categoryAssignments = [];
     }
 
+
+
     ##########################
+
+
 
     /*public function getUnit(): ActiveQuery
     {
@@ -167,5 +244,9 @@ class Product extends ActiveRecord
         return $this->hasMany(CategoryAssignment::class, ['product_id' => 'id']);
     }
 
+    public function getPhotos(): ActiveQuery
+    {
+        return $this->hasMany(Photo::class, ['product_id' => 'id'])->orderBy('sort');
+    }
 
 }
