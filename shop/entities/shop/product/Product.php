@@ -435,4 +435,9 @@ class Product extends ActiveRecord
         return $this->hasMany(RelatedAssignment::class, ['product_id' => 'id']);
     }
 
+    public function getReviews(): ActiveQuery
+    {
+        return $this->hasMany(Review::class, ['product_id' => 'id']);
+    }
+
 }
