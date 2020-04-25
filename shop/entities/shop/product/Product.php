@@ -84,7 +84,7 @@ class Product extends ActiveRecord
                     'tagAssignments',
                     'relatedAssignments',
                     'modifications',
-                    /*  'reviews'*/
+                    'reviews'
                 ],
             ],
         ];
