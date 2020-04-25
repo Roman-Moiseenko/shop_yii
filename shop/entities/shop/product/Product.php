@@ -34,6 +34,8 @@ use yii\web\UploadedFile;
  * @property Photo $mainPhoto
  * @property TagAssignment[] $tagAssignments
  * @property RelatedAssignment[] $relatedAssignments
+ * @property Modification $modifications
+ * @property Review[] $reviews
  */
 class Product extends ActiveRecord
 {
@@ -81,7 +83,8 @@ class Product extends ActiveRecord
                     'photos',
                     'tagAssignments',
                     'relatedAssignments',
-                    /*'modifications',  'reviews'*/
+                    'modifications',
+                    /*  'reviews'*/
                 ],
             ],
         ];
@@ -115,6 +118,118 @@ class Product extends ActiveRecord
             }
         }
         return Value::blank($id);
+    }
+//Review
+
+    public function addReview($userId, $vote, $text): void
+    {
+        $reviews = $this->reviews;
+        $reviews[] = Review::create($userId, $vote, $text);
+        $this->updateReviews($reviews);
+    }
+
+    public function editReview($id, $vote, $text): void
+    {
+        $this->doWithReview($id, function (Review $review) use ($vote, $text) {
+            $review->edit($vote, $text);
+        });
+    }
+
+    public function activateReview($id): void
+    {
+        $this->doWithReview($id, function (Review $review) {
+            $review->activate();
+        });
+    }
+
+    public function draftReview($id): void
+    {
+        $this->doWithReview($id, function (Review $review) {
+            $review->draft();
+        });
+    }
+
+    private function doWithReview($id, callable $callback): void
+    {
+        $reviews = $this->reviews;
+        foreach ($reviews as $review) {
+            if ($review->isIdEqualTo($id)) {
+                $callback($review);
+                $this->updateReviews($reviews);
+                return;
+            }
+        }
+        throw new \DomainException('Review is not found.');
+    }
+
+    public function removeReview($id): void
+    {
+        $reviews = $this->reviews;
+        foreach ($reviews as $i => $review) {
+            if ($review->isIdEqualTo($id)) {
+                unset($reviews[$i]);
+                $this->updateReviews($reviews);
+                return;
+            }
+        }
+        throw new \DomainException('Review is not found.');
+    }
+
+    private function updateReviews(array $reviews): void
+    {
+        $amount = 0;
+        $total = 0;
+
+        foreach ($reviews as $review) {
+            if ($review->isActive()) {
+                $amount++;
+                $total += $review->getRating();
+            }
+        }
+
+        $this->reviews = $reviews;
+        $this->rating = $amount ? $total / $amount : null;
+    }
+
+
+    //Modification
+
+    public function getModification($id): Modification
+    {
+        foreach ($this->modifications as $modification) {
+            if ($modification->isIdEqualTo($id)) {
+                return $modification;
+            }
+        }
+        throw new \DomainException('Модификация не найдена');
+    }
+
+    public function addModification($code, $name, $price): void
+    {
+        $modifications = $this->modifications;
+        foreach ($modifications as $modification) {
+            if ($modification->isCodeEqualTo($code)) {
+                throw new \DomainException('Модификация уже внесена');
+            }
+        }
+        $modifications[] = Modification::create($code, $name, $price);
+        $this->modifications = $modifications;
+
+    }
+
+    public function editModification($id, $code, $name, $price): void
+    {
+        $modifications = $this->modifications;
+        foreach ($modifications as $i => $modification) {
+            if ($modification->isIdEqualTo($id)) {
+                $modification->edit($code, $name, $price);
+                $modifications[] = $modification;
+                $this->modifications = $modifications;
+                return;
+            }
+        }
+        throw new \DomainException('Модификация не найдена');
+
     }
     // Related products
 

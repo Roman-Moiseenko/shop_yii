@@ -31,6 +31,11 @@ class Modification extends ActiveRecord
         $this->price = $price;
     }
 
+    public function isCodeEqualTo($code)
+    {
+        return $this->code === $code;
+    }
+
     public function isIdEqualTo($id): bool
     {
         return $this->id === $id;
