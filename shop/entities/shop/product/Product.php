@@ -56,7 +56,7 @@ class Product extends ActiveRecord
         $this->price_new = $new;
         $this->price_old = $old;
     }
-    public function edit($brandId, $categoryId, $code, $name, Meta $meta): void
+    public function edit($brandId,/* $categoryId,*/ $code, $name, Meta $meta): void
     {
         $this->brand_id = $brandId;
         $this->code = $code;
@@ -80,7 +80,8 @@ class Product extends ActiveRecord
                     'values',
                     'photos',
                     'tagAssignments',
-                    /* 'relatedAssignments', 'modifications',  'reviews'*/
+                    'relatedAssignments',
+                    /*'modifications',  'reviews'*/
                 ],
             ],
         ];
@@ -313,4 +314,10 @@ class Product extends ActiveRecord
     {
         return $this->hasMany(TagAssignment::class, ['product_id' => 'id']);
     }
+
+    public function getRelatedAssignments(): ActiveQuery
+    {
+        return $this->hasMany(RelatedAssignment::class, ['product_id' => 'id']);
+    }
+
 }

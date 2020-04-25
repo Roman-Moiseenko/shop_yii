@@ -65,6 +65,11 @@ class ProductEditForm extends CompositeForm
 */
     protected function internalForms(): array
     {
-        return ['meta', 'categories', 'tags', 'values'];
+        return [
+            'meta',
+        //    'categories',
+            'tags',
+            'values'
+        ];
     }
 }
