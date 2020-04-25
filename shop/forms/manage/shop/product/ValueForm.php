@@ -6,12 +6,14 @@ namespace shop\forms\manage\shop\product;
 
 
 use shop\entities\shop\Characteristic;
+use shop\entities\Shop\Product\Value;
 use yii\base\Model;
 
 /** @property integer $id */
 class ValueForm extends Model
 {
     public $value;
+    /** @var Characteristic $_characteristic */
     private $_characteristic;
 
     public function __construct(Characteristic $characteristic, Value $value = null, $config = [])

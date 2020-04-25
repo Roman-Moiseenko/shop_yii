@@ -2,7 +2,7 @@
 
 namespace shop\entities\Shop\Product;
 
-use shop\services\WaterMarker;
+//use shop\services\WaterMarker;
 use yii\db\ActiveRecord;
 use yii\web\UploadedFile;
 use yiidreamteam\upload\ImageUploadBehavior;
@@ -38,7 +38,7 @@ class Photo extends ActiveRecord
         return '{{%shop_photos}}';
     }
 
-    public function behaviors(): array
+  /*  public function behaviors(): array
     {
         return [
             [
@@ -61,5 +61,5 @@ class Photo extends ActiveRecord
                 ],
             ],
         ];
-    }
+    }*/
 }

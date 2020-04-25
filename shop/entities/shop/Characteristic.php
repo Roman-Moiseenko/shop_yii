@@ -70,5 +70,17 @@ class Characteristic extends ActiveRecord
         $this->variants = Json::decode($this->getAttribute('variants_json'));
         parent::afterFind();
     }
+    public function isString():bool
+    {
+        return $this->type === self::TYPE_STRING;
+    }
+    public function isInteger():bool
+    {
+        return $this->type === self::TYPE_INTEGER;
+    }
 
+    public function isFloat():bool
+    {
+        return $this->type === self::TYPE_FLOAT;
+    }
 }
