@@ -5,7 +5,7 @@ namespace shop\entities\Shop\Product;
 //use shop\services\WaterMarker;
 use yii\db\ActiveRecord;
 use yii\web\UploadedFile;
-use yiidreamteam\upload\ImageUploadBehavior;
+//use yiidreamteam\upload\ImageUploadBehavior;
 
 /**
  * @property integer $id
