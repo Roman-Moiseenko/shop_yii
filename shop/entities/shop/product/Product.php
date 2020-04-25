@@ -32,6 +32,7 @@ use yii\web\UploadedFile;
  * @property Value[] $values
  * @property Photo[] $photos
  * @property Photo $mainPhoto
+ * @property TagAssignment[] $tagAssignments
  */
 class Product extends ActiveRecord
 {
@@ -77,7 +78,8 @@ class Product extends ActiveRecord
                     'categoryAssignments',
                     'values',
                     'photos',
-                    /*'tagAssignments', 'relatedAssignments', 'modifications',  'reviews'*/
+                    'tagAssignments',
+                    /* 'relatedAssignments', 'modifications',  'reviews'*/
                 ],
             ],
         ];
@@ -112,7 +114,35 @@ class Product extends ActiveRecord
         }
         return Value::blank($id);
     }
+//Tag
 
+    public function assignTag($id): void
+    {
+        $assigments = $this->tagAssigments;
+        foreach ($assigments as $assigment) {
+            if ($assigments->isForTag($id))
+                return;
+        }
+        $assignments[] = TagAssignment::create($id);
+        $this->tagAssignments = $assignments;
+    }
+    public function revokeTag($id): void
+    {
+        $assignments = $this->tagAssignments;
+        foreach ($assignments as $i => $assignment) {
+            if ($assignment->isForTag($id)) {
+                unset($assignments[$i]);
+                $this->tagAssignments = $assignments;
+                return;
+            }
+        }
+        throw new \DomainException('Assignment is not found.');
+    }
+
+    public function revokeTags(): void
+    {
+        $this->tagAssignments = [];
+    }
     // Photos
 
     public function addPhoto(UploadedFile $file): void
@@ -248,5 +278,8 @@ class Product extends ActiveRecord
     {
         return $this->hasMany(Photo::class, ['product_id' => 'id'])->orderBy('sort');
     }
-
+    public function getTagAssignments(): ActiveQuery
+    {
+        return $this->hasMany(TagAssignment::class, ['product_id' => 'id']);
+    }
 }
