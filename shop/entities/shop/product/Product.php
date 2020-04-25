@@ -33,6 +33,7 @@ use yii\web\UploadedFile;
  * @property Photo[] $photos
  * @property Photo $mainPhoto
  * @property TagAssignment[] $tagAssignments
+ * @property RelatedAssignment[] $relatedAssignments
  */
 class Product extends ActiveRecord
 {
@@ -114,6 +115,33 @@ class Product extends ActiveRecord
         }
         return Value::blank($id);
     }
+    // Related products
+
+    public function assignRelatedProduct($id): void
+    {
+        $assignments = $this->relatedAssignments;
+        foreach ($assignments as $assignment) {
+            if ($assignment->isForProduct($id)) {
+                return;
+            }
+        }
+        $assignments[] = CategoryAssignment::create($id);
+        $this->relatedAssignments = $assignments;
+    }
+
+    public function revokeRelatedProduct($id): void
+    {
+        $assignments = $this->relatedAssignments;
+        foreach ($assignments as $i => $assignment) {
+            if ($assignment->isForProduct($id)) {
+                unset($assignments[$i]);
+                $this->relatedAssignments = $assignments;
+                return;
+            }
+        }
+        throw new \DomainException('Assignment is not found.');
+    }
+
 //Tag
 
     public function assignTag($id): void
@@ -243,7 +271,10 @@ class Product extends ActiveRecord
         $this->categoryAssignments = [];
     }
 
-
+    public function changeMainCategory($categoryId): void
+    {
+        $this->category_id = $categoryId;
+    }
 
     ##########################
 

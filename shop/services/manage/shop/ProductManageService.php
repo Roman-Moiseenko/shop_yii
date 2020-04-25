@@ -7,12 +7,16 @@ namespace shop\services\manage\shop;
 use shop\entities\Meta;
 use shop\entities\shop\Category;
 use shop\entities\shop\product\Product;
+use shop\entities\shop\product\TagAssignment;
+use shop\entities\shop\Tag;
 use shop\forms\manage\shop\product\CategoriesForm;
 use shop\forms\manage\shop\product\PhotosForm;
 use shop\forms\manage\shop\product\ProductCreateForm;
 use shop\repositories\shop\BrandRepository;
 use shop\repositories\shop\CategoryRepository;
 use shop\repositories\shop\ProductRepository;
+use shop\repositories\shop\TagRepository;
+use shop\services\TransactionManager;
 
 class ProductManageService
 {
@@ -29,16 +33,28 @@ class ProductManageService
      * @var CategoryRepository
      */
     private $categories;
+    /**
+     * @var TagRepository
+     */
+    private $tags;
+    /**
+     * @var TransactionManager
+     */
+    private $transaction;
 
     public function __construct(
         ProductRepository $products,
         BrandRepository $brands,
-        CategoryRepository $categories
+        CategoryRepository $categories,
+        TagRepository $tags,
+        TransactionManager $transaction
 )
     {
         $this->products = $products;
         $this->brands = $brands;
         $this->categories = $categories;
+        $this->tags = $tags;
+        $this->transaction = $transaction;
     }
 
     public function create(ProductCreateForm $form): Product
@@ -70,8 +86,23 @@ class ProductManageService
             $product->addPhoto($file);
         }
 
-        $this->products->save($product);
-        return $product;
+        foreach ($form->tags->existing as $tagId) {
+            $tag = $this->tags->get($tagId);
+            $product->assignTag($tag->id);
+        }
+
+        $this->transaction->wrap(function () use ($form, $product) {
+            foreach ($form->tags->newNames as $tagName) {
+                if (!$tag = $this->tags->findByName($tagName)) {
+                    $tag = Tag::create($tagName, $tagName);
+                    $this->tags->save($tag);
+                }
+                $product->assignTag($tag->id);
+            }
+
+            $this->products->save($product);
+            return $product;
+        });
     }
 
     public function changeCategories($id, CategoriesForm $form): void

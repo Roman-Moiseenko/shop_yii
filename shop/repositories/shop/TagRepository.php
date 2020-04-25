@@ -29,4 +29,9 @@ class TagRepository
             throw new \RuntimeException('Ошибка удаления метки');
         }
     }
+    public function findByName($name): ?Tag
+    {
+        return Tag::findOne(['name' => $name]);
+    }
+
 }

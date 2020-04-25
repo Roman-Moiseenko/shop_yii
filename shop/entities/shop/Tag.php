@@ -20,7 +20,6 @@ class Tag extends ActiveRecord
         $tag->name = $name;
         $tag->slug = $slug;
         return $tag;
-
     }
 
     public function edit(string $name, string $slug): void
