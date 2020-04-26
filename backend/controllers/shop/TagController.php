@@ -83,7 +83,7 @@ class TagController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $tag = $this->service->create($form);
-                return $this->redirect(['view', 'id' => $form->id]);
+                return $this->redirect(['view', 'id' => $tag->id]);
             } catch (\DomainException $e) {
                 Yii::$app->errorHandler->logException($e);
                 Yii::$app->session->setFlash('error', $e->getMessage());
@@ -104,14 +104,21 @@ class TagController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $tag = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $form = new TagForm($tag);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $this->service->edit($tag->id, $form);
+                return $this->redirect(['view', 'id' => $tag->id]);
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
         }
-
         return $this->render('update', [
-            'model' => $model,
+            'model' => $form,
+            'tag' => $tag,
         ]);
     }
 

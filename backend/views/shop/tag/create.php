@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model shop\entities\shop\Tag */
 
-$this->title = 'Create Tag';
+$this->title = 'Создать метку';
 $this->params['breadcrumbs'][] = ['label' => 'Tags', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

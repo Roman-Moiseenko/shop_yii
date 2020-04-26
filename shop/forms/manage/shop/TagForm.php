@@ -9,7 +9,6 @@ use shop\validators\SlugValidator;
 use yii\base\Model;
 
 
-
 class TagForm extends Model
 {
     public $name;
