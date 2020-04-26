@@ -2,6 +2,8 @@
 
 namespace backend\controllers\shop;
 
+use shop\forms\manage\shop\TagForm;
+use shop\services\manage\shop\TagManageService;
 use Yii;
 use shop\entities\shop\Tag;
 use backend\forms\shop\TagSearch;
@@ -15,8 +17,20 @@ use yii\filters\VerbFilter;
 class TagController extends Controller
 {
     /**
+     * @var array|TagManageService
+     */
+    private $service;
+
+    /**
      * {@inheritdoc}
      */
+
+    public function __construct($id, $module, TagManageService $service, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->service = $service;
+    }
+
     public function behaviors()
     {
         return [
@@ -64,14 +78,20 @@ class TagController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Tag();
+        $form = new TagForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $tag = $this->service->create($form);
+                return $this->redirect(['view', 'id' => $form->id]);
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $form,
         ]);
     }
 
