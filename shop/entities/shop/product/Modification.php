@@ -9,6 +9,7 @@ use yii\db\ActiveRecord;
 
 /**
  * @property integer $id
+ * @property integer product_id
  * @property string $name
  * @property string $code
  * @property string $price

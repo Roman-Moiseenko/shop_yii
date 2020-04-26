@@ -379,7 +379,7 @@ class Product extends ActiveRecord
                 return;
             }
         }
-        throw new \DomainException('Assignment is not found.');
+        throw new \DomainException('Дополнительные категории не найдены .');
     }
 
     public function revokeCategories(): void
@@ -440,4 +440,13 @@ class Product extends ActiveRecord
         return $this->hasMany(Review::class, ['product_id' => 'id']);
     }
 
+    public function getModifications(): ActiveQuery
+    {
+        return $this->hasMany(Modification::class, ['product_id' => 'id']);
+    }
+
+    public function getValues(): ActiveQuery
+    {
+        return $this->hasMany(Value::class, ['product_id' => 'id']);
+    }
 }
