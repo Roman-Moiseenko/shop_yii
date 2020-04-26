@@ -1,27 +1,31 @@
 <?php
 
-namespace backend\controllers;
+namespace backend\controllers\shop;
 
-use shop\forms\manage\user\UserCreateForm;
-use shop\forms\manage\user\UserEditForm;
-use shop\services\manage\UserManageService;
+use shop\forms\manage\shop\BrandForm;
+use shop\services\manage\shop\BrandManageService;
 use Yii;
-use shop\entities\user\User;
-use backend\forms\UserSearch;
+use shop\entities\shop\Brand;
+use backend\forms\shop\BrandSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * UserController implements the CRUD actions for User model.
+ * BrandController implements the CRUD actions for Brand model.
  */
-class UserController extends Controller
+class BrandController extends Controller
 {
+    /**
+     * @var BrandManageService
+     */
     private $service;
+
     /**
      * {@inheritdoc}
      */
-    public function __construct($id, $module, UserManageService $service, $config = [])
+
+    public function __construct($id, $module, BrandManageService $service, $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->service = $service;
@@ -31,7 +35,7 @@ class UserController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::class,
+                'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -40,12 +44,12 @@ class UserController extends Controller
     }
 
     /**
-     * Lists all User models.
+     * Lists all Brand models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
+        $searchModel = new BrandSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -55,7 +59,7 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a single User model.
+     * Displays a single Brand model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -63,26 +67,23 @@ class UserController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'brand' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new User model.
+     * Creates a new Brand model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-
-        $form = new UserCreateForm();
-
+        $form = new BrandForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
-                $user = $this->service->create($form);
-                return $this->redirect(['view', 'id' => $user->id]);
-            } catch (\DomainException $e)
-            {
+                $brand = $this->service->create($form);
+                return $this->redirect(['view', 'id' => $brand->id]);
+            } catch (\DomainException $e) {
                 Yii::$app->errorHandler->logException($e);
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
@@ -93,7 +94,7 @@ class UserController extends Controller
     }
 
     /**
-     * Updates an existing User model.
+     * Updates an existing Brand model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -101,30 +102,27 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
+        $brand = $this->findModel($id);
 
-        //$model = $this->findModel($id);
-        $user = $this->findModel($id);
-        $form = new UserEditForm($user);
-
+        $form = new BrandForm($brand);
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
-                $this->service->update($id, $form);
-                return $this->redirect(['view', 'id' => $user->id]);
-            } catch (\DomainException $e)
-            {
+                $this->service->edit($id, $form);
+                return $this->redirect(['view', 'id' => $brand->id]);
+            } catch (\DomainException $e) {
                 Yii::$app->errorHandler->logException($e);
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
-
         }
 
         return $this->render('update', [
             'model' => $form,
+            'brand' => $brand
         ]);
     }
 
     /**
-     * Deletes an existing User model.
+     * Deletes an existing Brand model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -138,15 +136,15 @@ class UserController extends Controller
     }
 
     /**
-     * Finds the User model based on its primary key value.
+     * Finds the Brand model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return User the loaded model
+     * @return Brand the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne($id)) !== null) {
+        if (($model = Brand::findOne($id)) !== null) {
             return $model;
         }
 

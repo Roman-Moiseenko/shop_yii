@@ -1,8 +1,6 @@
 <?php
 
-
 namespace shop\entities\behaviors;
-
 
 use shop\entities\Meta;
 use shop\entities\shop\Brand;
@@ -19,9 +17,9 @@ class MetaBehavior extends Behavior
     public function events(): array
     {
         return [
-            ActiveRecord::EVENT_AFTER_FIND, [$this, 'onAfterFind'],
-            ActiveRecord::EVENT_BEFORE_UPDATE, [$this, 'onBeforeSave'],
-            ActiveRecord::EVENT_BEFORE_INSERT, [$this, 'onBeforeSave']
+            ActiveRecord::EVENT_AFTER_FIND => 'onAfterFind',
+            ActiveRecord::EVENT_BEFORE_UPDATE => 'onBeforeSave',
+            ActiveRecord::EVENT_BEFORE_INSERT => 'onBeforeSave'
         ];
     }
 
@@ -30,7 +28,7 @@ class MetaBehavior extends Behavior
         /** @var ActiveRecord $brand */
         $brand = $event->sender;
         $meta = Json::decode($brand->getAttribute($this->jsonAttribute));
-        $brand->{$this->jsonAttribute} = new Meta(
+        $brand->{$this->attribute} = new Meta(
             $meta['title'] ?? null,
             $meta['description'] ?? null,
             $meta['keywords'] ?? null
@@ -42,9 +40,9 @@ class MetaBehavior extends Behavior
         /** @var ActiveRecord $brand */
         $brand = $event->sender;
         $brand->setAttribute($this->jsonAttribute, Json::encode([
-            'title' => $brand->{$this->jsonAttribute}->title,
-            'description' => $brand->{$this->jsonAttribute}->description,
-            'keywords' => $brand->{$this->jsonAttribute}->keywords
+            'title' => $brand->{$this->attribute}->title,
+            'description' => $brand->{$this->attribute}->description,
+            'keywords' => $brand->{$this->attribute}->keywords
         ]));
     }
 }

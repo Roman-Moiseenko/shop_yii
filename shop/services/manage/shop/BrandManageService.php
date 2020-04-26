@@ -20,15 +20,15 @@ class BrandManageService
         $this->brands = $brands;
     }
 
-    public function create(BrandForm $form, MetaForm $metaForm):Brand
+    public function create(BrandForm $form):Brand
     {
         $brand = Brand::create(
             $form->name,
             $form->slug,
             new Meta(
-                $metaForm->title,
-                $metaForm->description,
-                $metaForm->keywords
+                $form->meta->title,
+                $form->meta->description,
+                $form->meta->keywords
             ));
         $this->brands->save($brand);
         return $brand;

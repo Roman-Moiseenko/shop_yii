@@ -19,12 +19,14 @@ class BrandForm extends CompositeForm
 {
     public $name;
     public $slug;
+  //  public $id;
+   // public $meta_json;
     /** @var Meta $meta */
 
     private $_brand;
 
 
-    public function __construct(Brand $brand, $config = [])
+    public function __construct(Brand $brand = null, $config = [])
     {
         if ($brand) {
             $this->name = $brand->name;
