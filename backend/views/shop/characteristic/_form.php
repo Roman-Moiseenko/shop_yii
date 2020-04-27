@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'name')->textInput(['maxlength' => true])->label('Имя') ?>
             <?= $form->field($model, 'type')->dropDownList($model->typesList())->label('Тип') ?>
             <?= $form->field($model, 'sort')->textInput(['maxlength' => true])->label('Сортировка') ?>
-            <?= $form->field($model, 'required')->checkbox()->label('Обязательный') ?>
+            <?= $form->field($model, 'required')->checkbox()->label('Обязательный параметр') ?>
             <?= $form->field($model, 'default')->textInput(['maxlength' => true])->label('Значение по умолчанию') ?>
             <?= $form->field($model, 'textVariants')->textarea(['rows' => 6])->label('Варианты') ?>
         </div>

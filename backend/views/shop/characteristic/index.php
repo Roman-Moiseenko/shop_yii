@@ -49,7 +49,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 'label' => 'Обязательное поле',
             ],
-            'default',
+            [
+                    'attribute' => 'default',
+                'label' => 'Значение по умолчанию',
+            ],
             //'variants_json',
             //'sort',
 

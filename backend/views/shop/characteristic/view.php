@@ -1,5 +1,6 @@
 <?php
 
+use shop\entities\shop\Characteristic;
 use shop\helpers\CharacteristicHelper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -29,18 +30,35 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $characteristic,
         'attributes' => [
             'id',
-            'name',
+            [
+                    'attribute' => 'name',
+                'label' => 'Имя Атрибута',
+                ],
             [
                 'attribute' => 'type',
                 'value' => CharacteristicHelper::typeName($characteristic->type),
+                'label' => 'Тип Атрибута',
             ],
-            'sort',
-            'required:boolean',
-            'default',
+            [
+                'attribute' => 'sort',
+                'label' => 'Сортировка',
+            ],
+            [
+                'attribute' => 'required',
+                'value' => function (Characteristic $model) {
+                    return $model->required == 0 ? 'Нет' : 'Да';
+                },
+                'label' => 'Обязательное поле',
+            ],
+            [
+                'attribute' => 'default',
+                'label' => 'Значение по умолчанию',
+            ],
             [
                 'attribute' => 'variants',
                 'value' => implode(PHP_EOL, $characteristic->variants),
                 'format' => 'ntext',
+                'label' => 'Варианты',
             ],
         ],
     ]) ?>
