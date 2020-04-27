@@ -1,5 +1,6 @@
 <?php
 
+use shop\entities\shop\Tag;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -26,7 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                     'attribute' => 'name',
-                'label' => 'Имя'
+                'value' => function (Tag $model) {
+                    return Html::a(Html::encode($model->name), ['view', 'id' => $model->id]);
+                },
+                'label' => 'Имя',
+                'format' => 'raw'
             ],
             [
                     'attribute' => 'slug',
