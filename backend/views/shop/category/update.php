@@ -3,11 +3,11 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model shop\entities\shop\Category */
+/* @var $category shop\entities\shop\Category */
 
-$this->title = 'Редактировать Категорию: ' . $model->name;
+$this->title = 'Редактировать Категорию: ' . $category->name;
 $this->params['breadcrumbs'][] = ['label' => 'Категории', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $category->id]];
+$this->params['breadcrumbs'][] = ['label' => $category->name, 'url' => ['view', 'id' => $category->id]];
 $this->params['breadcrumbs'][] = 'Изменить';
 ?>
 <div class="category-update">

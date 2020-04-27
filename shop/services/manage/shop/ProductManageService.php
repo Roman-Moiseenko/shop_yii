@@ -67,6 +67,7 @@ class ProductManageService
             $category->id,
             $form->code,
             $form->name,
+            $form->description,
             new Meta(
                 $form->meta->title,
                 $form->meta->description,
@@ -109,17 +110,26 @@ class ProductManageService
     {
         $product = $this->products->get($id);
         $brand = $this->brands->get($id);
-
+        $category = $this->categories->get($form->categories->main);
         $product->edit(
             $brand->id,
             $form->code,
             $form->name,
+            $form->description,
             new Meta(
                 $form->meta->title,
                 $form->meta->description,
                 $form->meta->keywords
             )
         );
+
+        $product->changeMainCategory($category->id);
+        $product->revokeCategories();
+
+        foreach ($form->categories->others as $otherId) {
+            $category = $this->categories->get($otherId);
+            $product->assignCategory($category->id);
+        }
 
         foreach ($form->values as $value) {
             $product->setValue($value->id, $value->value);

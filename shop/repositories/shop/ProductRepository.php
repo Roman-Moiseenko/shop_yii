@@ -30,4 +30,13 @@ class ProductRepository
             throw new \RuntimeException('Ошибка удаления Продукта');
         }
     }
+
+    public function existsByBrand($id)
+    {
+        return Product::find()->andWhere(['brand_id' => $id])->exists();
+    }
+    public function existsByMainCategory($id)
+    {
+        return Product::find()->andWhere(['category_id' => $id])->exists();
+    }
 }

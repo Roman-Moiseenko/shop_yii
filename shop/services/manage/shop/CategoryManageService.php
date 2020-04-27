@@ -9,14 +9,20 @@ use shop\entities\shop\Category;
 use shop\forms\manage\MetaForm;
 use shop\forms\manage\shop\CategoryForm;
 use shop\repositories\shop\CategoryRepository;
+use shop\repositories\shop\ProductRepository;
 
 class CategoryManageService
 {
     private $categories;
+    /**
+     * @var ProductRepository
+     */
+    private $products;
 
-    public function __construct(CategoryRepository $categories)
+    public function __construct(CategoryRepository $categories, ProductRepository $products)
     {
         $this->categories = $categories;
+        $this->products = $products;
     }
 
     public function create(CategoryForm $form): Category
@@ -84,9 +90,9 @@ class CategoryManageService
     {
         $category = $this->categories->get($id);
         $this->assertIsNotRoot($category);
-      /*  if ($this->products->existsByMainCategory($category->id)) {
-            throw new \DomainException('Unable to remove category with products.');
-        } */
+        if ($this->products->existsByMainCategory($category->id)) {
+            throw new \DomainException('Невозможно удалить каталог с товарами');
+        }
         $this->categories->remove($category);
     }
 

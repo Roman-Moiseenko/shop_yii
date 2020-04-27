@@ -32,7 +32,7 @@ class ProductEditForm extends CompositeForm
         $this->brandId = $product->brand_id;
         $this->code = $product->code;
         $this->name = $product->name;
-   //     $this->description = $product->description;
+        $this->description = $product->description;
   //      $this->weight = $product->weight;
 
         $this->meta = new MetaForm($product->meta);
@@ -52,8 +52,8 @@ class ProductEditForm extends CompositeForm
             [['brandId'], 'integer'],
             [['code', 'name'], 'string', 'max' => 255],
             [['code'], 'unique', 'targetClass' => Product::class, 'filter' => $this->_product ? ['<>', 'id', $this->_product->id] : null],
-       /*     ['description', 'string'],
-            ['weight', 'integer', 'min' => 0],*/
+            ['description', 'string'],
+        /*    ['weight', 'integer', 'min' => 0],*/
         ];
     }
 /*
