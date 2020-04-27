@@ -13,7 +13,7 @@ use yii\helpers\ArrayHelper;
 
 /**
  * @property PriceForm $price
-
+* @property string $code1C
  * @property MetaForm $meta
  * @property CategoriesForm $categories
  * @property PhotosForm $photos
@@ -43,6 +43,7 @@ class ProductCreateForm extends CompositeForm
         return [
             [['brandId', 'code', 'name', 'weight'], 'required'],
             [['code', 'name'], 'string', 'max' => 255],
+            [['code1C'], 'string', 'max' => 9],
             [['brandId'], 'integer'],
             [['code'], 'unique', 'targetClass' => Product::class],
             ['description', 'string'],

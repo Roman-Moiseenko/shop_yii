@@ -31,6 +31,7 @@
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => [
                     ['label' => 'Меню', 'options' => ['class' => 'header']],
+                    ['label' => 'Товары', 'icon' => 'bank', 'url' => ['/shop/product'], 'active' => Yii::$app->controller->id == 'shop/product'],
                     ['label' => 'Бренды', 'icon' => 'bank', 'url' => ['/shop/brand'], 'active' => Yii::$app->controller->id == 'shop/brand'],
                     ['label' => 'Метки', 'icon' => 'tags', 'url' => ['/shop/tag'], 'active' => $this->context->id == 'shop/tag'],
                     ['label' => 'Атрибуты', 'icon' => 'bars', 'url' => ['/shop/characteristic'], 'active' => $this->context->id == 'shop/characteristic'],

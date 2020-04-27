@@ -2,6 +2,9 @@
 
 namespace backend\controllers\shop;
 
+use shop\forms\manage\shop\product\ProductCreateForm;
+use shop\forms\manage\shop\product\ProductEditForm;
+use shop\services\manage\shop\ProductManageService;
 use Yii;
 use shop\entities\shop\product\Product;
 use backend\forms\shop\ProductSearch;
@@ -14,6 +17,17 @@ use yii\filters\VerbFilter;
  */
 class ProductController extends Controller
 {
+    /**
+     * @var ProductManageService
+     */
+    private ProductManageService $service;
+
+    public function __construct($id, $module, ProductManageService $service, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->service = $service;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -64,14 +78,21 @@ class ProductController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Product();
+        $form = new ProductCreateForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $product = $this->service->create($form);
+                return $this->redirect(['view', 'id' => $product->id]);
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
+
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $form,
         ]);
     }
 
@@ -84,14 +105,20 @@ class ProductController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $product = $this->findModel($id);
+        $form = new ProductEditForm($product);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $this->service->edit($id, $form);
+                return $this->redirect(['view', 'id' => $product->id]);
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
         }
-
         return $this->render('update', [
-            'model' => $model,
+            'model' => $form,
+            'product' => $product
         ]);
     }
 

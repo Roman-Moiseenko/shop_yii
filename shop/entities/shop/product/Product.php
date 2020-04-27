@@ -25,6 +25,7 @@ use yii\web\UploadedFile;
  * @property integer $price_new
  * @property integer $rating
  * @property integer $unit_id
+ * @property string $code1C
  * @property Meta $meta
  * @property Brand $brand
  * @property Category $category
@@ -40,7 +41,7 @@ use yii\web\UploadedFile;
 class Product extends ActiveRecord
 {
 
-    public static function create($brandId, $categoryId, $code, $name, $description, Meta $meta): self
+    public static function create($brandId, $categoryId, $code, $name, $description, $code1C, Meta $meta): self
     {
         $product = new static();
         $product->brand_id = $brandId;
@@ -48,6 +49,7 @@ class Product extends ActiveRecord
         $product->code = $code;
         $product->name = $name;
         $product->description = $description;
+        $product->code1C = $code1C;
         $product->meta = $meta;
         $product->created_at = time();
 
@@ -59,12 +61,13 @@ class Product extends ActiveRecord
         $this->price_new = $new;
         $this->price_old = $old;
     }
-    public function edit($brandId,/* $categoryId,*/ $code, $name, $description, Meta $meta): void
+    public function edit($brandId,/* $categoryId,*/ $code, $name, $description, $code1C, Meta $meta): void
     {
         $this->brand_id = $brandId;
         $this->code = $code;
         $this->name = $name;
         $this->meta = $meta;
+        $this->code1C = $code1C;
         $this->description = $description;
     }
 

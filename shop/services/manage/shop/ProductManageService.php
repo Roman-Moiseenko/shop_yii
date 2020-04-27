@@ -68,6 +68,7 @@ class ProductManageService
             $form->code,
             $form->name,
             $form->description,
+            $form->code1C,
             new Meta(
                 $form->meta->title,
                 $form->meta->description,
@@ -116,6 +117,7 @@ class ProductManageService
             $form->code,
             $form->name,
             $form->description,
+            $form->code1C,
             new Meta(
                 $form->meta->title,
                 $form->meta->description,
