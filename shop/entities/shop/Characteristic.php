@@ -21,9 +21,9 @@ use yii\helpers\Json;
 
 class Characteristic extends ActiveRecord
 {
-    const TYPE_STRING = 'string';
-    const TYPE_INTEGER = 'integer';
-    const TYPE_FLOAT = 'float';
+    const TYPE_STRING = 0;
+    const TYPE_INTEGER = 1;
+    const TYPE_FLOAT = 2;
 
     public $variants;
 

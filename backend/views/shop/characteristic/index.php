@@ -1,5 +1,7 @@
 <?php
 
+use shop\entities\shop\Characteristic;
+use shop\helpers\CharacteristicHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -7,15 +9,12 @@ use yii\grid\GridView;
 /* @var $searchModel backend\forms\shop\CharacteristicSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Characteristics';
+$this->title = 'Атрибуты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="characteristic-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Characteristic', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать Атрибут', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -25,11 +24,31 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            [
+                'attribute' => 'name',
+                'value' => function (Characteristic $model) {
+                    return Html::a(Html::encode($model->name), ['view', 'id' => $model->id]);
+                },
+                'label' => 'Атрибут',
+                'format' => 'raw',
+            ],
+            [
+                'attribute' => 'type',
+                'filter' => $searchModel->typesList(),
+                'value' => function(Characteristic $model) {
+                    return CharacteristicHelper::typeName($model->type);
+                },
+                'label' => 'Тип',
+            ],
+            [
+                'attribute' => 'required',
+                'filter' => $searchModel->requiredList(),
+                'value' => function (Characteristic $model) {
+                    return $model->required == 0 ? 'Нет' : 'Да';
+                },
 
-            'id',
-            'name',
-            'type',
-            'required',
+                'label' => 'Обязательное поле',
+            ],
             'default',
             //'variants_json',
             //'sort',

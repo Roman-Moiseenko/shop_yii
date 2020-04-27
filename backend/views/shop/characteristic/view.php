@@ -1,41 +1,47 @@
 <?php
 
+use shop\helpers\CharacteristicHelper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model shop\entities\shop\Characteristic */
+/* @var $characteristic shop\entities\shop\Characteristic */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Characteristics', 'url' => ['index']];
+$this->title = $characteristic->name;
+$this->params['breadcrumbs'][] = ['label' => 'Атрибуты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="characteristic-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Изменить', ['update', 'id' => $characteristic->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $characteristic->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Удалить данный Атрибут?',
                 'method' => 'post',
             ],
         ]) ?>
     </p>
 
     <?= DetailView::widget([
-        'model' => $model,
+        'model' => $characteristic,
         'attributes' => [
             'id',
             'name',
-            'type',
-            'required',
-            'default',
-            'variants_json',
+            [
+                'attribute' => 'type',
+                'value' => CharacteristicHelper::typeName($characteristic->type),
+            ],
             'sort',
+            'required:boolean',
+            'default',
+            [
+                'attribute' => 'variants',
+                'value' => implode(PHP_EOL, $characteristic->variants),
+                'format' => 'ntext',
+            ],
         ],
     ]) ?>
 

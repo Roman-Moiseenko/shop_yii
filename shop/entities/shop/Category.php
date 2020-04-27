@@ -9,7 +9,24 @@ use shop\entities\behaviors\MetaBehavior;
 use shop\entities\Meta;
 use shop\entities\shop\queries\CategoryQuery;
 use yii\db\ActiveRecord;
-
+/**
+ * @property integer $id
+ * @property string $name
+ * @property string $slug
+ * @property string $title
+ * @property string $description
+ * @property integer $lft
+ * @property integer $rgt
+ * @property integer $depth
+ * @property Meta $meta
+ *
+ * @property Category $parent
+ * @property Category[] $parents
+ * @property Category[] $children
+ * @property Category $prev
+ * @property Category $next
+ * @mixin NestedSetsBehavior
+ */
 class Category extends ActiveRecord
 {
     public $meta;
@@ -44,7 +61,15 @@ class Category extends ActiveRecord
     {
         return '{{%shop_categories}}';
     }
+    public function getSeoTitle(): string
+    {
+        return $this->meta->title ?: $this->getHeadingTile();
+    }
 
+    public function getHeadingTile(): string
+    {
+        return $this->title ?: $this->name;
+    }
     public function behaviors()
     {
         return [

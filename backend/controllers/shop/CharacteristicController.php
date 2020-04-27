@@ -2,6 +2,8 @@
 
 namespace backend\controllers\shop;
 
+use shop\forms\manage\shop\CharacteristicForm;
+use shop\services\manage\shop\CharacteristicManageService;
 use Yii;
 use shop\entities\shop\Characteristic;
 use backend\forms\shop\CharacteristicSearch;
@@ -14,6 +16,17 @@ use yii\filters\VerbFilter;
  */
 class CharacteristicController extends Controller
 {
+    /**
+     * @var CharacteristicManageService
+     */
+    private $service;
+
+    public function __construct($id, $module, CharacteristicManageService $service, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->service = $service;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -53,7 +66,7 @@ class CharacteristicController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'characteristic' => $this->findModel($id),
         ]);
     }
 
@@ -64,14 +77,20 @@ class CharacteristicController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Characteristic();
+        $form = new CharacteristicForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $characteristic = $this->service->create($form);
+                return $this->redirect(['view', 'id' => $characteristic->id]);
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $form,
         ]);
     }
 
@@ -84,14 +103,21 @@ class CharacteristicController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $characteristic = $this->findModel($id);
+        $form = new CharacteristicForm($characteristic);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $this->service->edit($id, $form);
+                 return $this->redirect(['view', 'id' => $characteristic->id]);
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+    }
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'model' => $form,
+            'characteristic' => $characteristic,
         ]);
     }
 

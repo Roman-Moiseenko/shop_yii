@@ -1,5 +1,6 @@
 <?php
 
+use shop\entities\shop\Category;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -7,15 +8,13 @@ use yii\grid\GridView;
 /* @var $searchModel backend\forms\shop\CategorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Categories';
+$this->title = 'Категории';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="category-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать Категорию', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -24,13 +23,37 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'name',
-            'slug',
-            'title',
-            'description:ntext',
+            [
+                'attribute' => 'name',
+                'value' => function (Category $model) {
+                    $indent = ($model->depth > 1 ? str_repeat('&nbsp;&nbsp;', $model->depth - 1) . ' ' : '');
+                    return $indent . Html::a(Html::encode($model->name), ['view', 'id' => $model->id]);
+                },
+                'format' => 'raw',
+                'label' => 'Категория'
+            ],
+            [
+                'value' => function (Category $model) {
+                    return
+                        Html::a('<span class="glyphicon glyphicon-arrow-up"></span>', ['move-up', 'id' => $model->id]) .
+                        Html::a('<span class="glyphicon glyphicon-arrow-down"></span>', ['move-down', 'id' => $model->id]);
+                },
+                'format' => 'raw',
+                'contentOptions' => ['style' => 'text-align: center'],
+            ],
+            [
+                'attribute' =>'slug',
+                'label' => 'Ссылка'
+            ],
+            [
+                'attribute' =>'title',
+                'label' => 'Заголовок'
+            ],
+            [
+                'attribute' =>'description',
+                'format' => 'ntext',
+                'label' => 'Описание'
+            ],
             //'meta_json',
             //'lft',
             //'rgt',

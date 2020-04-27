@@ -21,7 +21,7 @@ class CategoryManageService
 
     public function create(CategoryForm $form): Category
     {
-        $parent = $this->categories->get($form->parentid);
+        $parent = $this->categories->get($form->parentId);
         $category = Category::create(
             $form->name,
             $form->slug,
@@ -59,7 +59,7 @@ class CategoryManageService
         }
         $this->categories->save($category);
     }
-/*
+
     public function moveUp($id): void
     {
         $category = $this->categories->get($id);
@@ -78,7 +78,7 @@ class CategoryManageService
             $category->insertAfter($next);
         }
         $this->categories->save($category);
-    } */
+    }
 
     public function remove($id): void
     {

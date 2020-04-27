@@ -12,22 +12,19 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'required')->textInput() ?>
-
-    <?= $form->field($model, 'default')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'variants_json')->textInput() ?>
-
-    <?= $form->field($model, 'sort')->textInput() ?>
+    <div class="box box-default">
+        <div class="box-body">
+            <?= $form->field($model, 'name')->textInput(['maxlength' => true])->label('Имя') ?>
+            <?= $form->field($model, 'type')->dropDownList($model->typesList())->label('Тип') ?>
+            <?= $form->field($model, 'sort')->textInput(['maxlength' => true])->label('Сортировка') ?>
+            <?= $form->field($model, 'required')->checkbox()->label('Обязательный') ?>
+            <?= $form->field($model, 'default')->textInput(['maxlength' => true])->label('Значение по умолчанию') ?>
+            <?= $form->field($model, 'textVariants')->textarea(['rows' => 6])->label('Варианты') ?>
+        </div>
+    </div>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

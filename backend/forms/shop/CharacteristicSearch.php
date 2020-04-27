@@ -2,6 +2,7 @@
 
 namespace backend\forms\shop;
 
+use shop\helpers\CharacteristicHelper;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use shop\entities\shop\Characteristic;
@@ -11,63 +12,63 @@ use shop\entities\shop\Characteristic;
  */
 class CharacteristicSearch extends Characteristic
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
+    public $id;
+    public $name;
+    public $type;
+    public $required;
+
+    public function rules(): array
     {
         return [
-            [['id', 'required', 'sort'], 'integer'],
-            [['name', 'type', 'default', 'variants_json'], 'safe'],
+            [['id', 'type', 'required'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function scenarios()
-    {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
-    }
-
-    /**
-     * Creates data provider instance with search query applied
-     *
      * @param array $params
-     *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params): ActiveDataProvider
     {
         $query = Characteristic::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['sort' => SORT_ASC]
+            ]
         ]);
 
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'type' => $this->type,
             'required' => $this->required,
-            'sort' => $this->sort,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'type', $this->type])
-            ->andFilterWhere(['like', 'default', $this->default])
-            ->andFilterWhere(['like', 'variants_json', $this->variants_json]);
+        $query
+            ->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
+    }
+
+    public function typesList(): array
+    {
+        return CharacteristicHelper::typeList();
+    }
+
+    public function requiredList(): array
+    {
+        return [
+            1 => 'Да',
+            0 => 'Нет',
+        ];
     }
 }

@@ -5,6 +5,7 @@ namespace shop\forms\manage\shop;
 
 
 use shop\entities\shop\Characteristic;
+use shop\helpers\CharacteristicHelper;
 use yii\base\Model;
 
 /**
@@ -31,6 +32,7 @@ class CharacteristicForm extends Model
             $this->default = $characteristic->default;
             $this->textVariants = implode(PHP_EOL, $characteristic->variants);
             $this->sort = $characteristic->sort;
+            $this->_characteristic = $characteristic;
         } else {
             $this->sort = Characteristic::find()->max('sort') + 1;
         }
@@ -41,19 +43,17 @@ class CharacteristicForm extends Model
     {
         return [
             [['name', 'type', 'sort'], 'required'],
-            ['required', 'boolean'],
+            [['required'], 'boolean'],
             [['default'], 'string', 'max' => 255],
-            ['textVariants', 'string'],
-            ['sort', 'integer'],
-            [
-                ['name'],
-                'unique',
-                'targetClass' => Characteristic::class,
-                'filter'=> $this->_characteristic ? ['<>', 'id', $this->_characteristic->id] : null
-            ]
+            [['textVariants'], 'string'],
+            [['sort'], 'integer'],
+            [['name'], 'unique', 'targetClass' => Characteristic::class, 'filter' => $this->_characteristic ? ['<>', 'id', $this->_characteristic->id] : null]
         ];
     }
-
+    public function typesList(): array
+    {
+        return CharacteristicHelper::typeList();
+    }
     public function getVariants(): array
     {
         return preg_split('#[\r\n]+#i', $this->textVariants);
