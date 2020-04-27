@@ -11,6 +11,7 @@ use shop\entities\shop\product\TagAssignment;
 use shop\entities\shop\Tag;
 use shop\forms\manage\shop\product\CategoriesForm;
 use shop\forms\manage\shop\product\PhotosForm;
+use shop\forms\manage\shop\product\PriceForm;
 use shop\forms\manage\shop\product\ProductCreateForm;
 use shop\forms\manage\shop\product\ProductEditForm;
 use shop\repositories\shop\BrandRepository;
@@ -170,6 +171,13 @@ class ProductManageService
         $this->products->save($product);
     }
 
+    public function changePrice($id, PriceForm $form): void
+    {
+        $product = $this->products->get($id);
+        $product->price_new = $form->new;
+        $product->price_old = $form->old;
+        $this->products->save($product);
+    }
     public function addPhoto($id, PhotosForm $form): void
     {
         $product = $this->products->get($id);

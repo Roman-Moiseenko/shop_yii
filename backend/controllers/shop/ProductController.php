@@ -2,6 +2,7 @@
 
 namespace backend\controllers\shop;
 
+use shop\forms\manage\shop\product\PriceForm;
 use shop\forms\manage\shop\product\ProductCreateForm;
 use shop\forms\manage\shop\product\ProductEditForm;
 use shop\services\manage\shop\ProductManageService;
@@ -35,9 +36,12 @@ class ProductController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
+                    'delete-photo' => ['POST'],
+                    'move-photo-up' => ['POST'],
+                    'move-photo-down' => ['POST'],
                 ],
             ],
         ];
@@ -66,8 +70,10 @@ class ProductController extends Controller
      */
     public function actionView($id)
     {
+        $product = $this->findModel($id);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $product,
         ]);
     }
 
@@ -79,7 +85,6 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $form = new ProductCreateForm();
-
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $product = $this->service->create($form);
@@ -88,9 +93,7 @@ class ProductController extends Controller
                 Yii::$app->errorHandler->logException($e);
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
-
         }
-
         return $this->render('create', [
             'model' => $form,
         ]);
@@ -122,6 +125,25 @@ class ProductController extends Controller
         ]);
     }
 
+    public function actionPrice($id)
+    {
+        $product = $this->findModel($id);
+
+        $form = new PriceForm($product);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $this->service->changePrice($product->id, $form);
+                return $this->redirect(['view', 'id' => $product->id]);
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
+        }
+        return $this->render('price', [
+            'model' => $form,
+            'product' => $product,
+        ]);
+    }
     /**
      * Deletes an existing Product model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -131,8 +153,12 @@ class ProductController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        try {
+            $this->service->remove($id);
+        } catch (\DomainException $e) {
+            Yii::$app->errorHandler->logException($e);
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
         return $this->redirect(['index']);
     }
 
