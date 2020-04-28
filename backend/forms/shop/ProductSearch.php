@@ -27,11 +27,7 @@ class ProductSearch extends Product
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
-    {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
-    }
+
 
     /**
      * Creates data provider instance with search query applied
@@ -42,7 +38,7 @@ class ProductSearch extends Product
      */
     public function search($params)
     {
-        $query = Product::find()->with('mainPhoto', 'category');
+        $query = Product::find()->with('category'); //'mainPhoto',
 
         // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([

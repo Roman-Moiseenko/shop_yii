@@ -2,6 +2,8 @@
 
 namespace backend\controllers\shop;
 
+use shop\entities\shop\product\Modification;
+use shop\forms\manage\shop\product\PhotosForm;
 use shop\forms\manage\shop\product\PriceForm;
 use shop\forms\manage\shop\product\ProductCreateForm;
 use shop\forms\manage\shop\product\ProductEditForm;
@@ -10,6 +12,7 @@ use shop\services\manage\shop\ProductManageService;
 use Yii;
 use shop\entities\shop\product\Product;
 use backend\forms\shop\ProductSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -73,8 +76,32 @@ class ProductController extends Controller
     {
         $product = $this->findModel($id);
 
+        $modificationsProvider = new ActiveDataProvider([
+            'query' => $product->getModifications()->orderBy('name'),
+            'key' => function (Modification $modification) use ($product) {
+                return [
+                    'product_id' => $product->id,
+                    'id' => $modification->id,
+                ];
+            },
+            'pagination' => false,
+        ]);
+
+        $photosForm = new PhotosForm();
+        if ($photosForm->load(Yii::$app->request->post()) && $photosForm->validate()) {
+            try {
+                $this->service->addPhotos($product->id, $photosForm);
+                return $this->redirect(['view', 'id' => $product->id]);
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
+        }
+
         return $this->render('view', [
-            'model' => $product,
+            'product' => $product,
+            'modificationsProvider' => $modificationsProvider,
+            'photosForm' => $photosForm,
         ]);
     }
 

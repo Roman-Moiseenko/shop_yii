@@ -9,6 +9,7 @@ use shop\entities\behaviors\MetaBehavior;
 use shop\entities\Meta;
 use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
+use shop\entities\shop\Tag;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\UploadedFile;
@@ -34,6 +35,7 @@ use yii\web\UploadedFile;
  * @property Photo[] $photos
  * @property Photo $mainPhoto
  * @property TagAssignment[] $tagAssignments
+ * @property Tag[] $tags
  * @property RelatedAssignment[] $relatedAssignments
  * @property Modification $modifications
  * @property Review[] $reviews
@@ -464,5 +466,9 @@ class Product extends ActiveRecord
     public function getValues(): ActiveQuery
     {
         return $this->hasMany(Value::class, ['product_id' => 'id']);
+    }
+    public function getTags(): ActiveQuery
+    {
+        return $this->hasMany(Tag::class, ['id' => 'tag_id'])->via('tagAssignments');
     }
 }

@@ -25,7 +25,7 @@ abstract class  CompositeForm extends Model
                 $success2 = $form->load($data, $formName !== '' ? null : $name);
                 $success =  $success2 && $success;
             }
-            /*echo $name;
+           /* echo $name;
             var_dump($success2);*/
         }
        // if (!$success) die();

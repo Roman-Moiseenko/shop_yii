@@ -86,6 +86,10 @@ class ProductManageService
             $product->setValue($value->id, $value->value);
         }
 
+        /*echo '<pre>';
+        var_dump($form->photos);
+        die();*/
+        if ($form->photos->files != null)
         foreach ($form->photos->files as $file) {
             $product->addPhoto($file);
         }
@@ -178,7 +182,7 @@ class ProductManageService
         $product->price_old = $form->old;
         $this->products->save($product);
     }
-    public function addPhoto($id, PhotosForm $form): void
+    public function addPhotos($id, PhotosForm $form): void
     {
         $product = $this->products->get($id);
         foreach ($form->files as $file) {

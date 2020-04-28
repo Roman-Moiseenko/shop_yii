@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'code1C')->textInput(['maxlength' => true]) ?>
                 </div>
             </div>
-            <?= ''; /*$form->field($model, 'description')->widget(CKEditor::className()) */ ?>
+            <?= $form->field($model, 'description')->textarea(['rows' => 6])//->widget(CKEditor::class)  ?>
         </div>
     </div>
 
@@ -87,6 +87,8 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
 <div class="box box-default">
         <div class="box-header with-border">Characteristics</div>
         <div class="box-body">
@@ -99,8 +101,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php endforeach; ?>
         </div>
     </div>
-
-
+        </div>
+        <div class="col-md-6">
     <div class="box box-default">
         <div class="box-header with-border">Photos</div>
         <div class="box-body">
@@ -112,7 +114,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ]) ?>
         </div>
     </div>
-
+        </div>
+    </div>
     <div class="box box-default">
         <div class="box-header with-border">SEO</div>
         <div class="box-body">
