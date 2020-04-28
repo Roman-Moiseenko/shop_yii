@@ -86,9 +86,6 @@ class ProductManageService
             $product->setValue($value->id, $value->value);
         }
 
-        /*echo '<pre>';
-        var_dump($form->photos);
-        die();*/
         if ($form->photos->files != null)
         foreach ($form->photos->files as $file) {
             $product->addPhoto($file);
