@@ -53,7 +53,7 @@ class Photo extends ActiveRecord
                 'thumbUrl' => '@static/cache/products/[[attribute_product_id]]/[[profile]]_[[id]].[[extension]]',
                 'thumbs' => [
                     'admin' => ['width' => 100, 'height' => 70],
-                    'thumb' => ['width' => 640, 'height' => 480],
+                    'thumb' => ['width' => 320, 'height' => 240],
                     /*'cart_list' => ['width' => 150, 'height' => 150],
                     'cart_widget_list' => ['width' => 57, 'height' => 57],
                     'catalog_list' => ['width' => 228, 'height' => 228],
