@@ -5,6 +5,7 @@ namespace backend\controllers\shop;
 use shop\forms\manage\shop\product\PriceForm;
 use shop\forms\manage\shop\product\ProductCreateForm;
 use shop\forms\manage\shop\product\ProductEditForm;
+use shop\forms\manage\Shop\Product\TagsForm;
 use shop\services\manage\shop\ProductManageService;
 use Yii;
 use shop\entities\shop\product\Product;
@@ -93,10 +94,18 @@ class ProductController extends Controller
                 Yii::$app->errorHandler->logException($e);
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
+        } else {
+           // die();
         }
         return $this->render('create', [
             'model' => $form,
         ]);
+    }
+
+    public function actionTags()
+    {
+        $form = new TagsForm();
+
     }
 
     /**
@@ -160,6 +169,29 @@ class ProductController extends Controller
             Yii::$app->session->setFlash('error', $e->getMessage());
         }
         return $this->redirect(['index']);
+    }
+    public function actionDeletePhoto($id, $photo_id)
+    {
+        try {
+            $this->service->removePhoto($id, $photo_id);
+
+        } catch (\DomainException $e) {
+            Yii::$app->errorHandler->logException($e);
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+        return $this->redirect(['view', 'id' => $id, '#' => 'photos']);
+    }
+
+    public function actionMovePhotoUp($id, $photo_id)
+    {
+        $this->service->movePhotoUp($id, $photo_id);
+        return $this->redirect(['view', 'id' => $id, '#' => 'photos']);
+    }
+
+    public function actionMovePhotoDown($id, $photo_id)
+    {
+        $this->service->movePhotoDown($id, $photo_id);
+        return $this->redirect(['view', 'id' => $id, '#' => 'photos']);
     }
 
     /**

@@ -6,6 +6,7 @@ namespace shop\services\manage\shop;
 
 use shop\entities\shop\Tag;
 use shop\forms\manage\shop\TagForm;
+use shop\forms\manage\shop\TagsForm;
 use shop\repositories\shop\TagRepository;
 use yii\helpers\Inflector;
 

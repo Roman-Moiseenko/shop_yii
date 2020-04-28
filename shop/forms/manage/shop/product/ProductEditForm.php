@@ -23,6 +23,7 @@ class ProductEditForm extends CompositeForm
     public $code;
     public $name;
     public $description;
+    public $code1C;
     public $weight;
 
     private $_product;
@@ -57,12 +58,12 @@ class ProductEditForm extends CompositeForm
         /*    ['weight', 'integer', 'min' => 0],*/
         ];
     }
-/*
+
     public function brandsList(): array
     {
         return ArrayHelper::map(Brand::find()->orderBy('name')->asArray()->all(), 'id', 'name');
     }
-*/
+
     protected function internalForms(): array
     {
         return [

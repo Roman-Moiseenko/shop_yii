@@ -1,8 +1,6 @@
 <?php
 
-
 namespace shop\forms\manage\shop\product;
-
 
 use yii\base\Model;
 use yii\web\UploadedFile;
@@ -13,10 +11,10 @@ class PhotosForm extends Model
 
     public function rules(): array
     {
-        return ['files', 'each', 'rule' => ['image']];
+        return [['files', 'each', 'rule' => ['image']]];
     }
 
-    public function beforeValidate()
+    public function beforeValidate(): bool
     {
         if (parent::beforeValidate()) {
             $this->files = UploadedFile::getInstance($this, 'files');

@@ -22,7 +22,7 @@ class CategoriesForm extends Model
         }
         parent::__construct($config);
     }
-/*
+
     public function categoriesList(): array
     {
         return ArrayHelper::map(
@@ -32,7 +32,7 @@ class CategoriesForm extends Model
                 return ($category['depth'] > 1 ? str_repeat('-- ', $category['depth'] - 1) . ' ' : '') . $category['name'];
             }
         );
-    }*/
+    }
 
     public function rules(): array
     {

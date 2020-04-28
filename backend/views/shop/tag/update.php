@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 /* @var $tag shop\entities\Shop\Tag */
-/* @var $model shop\forms\manage\Shop\TagForm */
+/* @var $model shop\forms\manage\Shop\TagsForm */
 
 $this->title = 'Редактирование метки: ' . $tag->name;
 $this->params['breadcrumbs'][] = ['label' => 'Метки', 'url' => ['index']];

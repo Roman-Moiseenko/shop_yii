@@ -1,19 +1,18 @@
 <?php
 
+namespace shop\forms\manage\Shop\Product;
 
-namespace shop\forms\manage\shop\product;
-
-
-
-use shop\entities\shop\Characteristic;
+use shop\entities\Shop\Characteristic;
 use shop\entities\Shop\Product\Value;
 use yii\base\Model;
 
-/** @property integer $id */
+/**
+ * @property integer $id
+ */
 class ValueForm extends Model
 {
     public $value;
-    /** @var Characteristic $_characteristic */
+
     private $_characteristic;
 
     public function __construct(Characteristic $characteristic, Value $value = null, $config = [])
@@ -25,7 +24,7 @@ class ValueForm extends Model
         parent::__construct($config);
     }
 
-    public function rules()
+    public function rules(): array
     {
         return array_filter([
             $this->_characteristic->required ? ['value', 'required'] : false,
@@ -43,10 +42,10 @@ class ValueForm extends Model
         ];
     }
 
-   /*  public function variantsList(): array
+    public function variantsList(): array
     {
         return $this->_characteristic->variants ? array_combine($this->_characteristic->variants, $this->_characteristic->variants) : [];
-    }*/
+    }
 
     public function getId(): int
     {

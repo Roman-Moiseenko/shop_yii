@@ -1,19 +1,15 @@
 <?php
 
-
 namespace shop\forms\manage\shop\product;
 
-
-use shop\entities\shop\product\Product;
+use shop\entities\Shop\Product\Product;
+use shop\entities\Shop\Tag;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 
 /**
- * Class TagsForm
- * @package shop\forms\manage\shop\product
  * @property array $newNames
  */
-
 class TagsForm extends Model
 {
     public $existing = [];
@@ -22,20 +18,32 @@ class TagsForm extends Model
     public function __construct(Product $product = null, $config = [])
     {
         if ($product) {
-            $this->existing = ArrayHelper::getColumn($product->tagAssigments, 'tag_id');
+            $this->existing = ArrayHelper::getColumn($product->tagAssignments, 'tag_id');
         }
         parent::__construct($config);
     }
-    public function rules()
+
+    public function rules(): array
     {
         return [
             ['existing', 'each', 'rule' => ['integer']],
-            ['textNew', 'string']
+            ['textNew', 'string'],
         ];
+    }
+
+    public function tagsList(): array
+    {
+        return ArrayHelper::map(Tag::find()->orderBy('name')->asArray()->all(), 'id', 'name');
     }
 
     public function getNewNames(): array
     {
         return array_map('trim', preg_split('#\s*,\s*#i', $this->textNew));
+    }
+
+    public function beforeValidate(): bool
+    {
+        $this->existing = array_filter((array)$this->existing);
+        return parent::beforeValidate();
     }
 }

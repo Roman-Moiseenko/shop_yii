@@ -40,6 +40,7 @@ use yii\web\UploadedFile;
  */
 class Product extends ActiveRecord
 {
+    public $meta;
 
     public static function create($brandId, $categoryId, $code, $name, $description, $code1C, Meta $meta): self
     {
@@ -56,7 +57,7 @@ class Product extends ActiveRecord
         //$product->unit_id = $unitId;
         return $product;
     }
-    public function setPrice($new, $old): void
+    public function updatePrice($new, $old): void
     {
         $this->price_new = $new;
         $this->price_old = $old;
@@ -267,14 +268,16 @@ class Product extends ActiveRecord
 
     public function assignTag($id): void
     {
-        $assigments = $this->tagAssigments;
-        foreach ($assigments as $assigment) {
-            if ($assigments->isForTag($id))
+        $assignments = $this->tagAssignments;
+        foreach ($assignments as $assignment) {
+            if ($assignment->isForTag($id)) {
                 return;
+            }
         }
         $assignments[] = TagAssignment::create($id);
         $this->tagAssignments = $assignments;
     }
+
     public function revokeTag($id): void
     {
         $assignments = $this->tagAssignments;

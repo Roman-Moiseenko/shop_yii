@@ -15,13 +15,20 @@ abstract class  CompositeForm extends Model
     public function load($data, $formName = null)
     {
         $success = parent::load($data, $formName);
+        $success2 = $success;
         foreach ($this->forms as $name => $form) {
+
             if (is_array($form)) { //TODO $formName ? null : $name   ???????
-                $success = Model::loadMultiple($form, $data, $formName === null ? null : $name) && $success;
+                $success2 = Model::loadMultiple($form, $data, $formName === null  ? null : $name);
+                $success =  $success2 && $success;
             } else {
-                $success = $form->load($data, $formName !== '' ? null : $name) && $success;
+                $success2 = $form->load($data, $formName !== '' ? null : $name);
+                $success =  $success2 && $success;
             }
+            /*echo $name;
+            var_dump($success2);*/
         }
+       // if (!$success) die();
         return $success;
     }
 

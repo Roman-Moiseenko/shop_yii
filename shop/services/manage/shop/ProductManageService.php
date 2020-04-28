@@ -77,7 +77,7 @@ class ProductManageService
             )
         );
 
-        $product->setPrice($form->price->new, $form->price->old);
+        $product->updatePrice($form->price->new, $form->price->old);
         foreach ($form->categories->others as $otherId) {
             $category = $this->categories->get($otherId);
             $product->assignCategory($category->id);
@@ -213,5 +213,17 @@ class ProductManageService
         $categories = $this->categories->get($id);
         $this->categories->remove($categories);
     }
+    public function activate($id): void
+    {
+        $product = $this->products->get($id);
+        $product->activate();
+        $this->products->save($product);
+    }
 
+    public function draft($id): void
+    {
+        $product = $this->products->get($id);
+        $product->draft();
+        $this->products->save($product);
+    }
 }

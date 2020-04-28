@@ -18,7 +18,6 @@ use yii\base\Model;
  */
 class PriceForm extends Model
 {
-
     public $old;
     public $new;
 
