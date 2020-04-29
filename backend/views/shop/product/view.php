@@ -19,18 +19,18 @@ use yii\widgets\DetailView;
 /* @var $modificationsProvider yii\data\ActiveDataProvider */
 
 $this->title = $product->name;
-$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Товары', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
 
     <p>
 
-        <?= Html::a('Update', ['update', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $product->id], [
+        <?= Html::a('Изменить', ['update', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $product->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Удалить данный Товар?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -76,10 +76,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute' => 'price_new',
                                 'value' => PriceHelper::format($product->price_new),
+                                'format' => 'raw',
                             ],
                             [
                                 'attribute' => 'price_old',
                                 'value' => PriceHelper::format($product->price_old),
+                                'format' => 'raw',
                             ],
                         ],
                     ]) ?>
@@ -140,8 +142,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => function (Modification $model) {
                             return PriceHelper::format($model->price);
                         },
+                        'format' => 'raw',
                     ],
-                    'quantity',
+                    /*'quantity',*/
                     [
                         'class' => ActionColumn::class,
                         'controller' => 'shop/modification',

@@ -45,5 +45,6 @@ phpunit.phar
 
 # Project exclude paths
 /backend/web/
-/frontend/web/
+/frontend/web/assets
+/frontend/web/image
 /vagrant/

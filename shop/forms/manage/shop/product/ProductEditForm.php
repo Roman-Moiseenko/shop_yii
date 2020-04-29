@@ -68,7 +68,7 @@ class ProductEditForm extends CompositeForm
     {
         return [
             'meta',
-        //    'categories',
+            'categories',
             'tags',
             'values'
         ];

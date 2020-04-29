@@ -10,6 +10,7 @@ use shop\entities\shop\product\Product;
 use shop\entities\shop\product\TagAssignment;
 use shop\entities\shop\Tag;
 use shop\forms\manage\shop\product\CategoriesForm;
+use shop\forms\manage\shop\product\ModificationForm;
 use shop\forms\manage\shop\product\PhotosForm;
 use shop\forms\manage\shop\product\PriceForm;
 use shop\forms\manage\shop\product\ProductCreateForm;
@@ -226,5 +227,24 @@ class ProductManageService
         $product = $this->products->get($id);
         $product->draft();
         $this->products->save($product);
+    }
+
+    public function addModification(int $id, ModificationForm $form)
+    {
+        $product = $this->products->get($id);
+        $product->addModification($form->code, $form->name, $form->price);
+        $this->products->save($product);
+    }
+
+    public function editModification(int $id, int $id_modification, ModificationForm $form)
+    {
+        $product = $this->products->get($id);
+        $product->editModification($id_modification, $form->code, $form->name, $form->price);
+        $this->products->save($product);
+    }
+
+    public function removeModification($id, ModificationForm $form)
+    {
+
     }
 }
