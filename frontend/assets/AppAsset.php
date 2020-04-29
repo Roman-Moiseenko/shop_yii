@@ -17,6 +17,7 @@ class AppAsset extends AssetBundle
         'css/swiper.min.css',
         'css/opencart.css',
         'css/stylesheet.css',
+        'css/font-awesome/css/font-awesome.css'
 
     ];
     public $js = [
@@ -24,8 +25,16 @@ class AppAsset extends AssetBundle
         'js/swiper.jquery.js',
     ];
     public $depends = [
-        'frontend\assets\FontAwesomeAsset',
+        //'frontend\assets\FontAwesomeAsset',
+       // 'sersid\fontawesome\Asset',
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
 }
+
+
+
+
+
+
+

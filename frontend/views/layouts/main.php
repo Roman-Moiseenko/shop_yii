@@ -26,25 +26,8 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 <nav id="top">
-    <div class="container"><div class="pull-left">
-            <form action="https://demo.opencart.com/index.php?route=common/currency/currency" method="post" enctype="multipart/form-data" id="form-currency">
-                <div class="btn-group">
-                    <button class="btn btn-link dropdown-toggle" data-toggle="dropdown"> <strong>$</strong> <span class="hidden-xs hidden-sm hidden-md">Currency</span>&nbsp;<i class="fa fa-caret-down"></i></button>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <button class="currency-select btn btn-link btn-block" type="button" name="EUR">€ Euro</button>
-                        </li>
-                        <li>
-                            <button class="currency-select btn btn-link btn-block" type="button" name="GBP">£ Pound Sterling</button>
-                        </li>
-                        <li>
-                            <button class="currency-select btn btn-link btn-block" type="button" name="USD">$ US Dollar</button>
-                        </li>
-                    </ul>
-                </div>
-                <input type="hidden" name="code" value="" />
-                <input type="hidden" name="redirect" value="https://demo.opencart.com/index.php?route=common/home" />
-            </form>
+    <div class="container">
+        <div class="pull-left">
         </div>
         <div id="top-links" class="nav pull-right">
             <ul class="list-inline">

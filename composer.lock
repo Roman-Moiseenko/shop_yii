@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "636401b1147e1a96f5d9179253eccf12",
+    "content-hash": "376be90b46a30e9fa1a6a2281ab2eb51",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -76,6 +76,21 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:FortAwesome/Font-Awesome.git",
+                "reference": "4e6402443679e0a9d12c7401ac8783ef4646657f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/4e6402443679e0a9d12c7401ac8783ef4646657f",
+                "reference": "4e6402443679e0a9d12c7401ac8783ef4646657f"
+            },
+            "type": "bower-asset"
+        },
+        {
+            "name": "bower-asset/fontawesome",
+            "version": "5.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
                 "reference": "4e6402443679e0a9d12c7401ac8783ef4646657f"
             },
             "dist": {
@@ -2099,6 +2114,53 @@
             "description": "Select2 is a jQuery based replacement for select boxes.",
             "homepage": "https://select2.org/",
             "time": "2020-01-28T05:01:22+00:00"
+        },
+        {
+            "name": "sersid/yii2-font-awesome-asset",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Sersid/yii2-font-awesome-asset.git",
+                "reference": "cdeb663859a05b3c7a6cd3741ed90344d623893b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Sersid/yii2-font-awesome-asset/zipball/cdeb663859a05b3c7a6cd3741ed90344d623893b",
+                "reference": "cdeb663859a05b3c7a6cd3741ed90344d623893b",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/fontawesome": "*",
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "sersid\\fontawesome\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-4-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sersid",
+                    "email": "sersONEd@gmail.com"
+                }
+            ],
+            "description": "Adding FontAwesome to your Yii2 project via Composer",
+            "keywords": [
+                "FontAwesome",
+                "asset",
+                "extension",
+                "font awesome",
+                "font-awesome",
+                "yii2",
+                "yii2-fontawesome"
+            ],
+            "time": "2014-11-27T00:43:55+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
