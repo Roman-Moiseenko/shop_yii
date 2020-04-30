@@ -11,6 +11,7 @@ use yii\web\Controller;
 
 class ContactController extends Controller
 {
+    public string $layout = 'blank';
     /**
      * @var ContactService
      */

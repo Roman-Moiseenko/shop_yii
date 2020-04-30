@@ -13,30 +13,41 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to login:</p>
+    <p>Пожалуйста, заполните следующие поля для входа в систему:</p>
 
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-sm-6">
+            <div class="well">
+                <h2>Новый пользователь</h2>
+                <p><strong>Зарегистрировать аккаунт</strong></p>
+                <p>Создав учетную запись, вы сможете совершать покупки быстрее, быть в курсе состояния заказа и отслеживать ранее сделанные заказы.</p>
+                <a href="/site/signup" class="btn btn-primary">Continue</a>
+            </div>
+            <div class="well"><?= yii\authclient\widgets\AuthChoice::widget(['baseAuthUrl' => ['auth/network/auth']]); ?></div>
+        </div>
+        <div class="col-sm-6">
+            <div class="well">
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                <?= $form->field($model, 'username')->textInput(['autofocus' => true])->label('Логин') ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+                <?= $form->field($model, 'password')->passwordInput()->label('Пароль') ?>
 
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                <?= $form->field($model, 'rememberMe')->checkbox()->label('Запомнить меня') ?>
 
                 <div style="color:#999;margin:1em 0">
-                    If you forgot your password you can <?= Html::a('reset it', ['auth/reset/request']) ?>.
+                    Если Вы забыли пароль, о вы можете <?= Html::a('сбросить его', ['auth/reset/request']) ?>.
                     <br>
-                    Need new verification email? <?= Html::a('Resend', ['auth/reset/resend']) ?>
+                    Необходимо подтверждение почты? <?= Html::a('Отправить', ['auth/reset/resend']) ?>
                 </div>
 
                 <div class="form-group">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                    <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 </div>
 
             <?php ActiveForm::end(); ?>
-            <?= yii\authclient\widgets\AuthChoice::widget(['baseAuthUrl' => ['auth/network/auth']]); ?>
+
+            </div>
         </div>
     </div>
 </div>

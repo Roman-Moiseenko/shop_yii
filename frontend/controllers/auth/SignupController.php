@@ -12,7 +12,7 @@ use yii\web\Controller;
 
 class SignupController extends Controller
 {
-
+    public string $layout = 'cabinet';
     /**
      * @var SignupService
      */
