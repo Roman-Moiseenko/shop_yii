@@ -159,9 +159,6 @@ AppAsset::register($this);
 </div>
 
 <div id="common-home" class="container">
-
-
-
     <?= Breadcrumbs::widget([
 
     'homeLink' => [
