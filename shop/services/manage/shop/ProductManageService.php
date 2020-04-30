@@ -113,7 +113,7 @@ class ProductManageService
     public function edit($id, ProductEditForm $form): void
     {
         $product = $this->products->get($id);
-        $brand = $this->brands->get($id);
+        $brand = $this->brands->get($form->brandId);
         $category = $this->categories->get($form->categories->main);
         $product->edit(
             $brand->id,
@@ -129,24 +129,26 @@ class ProductManageService
         );
 
         $product->changeMainCategory($category->id);
-        $product->revokeCategories();
 
-        foreach ($form->categories->others as $otherId) {
-            $category = $this->categories->get($otherId);
-            $product->assignCategory($category->id);
-        }
+        $this->transaction->wrap(function () use ($product, $form) {
 
-        foreach ($form->values as $value) {
-            $product->setValue($value->id, $value->value);
-        }
+            $product->revokeCategories();
+            $product->revokeTags();
+            $this->products->save($product);
 
-        $product->revokeTags();
-        foreach ($form->tags->existing as $tagId) {
-            $tag = $this->tags->get($tagId);
-            $product->assignTag($tag->id);
-        }
+            foreach ($form->categories->others as $otherId) {
+                $category = $this->categories->get($otherId);
+                $product->assignCategory($category->id);
+            }
 
-        $this->transaction->wrap(function () use ($form, $product) {
+            foreach ($form->values as $value) {
+                $product->setValue($value->id, $value->value);
+            }
+
+            foreach ($form->tags->existing as $tagId) {
+                $tag = $this->tags->get($tagId);
+                $product->assignTag($tag->id);
+            }
             foreach ($form->tags->newNames as $tagName) {
                 if (!$tag = $this->tags->findByName($tagName)) {
                     $tag = Tag::create($tagName, $tagName);
@@ -154,7 +156,6 @@ class ProductManageService
                 }
                 $product->assignTag($tag->id);
             }
-
             $this->products->save($product);
         });
 

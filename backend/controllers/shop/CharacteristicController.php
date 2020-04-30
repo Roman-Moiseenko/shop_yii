@@ -16,6 +16,7 @@ use yii\filters\VerbFilter;
  */
 class CharacteristicController extends Controller
 {
+    public string $layout = 'main';
     /**
      * @var CharacteristicManageService
      */

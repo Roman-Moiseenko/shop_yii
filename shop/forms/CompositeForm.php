@@ -25,8 +25,8 @@ abstract class  CompositeForm extends Model
                 $success2 = $form->load($data, $formName !== '' ? null : $name);
                 $success =  $success2 && $success;
             }
-           /* echo $name;
-            var_dump($success2);*/
+          //  echo $name;
+           // var_dump($success2);
         }
        // if (!$success) die();
         return $success;
@@ -36,14 +36,20 @@ abstract class  CompositeForm extends Model
     {
         $parentNames = $attributeNames !== null ? array_filter((array)$attributeNames, 'is_string') : null;
         $success = parent::validate($parentNames, $clearErrors);
+        $success2 = $success;
         foreach ($this->forms as $name => $form) {
             if (is_array($form)) {
-                $success = Model::validateMultiple($form) && $success;
+                $success2 = Model::validateMultiple($form);
+                $success = $success2    && $success;
             } else {
                 $innerNames = $attributeNames !== null ? ArrayHelper::getValue($attributeNames, $name) : null;
-                $success = $form->validate($innerNames ?: null, $clearErrors) && $success;
+                $success2 = $form->validate($innerNames ?: null, $clearErrors);
+                $success = $success2 && $success;
             }
+           //   echo $name;
+            // var_dump($success2);
         }
+        // if (!$success) die();
         return $success;
     }
     public function __get($name)

@@ -17,6 +17,7 @@ use yii\filters\VerbFilter;
  */
 class ModificationController extends Controller
 {
+    public string $layout = 'main';
     /**
      * @var ProductManageService
      */

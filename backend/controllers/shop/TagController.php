@@ -17,6 +17,7 @@ use yii\filters\VerbFilter;
  */
 class TagController extends Controller
 {
+    public string $layout = 'main';
     /**
      * @var array|TagManageService
      */

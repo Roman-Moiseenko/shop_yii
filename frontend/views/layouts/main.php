@@ -159,7 +159,18 @@ AppAsset::register($this);
 </div>
 
 <div id="common-home" class="container">
-    <?= Breadcrumbs::widget([        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],    ]) ?>
+
+
+
+    <?= Breadcrumbs::widget([
+
+    'homeLink' => [
+        'label' => 'Главная',
+        'url' => Yii::$app->homeUrl,
+        'title' => 'Первая страница сайта мастеров по ремонту квартир',
+    ],
+            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
     <?= Alert::widget() ?>
     <?= $content ?>
 </div>

@@ -22,6 +22,7 @@ use yii\filters\VerbFilter;
  */
 class ProductController extends Controller
 {
+    public string $layout = 'main';
     /**
      * @var ProductManageService
      */
@@ -148,6 +149,7 @@ class ProductController extends Controller
         $form = new ProductEditForm($product);
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
+
                 $this->service->edit($id, $form);
                 return $this->redirect(['view', 'id' => $product->id]);
             } catch (\DomainException $e) {

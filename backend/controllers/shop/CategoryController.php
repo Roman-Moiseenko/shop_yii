@@ -16,6 +16,7 @@ use yii\filters\VerbFilter;
  */
 class CategoryController extends Controller
 {
+    public string $layout = 'main';
     /**
      * @var CategoryManageService
      */
