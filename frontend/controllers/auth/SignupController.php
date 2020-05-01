@@ -12,11 +12,11 @@ use yii\web\Controller;
 
 class SignupController extends Controller
 {
-    public string $layout = 'cabinet';
+    public  $layout = 'cabinet';
     /**
      * @var SignupService
      */
-    private SignupService $signupService;
+    private  $signupService;
 
     public function __construct($id, $module, SignupService $signupService, $config = [])
     {

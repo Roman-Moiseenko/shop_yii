@@ -12,7 +12,7 @@ class NetworkService
     /**
      * @var UserRepository
      */
-    private UserRepository $users;
+    private $users;
 
     public function __construct(UserRepository $users)
     {

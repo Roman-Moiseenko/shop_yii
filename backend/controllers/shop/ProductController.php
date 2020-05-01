@@ -22,11 +22,11 @@ use yii\filters\VerbFilter;
  */
 class ProductController extends Controller
 {
-    public string $layout = 'main';
+    public  $layout = 'main';
     /**
      * @var ProductManageService
      */
-    private ProductManageService $service;
+    private  $service;
 
     public function __construct($id, $module, ProductManageService $service, $config = [])
     {
@@ -117,6 +117,8 @@ class ProductController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $product = $this->service->create($form);
+               // echo '---------------';
+                //die(1);
                 return $this->redirect(['view', 'id' => $product->id]);
             } catch (\DomainException $e) {
                 Yii::$app->errorHandler->logException($e);

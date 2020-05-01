@@ -81,9 +81,10 @@ div.required .control-label:before {
 #top {
 	background-color: #EEEEEE;
 	border-bottom: 1px solid #e2e2e2;
-	padding: 4px 0px 3px 0;
-	margin: 0 0 20px 0;
+	padding: 1px 0px 1px 0;
+	margin: 0 0 10px 0;
 	min-height: 40px;
+	z-index: 2;
 }
 #top .container {
 	padding: 0 20px;
@@ -197,6 +198,7 @@ div.required .control-label:before {
 	background-repeat: repeat-x;
 	border-color: #1f90bb #1f90bb #145e7a;
 	min-height: 40px;
+	z-index: 2;
 }
 #menu .nav > li > a {
 	color: #fff;
@@ -204,6 +206,7 @@ div.required .control-label:before {
 	padding: 10px 15px 10px 15px;
 	min-height: 15px;
 	background-color: transparent;
+
 }
 #menu .nav > li > a:hover, #menu .nav > li.open > a {
 	background-color: rgba(0, 0, 0, 0.1);

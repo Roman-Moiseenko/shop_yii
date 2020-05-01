@@ -13,12 +13,12 @@ use yii\web\Controller;
 
 class AuthController extends Controller
 {
-    public string $layout = 'cabinet';
+    public  $layout = 'cabinet';
     /**
      * @var AuthService
      */
 
-    private AuthService $authService;
+    private  $authService;
 
     public function __construct($id, $module, AuthService $authService, $config = [])
     {

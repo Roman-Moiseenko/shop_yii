@@ -17,7 +17,7 @@ use yii\filters\VerbFilter;
  */
 class UserController extends Controller
 {
-    public string $layout = 'main';
+    public  $layout = 'main';
     private $service;
     /**
      * {@inheritdoc}

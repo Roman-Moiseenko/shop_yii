@@ -16,7 +16,7 @@ use yii\filters\VerbFilter;
  */
 class BrandController extends Controller
 {
-    public string $layout = 'main';
+    public $layout = 'main';
     /**
      * @var BrandManageService
      */

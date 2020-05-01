@@ -14,12 +14,12 @@ use yii\web\Controller;
 
 class ResetController extends Controller
 {
-    public string $layout = 'cabinet';
+    public  $layout = 'cabinet';
     /**
      * @var PasswordResetService
      */
 
-    private PasswordResetService $passwordResetService;
+    private  $passwordResetService;
 
     public function __construct($id, $module, PasswordResetService $passwordResetService, $config = [])
     {

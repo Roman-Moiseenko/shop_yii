@@ -14,7 +14,7 @@ class CharacteristicManageService
     /**
      * @var CharacteristicRepository
      */
-    private CharacteristicRepository $characteristics;
+    private $characteristics;
 
     public function __construct(CharacteristicRepository $characteristics)
     {

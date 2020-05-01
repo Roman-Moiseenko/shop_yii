@@ -18,7 +18,7 @@ class NetworkController extends Controller
     /**
      * @var NetworkService
      */
-    private NetworkService $networkService;
+    private  $networkService;
 
     public function __construct($id, $module, NetworkService $networkService, $config = [])
     {

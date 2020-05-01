@@ -11,11 +11,11 @@ use yii\web\Controller;
 
 class ContactController extends Controller
 {
-    public string $layout = 'blank';
+    public  $layout = 'blank';
     /**
      * @var ContactService
      */
-    private ContactService $contact;
+    private  $contact;
 
     public function __construct($id, $module, ContactService $contact, $config = [])
     {

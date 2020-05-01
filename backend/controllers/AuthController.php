@@ -13,7 +13,7 @@ use yii\web\Controller;
 
 class AuthController extends Controller
 {
-    public string $layout = 'main-login';
+    public  $layout = 'main-login';
     /**
      * @var AuthService
      */

@@ -54,13 +54,13 @@ AppAsset::register($this);
         </div>
     </div>
 </nav>
-<header>
+<header id="header-top">
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
                 <div id="logo">
                     <a href="<?= Url::home()?>">
-                            <img src="<?= Yii::getAlias('@web/image/info.png') ?>" style="margin-top: -20px; margin-bottom: -20px;"></a>
+                            <img class="logo-image" src="<?= Yii::getAlias('@web/image/info.png') ?>"></a>
                 </div>
             </div>
             <div class="col-sm-6"><div id="search" class="input-group">
@@ -241,6 +241,13 @@ AppAsset::register($this);
         prevButton: '.swiper-button-prev',
         autoplay: 2500,
         loop: true
+    });
+    --></script>
+<script type="text/javascript"><!--
+    $('#banner0').swiper({
+        effect: 'fade',
+        autoplay: 2500,
+        autoplayDisableOnInteraction: false
     });
     --></script>
 </body>

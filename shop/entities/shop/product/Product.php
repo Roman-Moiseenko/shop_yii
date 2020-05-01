@@ -28,6 +28,7 @@ use yii\web\UploadedFile;
  * @property integer $rating
  * @property integer $unit_id
  * @property string $code1C
+ * @property float $remains
  * @property Meta $meta
  * @property Brand $brand
  * @property Category $category
@@ -45,7 +46,7 @@ class Product extends ActiveRecord
 {
     public $meta;
 
-    public static function create($brandId, $categoryId, $code, $name, $description, $code1C, Meta $meta): self
+    public static function create($brandId, $categoryId, $code, $name, $description, $code1C, Meta $meta, $remains = 0): self
     {
         $product = new static();
         $product->brand_id = $brandId;
@@ -55,6 +56,7 @@ class Product extends ActiveRecord
         $product->description = $description;
         $product->code1C = $code1C;
         $product->meta = $meta;
+        $product->remains = $remains;
         $product->created_at = time();
 
         //$product->unit_id = $unitId;
@@ -105,6 +107,19 @@ class Product extends ActiveRecord
             self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
     }
+
+/*
+    public function setRemains($remains)
+    {
+        $this->remains = $remains;
+    }
+
+    public function getRemains()
+    {
+        return $this->remains;
+    }*/
+
+
     public function setValue($id, $value): void
     {
         $values = $this->values;

@@ -118,3 +118,13 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.logo-image {
+    margin-top: -20px;
+    margin-bottom: -20px;
+    z-index: 9999;
+}
+
+#header-top {
+    z-index: 999;
+}

@@ -77,7 +77,7 @@ class ProductManageService
                 $form->meta->keywords
             )
         );
-
+        $this->transaction->wrap(function () use ($form, $product) {
         $product->updatePrice($form->price->new, $form->price->old);
         foreach ($form->categories->others as $otherId) {
             $category = $this->categories->get($otherId);
@@ -97,7 +97,7 @@ class ProductManageService
             $product->assignTag($tag->id);
         }
 
-        $this->transaction->wrap(function () use ($form, $product) {
+
             foreach ($form->tags->newNames as $tagName) {
                 if (!$tag = $this->tags->findByName($tagName)) {
                     $tag = Tag::create($tagName, $tagName);
@@ -246,6 +246,15 @@ class ProductManageService
 
     public function removeModification($id, ModificationForm $form)
     {
+        $product = $this->products->get($id);
+        //$product->Modification($id_modification, $form->code, $form->name, $form->price);
+        $this->products->save($product);
+    }
 
+    public function setRemains($id, $remains)
+    {
+        $product = $this->products->get($id);
+        $product->setRemains($remains);
+        $this->products->save($product);
     }
 }
