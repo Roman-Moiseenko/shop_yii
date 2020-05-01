@@ -244,10 +244,10 @@ class ProductManageService
         $this->products->save($product);
     }
 
-    public function removeModification($id, ModificationForm $form)
+    public function removeModification($id, $modificationId)
     {
         $product = $this->products->get($id);
-        //$product->Modification($id_modification, $form->code, $form->name, $form->price);
+        $product->removeModification($modificationId);
         $this->products->save($product);
     }
 

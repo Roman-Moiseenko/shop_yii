@@ -108,7 +108,7 @@ class Product extends ActiveRecord
         ];
     }
 
-/*
+
     public function setRemains($remains)
     {
         $this->remains = $remains;
@@ -117,7 +117,7 @@ class Product extends ActiveRecord
     public function getRemains()
     {
         return $this->remains;
-    }*/
+    }
 
 
     public function setValue($id, $value): void
@@ -239,6 +239,20 @@ class Product extends ActiveRecord
         $modifications[] = Modification::create($code, $name, $price);
         $this->modifications = $modifications;
 
+    }
+
+    public function removeModification($id)
+    {
+        /** @var Modification $modifications */
+        $modifications = $this->modifications;
+        foreach ($modifications as $i => $modification) {
+            if ($modification->isIdEqualTo($id)) {
+                unset($modifications[$i]);
+                $this->modifications = $modifications;
+                return;
+            }
+        }
+        throw new \DomainException('Модификация не найдена');
     }
 
     public function editModification($id, $code, $name, $price): void
