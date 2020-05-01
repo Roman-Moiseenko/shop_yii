@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <h2>Новый пользователь</h2>
                 <p><strong>Зарегистрировать аккаунт</strong></p>
                 <p>Создав учетную запись, вы сможете совершать покупки быстрее, быть в курсе состояния заказа и отслеживать ранее сделанные заказы.</p>
-                <a href="/site/signup" class="btn btn-primary">Continue</a>
+                <a href="/signup" class="btn btn-primary">Continue</a>
             </div>
             <div class="well"><?= yii\authclient\widgets\AuthChoice::widget(['baseAuthUrl' => ['auth/network/auth']]); ?></div>
         </div>
