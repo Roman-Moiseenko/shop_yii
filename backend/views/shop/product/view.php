@@ -96,7 +96,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     <br/>
                     <p>
                         <?= Html::a('Change Price', ['price', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
-
                     </p>
                 </div>
             </div>
