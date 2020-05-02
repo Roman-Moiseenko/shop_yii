@@ -9,6 +9,7 @@ use shop\entities\behaviors\MetaBehavior;
 use shop\entities\Meta;
 use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
+use shop\entities\shop\product\queries\ProductQuery;
 use shop\entities\shop\Tag;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -44,6 +45,7 @@ use yii\web\UploadedFile;
  */
 class Product extends ActiveRecord
 {
+
     public $meta;
 
     public static function create($brandId, $categoryId, $code, $name, $description, $code1C, Meta $meta, $units, $remains = 0): self
@@ -493,6 +495,9 @@ class Product extends ActiveRecord
     {
         return $this->hasOne(Photo::class, ['id' => 'main_photo_id']);
     }
-
+    public static function find(): ProductQuery
+    {
+        return new ProductQuery(static::class);
+    }
 
 }

@@ -2,6 +2,7 @@
 
 namespace backend\forms\shop;
 
+use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -13,6 +14,7 @@ use yii\helpers\ArrayHelper;
  */
 class ProductSearch extends Product
 {
+    public $notRemains = false;
     /**
      * {@inheritdoc}
      */
@@ -52,7 +54,7 @@ class ProductSearch extends Product
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-             $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
@@ -61,11 +63,13 @@ class ProductSearch extends Product
             'id' => $this->id,
             'category_id' => $this->category_id,
             'brand_id' => $this->brand_id,
+
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code])
             ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'code1C', $this->code1C]);
+            ->andFilterWhere(['like', 'code1C', $this->code1C])
+            ->andFilterWhere(['>', 'remains', $this->notRemains ? 0 : null]);
 
         return $dataProvider;
     }
@@ -73,11 +77,21 @@ class ProductSearch extends Product
     public function categoriesList(): array
     {
         return ArrayHelper::map(Category::find()->andWhere(['>', 'depth', 0])->
-                                          orderBy('lft')->asArray()->all(),
+        orderBy('lft')->asArray()->all(),
             'id',
             function (array $category) {
                 return ($category['depth'] > 1 ?
-                    str_repeat('--', $category['depth'] - 1) . ' ' : '') . $category['name'];
+                        str_repeat('--', $category['depth'] - 1) . ' ' : '') . $category['name'];
+            }
+        );
+    }
+
+    public function brandList(): array
+    {
+        return ArrayHelper::map(Brand::find()->orderBy('id')->asArray()->all(),
+            'id',
+            function (array $brand) {
+                return $brand['name'];
             }
         );
     }

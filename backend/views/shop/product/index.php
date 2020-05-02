@@ -4,6 +4,7 @@ use shop\entities\shop\product\Product;
 use shop\helpers\PriceHelper;
 //use shop\helpers\ProductHelper;
 use yii\grid\ActionColumn;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -37,6 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         'contentOptions' => ['style' => 'width: 100px'],
                     ],
                     [
+                        'label' => 'Бренд',
+                        'attribute' => 'brand_id',
+                        'value' => 'brand.name',
+                        'filter' => $searchModel->brandList(),
+                    ],
+                    [
+                        'label' => 'Товар',
                         'attribute' => 'name',
                         'value' => function (Product $model) {
                             return Html::a(Html::encode($model->name), ['view', 'id' => $model->id]);
@@ -44,11 +52,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'raw',
                     ],
                     [
+                        'label' => 'Категория',
                         'attribute' => 'category_id',
                         'filter' => $searchModel->categoriesList(),
                         'value' => 'category.name',
                     ],
                     [
+                        'label' => 'Цена',
                         'attribute' => 'price_new',
                         'value' => function (Product $model) {
                             return PriceHelper::format($model->price_new);
@@ -56,11 +66,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'raw'
                     ],
                     [
+                        'label' => 'Остаток',
                         'attribute' => 'remains',
                         'value' => function (Product $model) {
                             return $model->remains . ' ' . $model->units;
                         },
-                        'label' => 'Остаток',
+                        'filter' => [1 => 'Все', 0 => 'Нет на складе'],
                     ],
                     /*  'quantity',
                       [

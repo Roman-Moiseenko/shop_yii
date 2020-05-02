@@ -219,7 +219,7 @@ class ProductManageService
         $categories = $this->categories->get($id);
         $this->categories->remove($categories);
     }
-    public function activate($id): void
+/*    public function activate($id): void
     {
         $product = $this->products->get($id);
         $product->activate();
@@ -232,7 +232,7 @@ class ProductManageService
         $product->draft();
         $this->products->save($product);
     }
-
+*/
     public function addModification(int $id, ModificationForm $form)
     {
         $product = $this->products->get($id);

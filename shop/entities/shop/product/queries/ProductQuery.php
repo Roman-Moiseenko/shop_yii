@@ -8,9 +8,9 @@ use yii\db\ActiveQuery;
 
 class ProductQuery extends ActiveQuery
 {
-    public function NotEmpty()
+    public function NotEmpty($alias = null)
     {
-        return $this->andWhere(['>', 'remains', 0]);
+        return $this->andWhere(['>', ($alias ? $alias . '.' : '') . 'remains', 0]);
     }
 
 }
