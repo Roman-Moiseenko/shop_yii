@@ -120,11 +120,14 @@ a.desc:after {
 }
 
 .logo-image {
+
+    position: relative;
     margin-top: -20px;
     margin-bottom: -20px;
     z-index: 9999;
 }
 
 #header-top {
-    z-index: 999;
+
+    z-index: 99999;
 }

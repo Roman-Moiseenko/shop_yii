@@ -1,10 +1,12 @@
 <?php
 
+use shop\helpers\ProductHelper;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model shop\entities\shop\product\Product */
+/* @var $product shop\entities\shop\product\Product */
 
 $this->title = 'Редактировать товар: ' . $product->name;
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
@@ -19,7 +21,7 @@ $this->params['breadcrumbs'][] = 'Изменить';
         <div class="box-header with-border">Common</div>
         <div class="box-body">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <?= $form->field($model, 'brandId')->dropDownList($model->brandsList()) ?>
                 </div>
                 <div class="col-md-2">
@@ -27,6 +29,9 @@ $this->params['breadcrumbs'][] = 'Изменить';
                 </div>
                 <div class="col-md-6">
                     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+                </div>
+                <div class="col-md-1">
+                    <?= $form->field($model, 'units')->textInput(['maxlength' => true]) ?>
                 </div>
             </div>
             <?= $form->field($model, 'description')->textarea()/*->widget(CKEditor::className())*/ ?>

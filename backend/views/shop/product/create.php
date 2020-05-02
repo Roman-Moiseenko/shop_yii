@@ -2,6 +2,7 @@
 
 use kartik\widgets\FileInput;
 //use mihaildev\ckeditor\CKEditor;
+use shop\helpers\ProductHelper;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
@@ -22,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box-header with-border">Основные</div>
         <div class="box-body">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <?= $form->field($model, 'brandId')->dropDownList($model->brandsList()) ?>
                 </div>
                 <div class="col-md-2">
@@ -33,6 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="col-md-2">
                     <?= $form->field($model, 'code1C')->textInput(['maxlength' => true]) ?>
+                </div>
+                <div class="col-md-1">
+                    <?= $form->field($model, 'units')->textInput(['maxlength' => true]) ?>
                 </div>
             </div>
             <?= $form->field($model, 'description')->textarea(['rows' => 6])//->widget(CKEditor::class)  ?>

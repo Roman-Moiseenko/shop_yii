@@ -75,7 +75,8 @@ class ProductManageService
                 $form->meta->title,
                 $form->meta->description,
                 $form->meta->keywords
-            )
+            ),
+            $form->units
         );
         $this->transaction->wrap(function () use ($form, $product) {
         $product->updatePrice($form->price->new, $form->price->old);
@@ -115,6 +116,7 @@ class ProductManageService
         $product = $this->products->get($id);
         $brand = $this->brands->get($form->brandId);
         $category = $this->categories->get($form->categories->main);
+        //var_dump($form->units);exit;
         $product->edit(
             $brand->id,
             $form->code,
@@ -125,7 +127,8 @@ class ProductManageService
                 $form->meta->title,
                 $form->meta->description,
                 $form->meta->keywords
-            )
+            ),
+            $form->units
         );
 
         $product->changeMainCategory($category->id);

@@ -45,12 +45,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         'model' => $product,
                         'attributes' => [
                             'id',
-                           /* [
-                                'attribute' => 'status',
-                                'value' => ProductHelper::statusLabel($product->status),
-                                'format' => 'raw',
-                            ],*/
+                            /* [
+                                 'attribute' => 'status',
+                                 'value' => ProductHelper::statusLabel($product->status),
+                                 'format' => 'raw',
+                             ],*/
                             [
+                                'label' => 'Бренд',
                                 'attribute' => 'brand_id',
                                 'value' => ArrayHelper::getValue($product, 'brand.name'),
                             ],
@@ -59,33 +60,40 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute' => 'category_id',
                                 'value' => ArrayHelper::getValue($product, 'category.name'),
+                                'label' => 'Категоря',
                             ],
                             [
-                                'label' => 'Other categories',
+                                'label' => 'Дополнительные категории',
                                 'value' => implode(', ', ArrayHelper::getColumn($product->categories, 'name')),
                             ],
                             [
-                                'label' => 'Tags',
+                                'label' => 'Метки',
                                 'value' => implode(', ', ArrayHelper::getColumn($product->tags, 'name')),
                             ],
-                           /* 'quantity',
-                            [
-                                'attribute' => 'weight',
-                                'value' => WeightHelper::format($product->weight),
-                            ],*/
+                            /* 'quantity',
+                             [
+                                 'attribute' => 'weight',
+                                 'value' => WeightHelper::format($product->weight),
+                             ],*/
                             [
                                 'attribute' => 'price_new',
                                 'value' => PriceHelper::format($product->price_new),
                                 'format' => 'raw',
+                                'label' => 'Цена новая',
                             ],
                             [
                                 'attribute' => 'price_old',
                                 'value' => PriceHelper::format($product->price_old),
                                 'format' => 'raw',
+                                'label' => 'Цена предыдущая',
+                            ],
+                            [
+                                'attribute' => 'units',
+                                'label' => 'Ед.изм.',
                             ],
                         ],
                     ]) ?>
-                    <br />
+                    <br/>
                     <p>
                         <?= Html::a('Change Price', ['price', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
 
@@ -121,7 +129,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'HTML.SafeObject' => true,
                 'Output.FlashCompat' => true,
                 'HTML.SafeIframe' => true,
-                'URI.SafeIframeRegexp'=>'%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%',
+                'URI.SafeIframeRegexp' => '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%',
             ]) ?>
         </div>
     </div>
@@ -212,7 +220,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
 
             <?php $form = ActiveForm::begin([
-                'options' => ['enctype'=>'multipart/form-data'],
+                'options' => ['enctype' => 'multipart/form-data'],
             ]); ?>
 
             <?= $form->field($photosForm, 'files[]')->label(false)->widget(FileInput::class, [

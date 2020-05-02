@@ -56,12 +56,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'ntext',
                 'label' => 'Описание'
             ],
-            //'meta_json',
-            //'lft',
-            //'rgt',
-            //'depth',
-            //'code1C',
-            //'id_old',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

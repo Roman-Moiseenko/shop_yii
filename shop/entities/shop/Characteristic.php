@@ -34,7 +34,8 @@ class Characteristic extends ActiveRecord
         $object->type = $type;
         $object->required = $required;
         $object->default = $default;
-        $object->variants = $variants;
+        if (count($variants) == 1 && $variants[0] == '') {$object->variants = [];}
+        else {$object->variants = $variants;}
         $object->sort = $sort;
         return $object;
     }
@@ -45,7 +46,8 @@ class Characteristic extends ActiveRecord
         $this->type = $type;
         $this->required = $required;
         $this->default = $default;
-        $this->variants = $variants;
+        if (count($variants) == 1 && $variants[0] == '') {$this->variants = [];}
+        else {$this->variants = $variants;}
         $this->sort = $sort;
     }
 

@@ -25,9 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
-               /* 'rowOptions' => function (Product $model) {
-                    return $model->quantity <= 0 ? ['style' => 'background: #fdc'] : [];
-                },*/
+                /* 'rowOptions' => function (Product $model) {
+                     return $model->quantity <= 0 ? ['style' => 'background: #fdc'] : [];
+                 },*/
                 'columns' => [
                     [
                         'value' => function (Product $model) {
@@ -36,7 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'raw',
                         'contentOptions' => ['style' => 'width: 100px'],
                     ],
-                    'id',
                     [
                         'attribute' => 'name',
                         'value' => function (Product $model) {
@@ -56,15 +55,23 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'format' => 'raw'
                     ],
-                  /*  'quantity',
                     [
-                        'attribute' => 'status',
-                        'filter' => $searchModel->statusList(),
+                        'attribute' => 'remains',
                         'value' => function (Product $model) {
-                            return ProductHelper::statusLabel($model->status);
+                            return $model->remains . ' ' . $model->units;
                         },
-                        'format' => 'raw',
-                    ],*/
+                        'label' => 'Остаток',
+                    ],
+                    /*  'quantity',
+                      [
+                          'attribute' => 'status',
+                          'filter' => $searchModel->statusList(),
+                          'value' => function (Product $model) {
+                              return ProductHelper::statusLabel($model->status);
+                          },
+                          'format' => 'raw',
+                      ],*/
+                    ['class' => 'yii\grid\ActionColumn'],
                 ],
             ]); ?>
         </div>

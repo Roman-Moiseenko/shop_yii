@@ -20,7 +20,7 @@ class m200501_035917_add_shop_product_remains_field extends Migration
     {
         $this->dropColumn('{{%shop_products}}', 'remains');
 
-        return false;
+
     }
 
 }

@@ -42,9 +42,9 @@ class ValueForm extends Model
         ];
     }
 
-    public function variantsList(): array
+    public function variantsList()
     {
-        return $this->_characteristic->variants ? array_combine($this->_characteristic->variants, $this->_characteristic->variants) : [];
+        return count($this->_characteristic->variants) > 0 ? array_combine($this->_characteristic->variants, $this->_characteristic->variants) : null;
     }
 
     public function getId(): int

@@ -26,7 +26,7 @@ use yii\web\UploadedFile;
  * @property integer $price_new
  * @property integer $main_photo_id
  * @property integer $rating
- * @property integer $unit_id
+ * @property string $units
  * @property string $code1C
  * @property float $remains
  * @property Meta $meta
@@ -46,7 +46,7 @@ class Product extends ActiveRecord
 {
     public $meta;
 
-    public static function create($brandId, $categoryId, $code, $name, $description, $code1C, Meta $meta, $remains = 0): self
+    public static function create($brandId, $categoryId, $code, $name, $description, $code1C, Meta $meta, $units, $remains = 0): self
     {
         $product = new static();
         $product->brand_id = $brandId;
@@ -56,6 +56,7 @@ class Product extends ActiveRecord
         $product->description = $description;
         $product->code1C = $code1C;
         $product->meta = $meta;
+        $product->units = $units;
         $product->remains = $remains;
         $product->created_at = time();
 
@@ -67,12 +68,13 @@ class Product extends ActiveRecord
         $this->price_new = $new;
         $this->price_old = $old;
     }
-    public function edit($brandId,/* $categoryId,*/ $code, $name, $description, $code1C, Meta $meta): void
+    public function edit($brandId,/* $categoryId,*/ $code, $name, $description, $code1C, Meta $meta, $units): void
     {
         $this->brand_id = $brandId;
         $this->code = $code;
         $this->name = $name;
         $this->meta = $meta;
+        $this->units = $units;
         $this->code1C = $code1C;
         $this->description = $description;
     }
@@ -108,7 +110,7 @@ class Product extends ActiveRecord
         ];
     }
 
-/*
+
     public function setRemains($remains)
     {
         $this->remains = $remains;
@@ -117,8 +119,7 @@ class Product extends ActiveRecord
     public function getRemains()
     {
         return $this->remains;
-    }*/
-
+    }
 
     public function setValue($id, $value): void
     {

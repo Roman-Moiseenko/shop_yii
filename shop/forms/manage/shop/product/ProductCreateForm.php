@@ -27,6 +27,7 @@ class ProductCreateForm extends CompositeForm
     public $name;
     public $description;
     public $code1C;
+    public $units;
    // public $photos;
 
     public function __construct($config = [])
@@ -48,6 +49,7 @@ class ProductCreateForm extends CompositeForm
             [['code', 'name'], 'string', 'max' => 255],
             [['code1C'], 'string', 'max' => 9],
             [['brandId'], 'integer'],
+            [['units'], 'string'],
             [['code'], 'unique', 'targetClass' => Product::class],
             ['description', 'string'],
             ['description', 'string'],

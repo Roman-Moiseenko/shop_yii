@@ -10,7 +10,7 @@ class ProductQuery extends ActiveQuery
 {
     public function NotEmpty()
     {
-        return $this->andWhere(['remains' => '> 0']);
+        return $this->andWhere(['>', 'remains', 0]);
     }
 
 }
