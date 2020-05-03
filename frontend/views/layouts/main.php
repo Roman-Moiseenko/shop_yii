@@ -73,7 +73,7 @@ AppAsset::register($this);
                     <button type="button" data-toggle="dropdown" data-loading-text="Loading..." class="btn btn-inverse btn-block btn-lg dropdown-toggle"><i class="fa fa-shopping-cart"></i> <span id="cart-total">0 item(s) - $0.00</span></button>
                     <ul class="dropdown-menu pull-right">
                         <li>
-                            <p class="text-center">Your shopping cart is empty!</p>
+                            <p class="text-center">Ваша корзина пуста.</p>
                         </li>
                     </ul>
                 </div>
@@ -84,78 +84,17 @@ AppAsset::register($this);
 <div class="container">
     <nav id="menu" class="navbar">
         <div class="navbar-header">
-            <span id="category" class="visible-xs">Каталог</span>
+            <span id="category" class="visible-xs">Меню</span>
             <button type="button" class="btn btn-navbar navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                 <i class="fa fa-bars"></i>
             </button>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                <li class="dropdown"><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=20" class="dropdown-toggle" data-toggle="dropdown">Desktops</a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-inner"> <ul class="list-unstyled">
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=20_26">PC (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=20_27">Mac (1)</a></li>
-                            </ul>
-                        </div>
-                        <a href="https://demo.opencart.com/index.php?route=product/category&amp;path=20" class="see-all">Show All Desktops</a> </div>
-                </li>
-                <li class="dropdown"><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=18" class="dropdown-toggle" data-toggle="dropdown">Laptops &amp; Notebooks</a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-inner"> <ul class="list-unstyled">
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=18_46">Macs (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=18_45">Windows (0)</a></li>
-                            </ul>
-                        </div>
-                        <a href="https://demo.opencart.com/index.php?route=product/category&amp;path=18" class="see-all">Show All Laptops &amp; Notebooks</a> </div>
-                </li>
-                <li class="dropdown"><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=25" class="dropdown-toggle" data-toggle="dropdown">Components</a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-inner"> <ul class="list-unstyled">
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=25_29">Mice and Trackballs (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=25_28">Monitors (2)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=25_30">Printers (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=25_31">Scanners (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=25_32">Web Cameras (0)</a></li>
-                            </ul>
-                        </div>
-                        <a href="https://demo.opencart.com/index.php?route=product/category&amp;path=25" class="see-all">Show All Components</a> </div>
-                </li>
-                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=57">Tablets</a></li>
-                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=17">Software</a></li>
-                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=24">Phones &amp; PDAs</a></li>
-                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=33">Cameras</a></li>
-                <li class="dropdown"><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34" class="dropdown-toggle" data-toggle="dropdown">MP3 Players</a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-inner"> <ul class="list-unstyled">
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_43">test 11 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_44">test 12 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_47">test 15 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_48">test 16 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_49">test 17 (0)</a></li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_50">test 18 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_51">test 19 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_52">test 20 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_53">test 21 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_54">test 22 (0)</a></li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_55">test 23 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_56">test 24 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_38">test 4 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_37">test 5 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_39">test 6 (0)</a></li>
-                            </ul>
-                            <ul class="list-unstyled">
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_40">test 7 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_41">test 8 (0)</a></li>
-                                <li><a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34_42">test 9 (0)</a></li>
-                            </ul>
-                        </div>
-                        <a href="https://demo.opencart.com/index.php?route=product/category&amp;path=34" class="see-all">Show All MP3 Players</a> </div>
-                </li>
+                <li><a href="<?=Html::encode(Url::to(['site/index']))?>">Главная</a></li>
+                <li><a href="<?=Html::encode(Url::to(['/shop/catalog/index']))?>">Каталог</a></li>
+                <li><a href="<?=Html::encode(Url::to(['/blog/post/index']))?>">Блог</a></li>
+                <li><a href="<?=Html::encode(Url::to(['/contact/index']))?>">Контакты</a></li>
             </ul>
         </div>
     </nav>
@@ -167,7 +106,7 @@ AppAsset::register($this);
     'homeLink' => [
         'label' => 'Главная',
         'url' => Yii::$app->homeUrl,
-        'title' => 'Первая страница сайта мастеров по ремонту квартир',
+        'title' => 'На главную',
     ],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

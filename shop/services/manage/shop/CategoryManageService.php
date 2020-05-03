@@ -57,7 +57,8 @@ class CategoryManageService
                 $form->meta->title,
                 $form->meta->description,
                 $form->meta->keywords
-            )
+            ),
+            $form->code1C
         );
         if ($form->parentId !== $category->parent->id) {
             $parent = $this->categories->get($form->parentId);

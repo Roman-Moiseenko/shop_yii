@@ -20,7 +20,7 @@ use yii\db\ActiveRecord;
  * @property integer $rgt
  * @property integer $depth
  * @property Meta $meta
- *
+ * @property string $code1C
  * @property Category $parent
  * @property Category[] $parents
  * @property Category[] $children
@@ -66,7 +66,7 @@ class Category extends ActiveRecord
     {
         return '{{%shop_categories}}';
     }
-    public function getSeoTitle(): string
+    public function getSeoTile(): string
     {
         return $this->meta->title ?: $this->getHeadingTile();
     }

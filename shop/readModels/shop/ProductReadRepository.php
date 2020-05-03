@@ -26,7 +26,7 @@ class ProductReadRepository
     {
         $query = Product::find()->alias('p')->NotEmpty('p')->with('mainPhoto', 'category');
         $ids = ArrayHelper::merge([$category->id], $category->getLeaves()->select('id')->column());
-        $query->joinWith(['categoryAssignment ca'], false);
+        $query->joinWith(['categoryAssignments ca'], false);
         $query->andWhere(['or', ['p.category_id' => $ids], ['ca.category_id' => $ids]]);
         $query->groupBy('p.id');
         return $this->getProvider($query);
@@ -75,6 +75,9 @@ class ProductReadRepository
                         ],
 
                     ],
+                ],
+                'pagination' => [
+                    'pageSizeLimit' => [15, 100],
                 ],
             ]
         );
