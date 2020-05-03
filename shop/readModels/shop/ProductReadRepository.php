@@ -16,7 +16,6 @@ use yii\helpers\ArrayHelper;
 
 class ProductReadRepository
 {
-
     public function getAll(): DataProviderInterface
     {
         $query = Product::find()->alias('p')->NotEmpty('p')->with('mainPhoto');

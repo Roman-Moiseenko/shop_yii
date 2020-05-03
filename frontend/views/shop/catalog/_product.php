@@ -15,7 +15,7 @@ $url = Url::to(['product'])
         <div class="image">
             <a href="<?=Html::encode($url)?>">
 
-                <img src="<?=Html::encode($product->mainPhoto->getThumbFileUrl('file', 'admin')) ?>" alt="" class="img-responsive" />
+                <img src="<?=Html::encode($product->mainPhoto->getThumbFileUrl('file', 'catalog_list')) ?>" alt="" class="img-responsive" />
             </a>
         </div>
         <?php endif; ?>
@@ -30,6 +30,9 @@ $url = Url::to(['product'])
                     <?php if ($product->price_old): ?>
                         <span class="price-old"><?= PriceHelper::format($product->price_old) ?></span>
                     <?php endif; ?>
+                </p>
+                <p class="price">
+                    Остаток <?= $product->remains . ' ' . $product->units ?>
                 </p>
             </div>
             <div class="button-group">

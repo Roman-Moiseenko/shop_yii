@@ -31,7 +31,8 @@
         "paulzi/yii2-nested-sets": "*",
         "yii-dream-team/yii2-upload-behavior": "*",
         "bower-asset/font-awesome": "*",
-        "sersid/yii2-font-awesome-asset": "*"
+        "sersid/yii2-font-awesome-asset": "*",
+        "cocur/slugify": "^4.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "*",

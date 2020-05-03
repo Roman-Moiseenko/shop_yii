@@ -8,6 +8,7 @@ use paulzi\nestedsets\NestedSetsBehavior;
 use shop\entities\behaviors\MetaBehavior;
 use shop\entities\Meta;
 use shop\entities\shop\queries\CategoryQuery;
+use shop\helpers\SlugHelper;
 use yii\db\ActiveRecord;
 /**
  * @property integer $id
@@ -35,6 +36,7 @@ class Category extends ActiveRecord
     {
         $category = new static();
         $category->name = $name;
+        if (empty($slug)) $slug = SlugHelper::slug($name);
         $category->slug = $slug;
         $category->title = $title;
         $category->description = $description;
@@ -49,6 +51,9 @@ class Category extends ActiveRecord
     public function edit($name, $slug, $title, $description, Meta $meta, $code1C = null)
     {
         $this->name = $name;
+        if (empty($slug)) {
+            $slug = SlugHelper::slug($name);
+        }
         $this->slug = $slug;
         $this->title = $title;
         $this->description = $description;

@@ -51,12 +51,8 @@ class CatalogController extends Controller
 
     public function actionIndex()
     {
-        // Product::find()->
         $dataProvider = $this->products->getAll();
-
         $category = $this->categories->getRoot();
-
-        //echo '<pre>';print_r(count($category->children));exit();
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'category' => $category,

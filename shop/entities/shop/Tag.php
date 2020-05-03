@@ -4,6 +4,7 @@
 namespace shop\entities\shop;
 
 
+use shop\helpers\SlugHelper;
 use yii\db\ActiveRecord;
 
 /**
@@ -18,6 +19,7 @@ class Tag extends ActiveRecord
     {
         $tag = new Tag();
         $tag->name = $name;
+        if (empty($slug)) $slug = SlugHelper::slug($name);
         $tag->slug = $slug;
         return $tag;
     }
@@ -25,6 +27,7 @@ class Tag extends ActiveRecord
     public function edit(string $name, string $slug): void
     {
         $this->name = $name;
+        if (empty($slug)) $slug = SlugHelper::slug($name);
         $this->slug = $slug;
     }
     public static function tableName()

@@ -44,7 +44,7 @@ class CategoryForm extends CompositeForm
     public function rules()
     {
         return [
-            [['name', 'slug', 'code1C'], 'required'],
+            [['name', 'code1C'], 'required'],
             [['parentId'], 'integer'],
             [['name', 'slug', 'title'], 'string', 'max' => 255],
             ['code1C', 'string', 'max' => 11],

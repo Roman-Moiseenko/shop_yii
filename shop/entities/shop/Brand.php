@@ -5,6 +5,7 @@ namespace shop\entities\shop;
 
 use shop\entities\behaviors\MetaBehavior;
 use shop\entities\Meta;
+use shop\helpers\SlugHelper;
 use yii\db\ActiveRecord;
 use yii\helpers\Json;
 
@@ -24,6 +25,7 @@ class Brand extends ActiveRecord
     {
         $brand = new static();
         $brand->name = $name;
+        if (empty($slug)) $slug = SlugHelper::slug($name);
         $brand->slug = $slug;
         $brand->meta = $meta;
         return $brand;
@@ -32,6 +34,7 @@ class Brand extends ActiveRecord
     public function edit($name, $slug, Meta $meta): void
     {
         $this->name = $name;
+        if (empty($slug)) $slug = SlugHelper::slug($name);
         $this->slug = $slug;
         $this->meta = $meta;
     }
