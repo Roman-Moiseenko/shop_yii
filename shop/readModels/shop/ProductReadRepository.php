@@ -53,6 +53,10 @@ class ProductReadRepository
         return Product::find()->NotEmpty()->andWhere(['id'=> $id])->one();
     }
 
+    public function getFeatured($limit)
+    {
+        return Product::find()->NotEmpty()->orderBy(['id' => SORT_DESC])->limit($limit)->all();
+    }
 
     private function getProvider(ActiveQuery $query): ActiveDataProvider
     {

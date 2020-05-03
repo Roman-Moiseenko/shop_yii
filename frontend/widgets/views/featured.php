@@ -1,25 +1,25 @@
 <?php
-/* @var $product \shop\entities\shop\product\Product */
+/* @var $products \shop\entities\shop\product\Product */
 
 use shop\helpers\PriceHelper;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use yii\helpers\Url;
 
-$url = Url::to(['product', 'id' => $product->id])
 ?>
 
-<div class="product-layout product-list col-xs-12">
-    <div class="product-thumb">
-        <?php if ($product->mainPhoto): ?>
-        <div class="image">
-            <a href="<?=Html::encode($url)?>">
-
-                <img src="<?=Html::encode($product->mainPhoto->getThumbFileUrl('file', 'catalog_list')) ?>" alt="" class="img-responsive" />
-            </a>
-        </div>
-        <?php endif; ?>
-        <div>
+<div class="row">
+    <?php foreach ($products as $product): ?>
+    <?php $url = Url::to(['/shop/catalog/product', 'id' => $product->id])?>
+    <div class="product-layout col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="product-thumb transition">
+            <?php if ($product->mainPhoto): ?>
+                <div class="image">
+                    <a href="<?=Html::encode($url)?>">
+                        <img src="<?=Html::encode($product->mainPhoto->getThumbFileUrl('file', 'catalog_list')) ?>" alt="" class="img-responsive" />
+                    </a>
+                </div>
+            <?php endif; ?>
             <div class="caption">
                 <h4>
                     <a href="<?= Html::encode($url) ?>"><?= Html::encode($product->name) ?></a>
@@ -42,4 +42,5 @@ $url = Url::to(['product', 'id' => $product->id])
             </div>
         </div>
     </div>
+    <?php endforeach;?>
 </div>

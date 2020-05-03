@@ -50,6 +50,10 @@ class Brand extends ActiveRecord
             MetaBehavior::class,
         ];
     }
+    public function getSeoTile(): string
+    {
+        return $this->meta->title ?: $this->name;
+    }
 
 
 }

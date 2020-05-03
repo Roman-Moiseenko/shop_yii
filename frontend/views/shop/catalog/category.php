@@ -11,6 +11,7 @@ $this->params['breadcrumbs'][] = $category->name;
 use yii\helpers\Html; ?>
 
 <h1><?=Html::encode($category->getHeadingTile())?></h1>
+<hr/>
 <?= $this->render('_subcategories', ['category' =>$category]); ?>
 <?php if ($category->description):?>
 <div class="card">

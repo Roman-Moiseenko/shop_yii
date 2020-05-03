@@ -12,4 +12,8 @@ class BrandReadRepository
     {
         return Brand::findOne($id);
     }
+    public function getAll()
+    {
+        return Brand::find()->andWhere(['<>', 'id', 1])->all();
+    }
 }

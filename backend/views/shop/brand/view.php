@@ -21,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Создать бренд', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <div class="box">
