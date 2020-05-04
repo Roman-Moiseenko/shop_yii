@@ -256,7 +256,18 @@ class Product extends ActiveRecord
             }
         }
         throw new \DomainException('Модификация не найдена');
-
+    }
+    public function removeModification($id)
+    {
+        $modifications = $this->modifications;
+        foreach ($modifications as $i => $modification) {
+            if ($modification->isIdEqualTo($id)) {
+                unset($modifications[$i]);
+                $this->modifications = $modifications;
+                return;
+            }
+        }
+        throw new \DomainException('Модификация не найдена');
     }
     // Related products
 
