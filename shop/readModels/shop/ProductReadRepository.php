@@ -42,7 +42,7 @@ class ProductReadRepository
     public function getAllByTag(Tag $tag): DataProviderInterface
     {
         $query = Product::find()->alias('p')->NotEmpty('p')->with('mainPhoto');
-        $query->joinWith(['tagAssignment ta'], false);
+        $query->joinWith(['tagAssignments ta'], false);
         $query->andWhere(['ta.tag_id' => $tag->id]);
         $query->groupBy('p.id');
         return $this->getProvider($query);

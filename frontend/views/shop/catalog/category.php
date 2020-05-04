@@ -6,7 +6,15 @@ $this->registerMetaTag(['name' => 'description', 'content' => $category->meta->d
 $this->registerMetaTag(['name' => 'keywords', 'content' => $category->meta->keywords]);
 
 $this->params['breadcrumbs'][] = ['label' => 'Каталог', 'url' => ['index']];
+foreach ($category->parents as $parent) {
+    if (!$parent->isRoot()) {
+        $this->params['breadcrumbs'][] = ['label' => $parent->name, 'url' => ['category', 'id' => $parent->id]];
+    }
+}
 $this->params['breadcrumbs'][] = $category->name;
+
+$this->params['active_category'] = $category;
+
 
 use yii\helpers\Html; ?>
 

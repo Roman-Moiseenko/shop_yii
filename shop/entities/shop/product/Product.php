@@ -462,6 +462,7 @@ class Product extends ActiveRecord
         return $this->hasOne(Units::class, ['id' => 'unit_id']);
     }*/
 
+
     public function getBrand(): ActiveQuery
     {
         return $this->hasOne(Brand::class, ['id' => 'brand_id']);

@@ -3,12 +3,25 @@
 /* @var $this \yii\web\View */
 
 use frontend\assets\MagnificPopupAsset;
+use shop\helpers\PriceHelper;
+use shop\helpers\ProductHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 $this->title = $product->name;
+$this->registerMetaTag(['name' => 'description', 'content' => $product->meta->description]);
+$this->registerMetaTag(['name' => 'keywords', 'content' => $product->meta->keywords]);
 $this->params['breadcrumbs'][] = ['label' => 'Каталог', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+foreach ($product->category->parents as $parent) {
+    if (!$parent->isRoot()) {
+        $this->params['breadcrumbs'][] = ['label' => $parent->name, 'url' => ['category', 'id' => $parent->id]];
+    }
+}
+$this->params['breadcrumbs'][] = ['label' => $product->category->name, 'url' => ['category', 'id' => $product->category->id]];
+$this->params['breadcrumbs'][] = $product->name;
+
+$this->params['active_category'] = $product->category;
+
 
 MagnificPopupAsset::register($this);
 ?>
@@ -42,7 +55,7 @@ MagnificPopupAsset::register($this);
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab-description"><p>
-                    <?=$product->description?></p>
+                    <?=Yii::$app->formatter->asNtext($product->description)?></p>
             </div>
             <div class="tab-pane" id="tab-specification">
                 <table class="table table-bordered">
@@ -120,19 +133,23 @@ MagnificPopupAsset::register($this);
                 <i class="fa fa-exchange"></i>
             </button>
         </div>
-        <h1>HP LP3065</h1>
+        <h1></h1> <!-- Заголовок товара-->
         <ul class="list-unstyled">
-            <li>Бренд: <a href="<?=Html::encode(Url::to(['/shop/catalog/brand', 'id' => $product->brand->id]))?>"><?=$product->brand->name?></a></li>
-            <li>Product Code: Product 21</li>
-            <li>Reward Points: 300</li>
-            <li>Availability: In Stock</li>
+            <li>Бренд: <a href="<?=Html::encode(Url::to(['/shop/catalog/brand', 'id' => $product->brand->id]))?>"><?=Html::encode($product->brand->name)?></a></li>
+            <li>Артикул: <?=$product->code?></li>
+            <li>Метки:
+                <?php foreach ($product->tags as $tag):?>
+                <a href="<?=Html::encode(Url::to(['tag', 'id' => $tag->id]));?>"><?=Html::encode($tag->name)?></a>
+                <?php endforeach;?>
+            </li>
+            <li></li>
         </ul>
         <ul class="list-unstyled">
             <li>
-                <h2>$122.00</h2>
+                <h2><?=PriceHelper::format($product->price_new);?></h2>
             </li>
-            <li>Ex Tax: $100.00</li>
-            <li>Price in reward points: 400</li>
+            <li></li>
+            <li>На складе: <?=Html::encode(ProductHelper::remains($product));?></li>
         </ul>
         <div id="product"> <hr>
             <h3>Available Options</h3>
@@ -141,11 +158,12 @@ MagnificPopupAsset::register($this);
                 <div class="input-group date">
                     <input type="text" name="option[225]" value="2011-04-22" data-date-format="YYYY-MM-DD" id="input-option225" class="form-control" />
                     <span class="input-group-btn">
-<button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
-</span></div>
+                        <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </div>
             </div>
             <div class="form-group">
-                <label class="control-label" for="input-quantity">Qty</label>
+                <label class="control-label" for="input-quantity">Кол-во</label>
                 <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
                 <input type="hidden" name="product_id" value="47" />
                 <br />

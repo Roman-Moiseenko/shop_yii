@@ -60,6 +60,7 @@ class Category extends ActiveRecord
         $this->meta = $meta;
 
         $this->code1C = $code1C;
+
     }
 
     public static function tableName()
