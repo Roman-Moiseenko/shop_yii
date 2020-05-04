@@ -47,6 +47,7 @@ class ProductController extends Controller
                     'delete-photo' => ['POST'],
                     'move-photo-up' => ['POST'],
                     'move-photo-down' => ['POST'],
+                    'featured' => ['POST'],
                 ],
             ],
         ];
@@ -67,6 +68,12 @@ class ProductController extends Controller
         ]);
     }
 
+
+    public function actionFeatured($id, $featured)
+    {
+       $this->service->changeFeatured($id, ($featured == 1) ? false : true);
+        //echo !((bool)$featured);
+    }
     /**
      * Displays a single Product model.
      * @param integer $id

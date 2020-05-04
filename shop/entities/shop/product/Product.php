@@ -30,6 +30,7 @@ use yii\web\UploadedFile;
  * @property string $units
  * @property string $code1C
  * @property float $remains
+ * @property boolean $featured
  * @property Meta $meta
  * @property Brand $brand
  * @property Category $category
@@ -48,7 +49,9 @@ class Product extends ActiveRecord
 
     public $meta;
 
-    public static function create($brandId, $categoryId, $code, $name, $description, $code1C, Meta $meta, $units, $remains = 0): self
+    public static function create($brandId, $categoryId, $code,
+                                  $name, $description, $code1C,
+                                  Meta $meta, $units, $remains = 0): self
     {
         $product = new static();
         $product->brand_id = $brandId;
@@ -61,10 +64,20 @@ class Product extends ActiveRecord
         $product->units = $units;
         $product->remains = $remains;
         $product->created_at = time();
-
-        //$product->unit_id = $unitId;
+        $product->featured = false;
         return $product;
     }
+
+    public function addFeatured()
+    {
+        $this->featured = true;
+    }
+
+    public function removeFeatured()
+    {
+        $this->featured = false;
+    }
+
     public function updatePrice($new, $old): void
     {
         $this->price_new = $new;

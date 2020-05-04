@@ -55,7 +55,7 @@ class ProductReadRepository
 
     public function getFeatured($limit)
     {
-        return Product::find()->NotEmpty()->orderBy(['id' => SORT_DESC])->limit($limit)->all();
+        return Product::find()->NotEmpty()->andWhere(['featured' => true])->limit($limit)->all();
     }
 
     private function getProvider(ActiveQuery $query): ActiveDataProvider

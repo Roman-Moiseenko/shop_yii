@@ -23,6 +23,7 @@ class ProductSearch extends Product
         return [
             [['id', 'category_id', 'brand_id'], 'integer'],
             [['code', 'name', 'code1C'], 'safe'],
+            [['featured'], 'boolean'],
         ];
     }
 
@@ -63,6 +64,7 @@ class ProductSearch extends Product
             'id' => $this->id,
             'category_id' => $this->category_id,
             'brand_id' => $this->brand_id,
+            'featured' => $this->featured,
 
         ]);
 
@@ -94,5 +96,9 @@ class ProductSearch extends Product
                 return $brand['name'];
             }
         );
+    }
+    public function featured()
+    {
+        return [false => 'Нет', true => 'Да'];
     }
 }

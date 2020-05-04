@@ -73,6 +73,20 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'filter' => [1 => 'Все', 0 => 'Нет на складе'],
                     ],
+
+                    [
+                            'attribute' => 'featured',
+                        'label' => 'реком.',
+                        'value' => function (Product $model) {
+                            $checked = '';
+                            if ($model->featured) $checked = 'checked';
+                            return '<input type="checkbox" class="featured-check" data-id="' .
+                                $model->id . '" value="' . $model->featured . '" ' . $checked . '>';
+                        },
+                        'format' => 'raw',
+                        'filter' => [1 => 'Да', 0 => 'Нет'],
+                    ],
+
                     /*  'quantity',
                       [
                           'attribute' => 'status',

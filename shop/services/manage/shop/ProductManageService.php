@@ -164,6 +164,17 @@ class ProductManageService
 
     }
 
+    public function changeFeatured($id, $featured)
+    {
+        $product = $this->products->get($id);
+        if ($featured) {
+            $product->addFeatured();
+        } else {
+            $product->removeFeatured();
+        }
+        $this->products->save($product);
+    }
+
     public function changeCategories($id, CategoriesForm $form): void
     {
         $product = $this->products->get($id);
