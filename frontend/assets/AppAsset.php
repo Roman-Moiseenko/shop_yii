@@ -25,7 +25,7 @@ class AppAsset extends AssetBundle
         'js/swiper.jquery.js',
     ];
     public $depends = [
-        //'frontend\assets\FontAwesomeAsset',
+      //  'frontend\assets\MagnificPopupAsset',
        // 'sersid\fontawesome\Asset',
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapPluginAsset',

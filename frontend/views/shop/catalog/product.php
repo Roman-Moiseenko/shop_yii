@@ -1,176 +1,181 @@
 <?php
 /* @var $product \shop\entities\shop\product\Product*/
 /* @var $this \yii\web\View */
+
+use frontend\assets\MagnificPopupAsset;
+use yii\helpers\Html;
+use yii\helpers\Url;
+
 $this->title = $product->name;
 $this->params['breadcrumbs'][] = ['label' => 'Каталог', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-use yii\helpers\Html;
-use yii\helpers\Url; ?>
+MagnificPopupAsset::register($this);
+?>
 <h1><?=Html::encode($product->name)?></h1>
-<div id="product-product" class="container">
 
-    <div class="row">
-        <div id="content" class="col-sm-12">
-            <div class="row"> <div class="col-sm-8"> <ul class="thumbnails">
-                        <li>
-                            <a class="thumbnail" href="https://demo.opencart.com/image/cache/catalog/demo/hp_1-500x500.jpg" title="HP LP3065">
-                                <img src="https://demo.opencart.com/image/cache/catalog/demo/hp_1-228x228.jpg" title="HP LP3065" alt="HP LP3065" />
-                            </a>
-                        </li>
-                        <li class="image-additional">
-                            <a class="thumbnail" href="https://demo.opencart.com/image/cache/catalog/demo/hp_3-500x500.jpg" title="HP LP3065">&nbsp;
-                                <img src="https://demo.opencart.com/image/cache/catalog/demo/hp_3-74x74.jpg" title="HP LP3065" alt="HP LP3065" />
-                            </a>
-                        </li>
-                        <li class="image-additional">
-                            <a class="thumbnail" href="https://demo.opencart.com/image/cache/catalog/demo/hp_2-500x500.jpg" title="HP LP3065">&nbsp;
-                                <img src="https://demo.opencart.com/image/cache/catalog/demo/hp_2-74x74.jpg" title="HP LP3065" alt="HP LP3065" />
-                            </a>
-                        </li>
-                    </ul>
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tab-description" data-toggle="tab">Description</a></li>
-                        <li><a href="#tab-specification" data-toggle="tab">Specification</a></li>
-                        <li><a href="#tab-review" data-toggle="tab">Reviews (0)</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tab-description"><p>
-                                Stop your co-workers in their tracks with the stunning new 30-inch diagonal HP LP3065 Flat Panel Monitor. This flagship monitor features best-in-class performance and presentation features on a huge wide-aspect screen while letting you work as comfortably as possible - you might even forget you&#39;re at the office</p>
-                        </div>
-                        <div class="tab-pane" id="tab-specification">
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <td colspan="2"><strong>Memory</strong></td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>test 1</td>
-                                    <td>16GB</td>
-                                </tr>
-                                </tbody>
-                                <thead>
-                                <tr>
-                                    <td colspan="2"><strong>Processor</strong></td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>No. of Cores</td>
-                                    <td>4</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="tab-pane" id="tab-review">
-                            <form class="form-horizontal" id="form-review">
-                                <div id="review"></div>
-                                <h2>Write a review</h2>
-                                <div class="form-group required">
-                                    <div class="col-sm-12">
-                                        <label class="control-label" for="input-name">Your Name</label>
-                                        <input type="text" name="name" value="" id="input-name" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="form-group required">
-                                    <div class="col-sm-12">
-                                        <label class="control-label" for="input-review">Your Review</label>
-                                        <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
-                                        <div class="help-block"><span class="text-danger">Note:</span> HTML is not translated!</div>
-                                    </div>
-                                </div>
-                                <div class="form-group required">
-                                    <div class="col-sm-12">
-                                        <label class="control-label">Rating</label>
-                                        &nbsp;&nbsp;&nbsp; Bad&nbsp;
-                                        <input type="radio" name="rating" value="1" />
-                                        &nbsp;
-                                        <input type="radio" name="rating" value="2" />
-                                        &nbsp;
-                                        <input type="radio" name="rating" value="3" />
-                                        &nbsp;
-                                        <input type="radio" name="rating" value="4" />
-                                        &nbsp;
-                                        <input type="radio" name="rating" value="5" />
-                                        &nbsp;Good</div>
-                                </div>
-                                <div class="buttons clearfix">
-                                    <div class="pull-right">
-                                        <button type="button" id="button-review" data-loading-text="Loading..." class="btn btn-primary">Continue</button>
-                                    </div>
-                                </div>
-                            </form>
+<div class="row">
+    <div class="col-sm-8">
+        <ul class="thumbnails">
+            <?php foreach ($product->photos as $i => $photo): ?>
+                <?php if ($i == 0):?>
+                    <li>
+                        <a class="thumbnail" href="<?=$photo->getUploadedFileUrl('file')?>">
+                            <img src="<?=$photo->getThumbFileUrl('file', 'catalog_product_main');?>"
+                                 alt="<?=Html::encode($product->name);?>" />
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="image-additional">
+                        <a class="thumbnail" href="<?=$photo->getUploadedFileUrl('file')?>">&nbsp;
+                            <img src="<?=$photo->getThumbFileUrl('file', 'catalog_product_additional');?>"
+                                 alt="<?=$product->name;?>" />
+                        </a>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </ul>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-description" data-toggle="tab">Описание</a></li>
+            <li><a href="#tab-specification" data-toggle="tab">Характеристики</a></li>
+            <li><a href="#tab-review" data-toggle="tab">Отзывы (0)</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab-description"><p>
+                    <?=$product->description?></p>
+            </div>
+            <div class="tab-pane" id="tab-specification">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td colspan="2"><strong>Memory</strong></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>test 1</td>
+                        <td>16GB</td>
+                    </tr>
+                    </tbody>
+                    <thead>
+                    <tr>
+                        <td colspan="2"><strong>Processor</strong></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>No. of Cores</td>
+                        <td>4</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane" id="tab-review">
+                <form class="form-horizontal" id="form-review">
+                    <div id="review"></div>
+                    <h2>Write a review</h2>
+                    <div class="form-group required">
+                        <div class="col-sm-12">
+                            <label class="control-label" for="input-name">Your Name</label>
+                            <input type="text" name="name" value="" id="input-name" class="form-control" />
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="btn-group">
-                        <button type="button" data-toggle="tooltip" class="btn btn-default" title="В Избранное" onclick="wishlist.add('47');">
-                            <i class="fa fa-heart"></i>
-                        </button>
-                        <button type="button" data-toggle="tooltip" class="btn btn-default" title="Сравнить" onclick="compare.add('47');">
-                            <i class="fa fa-exchange"></i>
-                        </button>
-                    </div>
-                    <h1>HP LP3065</h1>
-                    <ul class="list-unstyled">
-                        <li>Бренд: <a href="<?=Html::encode(Url::to(['/shop/catalog/brand', 'id' => $product->brand->id]))?>"><?=$product->brand->name?></a></li>
-                        <li>Product Code: Product 21</li>
-                        <li>Reward Points: 300</li>
-                        <li>Availability: In Stock</li>
-                    </ul>
-                    <ul class="list-unstyled">
-                        <li>
-                            <h2>$122.00</h2>
-                        </li>
-                        <li>Ex Tax: $100.00</li>
-                        <li>Price in reward points: 400</li>
-                    </ul>
-                    <div id="product"> <hr>
-                        <h3>Available Options</h3>
-                        <div class="form-group required ">
-                            <label class="control-label" for="input-option225">Delivery Date</label>
-                            <div class="input-group date">
-                                <input type="text" name="option[225]" value="2011-04-22" data-date-format="YYYY-MM-DD" id="input-option225" class="form-control" />
-                                <span class="input-group-btn">
-<button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
-</span></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="input-quantity">Qty</label>
-                            <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
-                            <input type="hidden" name="product_id" value="47" />
-                            <br />
-                            <button type="button" id="button-cart" data-loading-text="Loading..." class="btn btn-primary btn-lg btn-block">Add to Cart</button>
+                    <div class="form-group required">
+                        <div class="col-sm-12">
+                            <label class="control-label" for="input-review">Your Review</label>
+                            <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
+                            <div class="help-block"><span class="text-danger">Note:</span> HTML is not translated!</div>
                         </div>
                     </div>
-                    <div class="rating">
-                        <p>
-                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
-                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
-                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
-                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
-                            <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
-                            <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">0 reviews</a>
-                            &nbsp;/&nbsp;<a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">Write a review</a>
-                        </p>
-                        <hr>
-
-                        <div class="addthis_toolbox addthis_default_style" data-url="https://demo.opencart.com/index.php?route=product/product&amp;product_id=47">
-                            <a class="addthis_button_facebook_like" fb:like:layout="button_count">
-                            </a> <a class="addthis_button_tweet"></a> <a class="addthis_button_pinterest_pinit"></a>
-                            <a class="addthis_counter addthis_pill_style"></a></div>
-                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-515eeaf54693130e"></script>
-
+                    <div class="form-group required">
+                        <div class="col-sm-12">
+                            <label class="control-label">Rating</label>
+                            &nbsp;&nbsp;&nbsp; Bad&nbsp;
+                            <input type="radio" name="rating" value="1" />
+                            &nbsp;
+                            <input type="radio" name="rating" value="2" />
+                            &nbsp;
+                            <input type="radio" name="rating" value="3" />
+                            &nbsp;
+                            <input type="radio" name="rating" value="4" />
+                            &nbsp;
+                            <input type="radio" name="rating" value="5" />
+                            &nbsp;Good</div>
                     </div>
-                </div>
+                    <div class="buttons clearfix">
+                        <div class="pull-right">
+                            <button type="button" id="button-review" data-loading-text="Loading..." class="btn btn-primary">Continue</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+    <div class="col-sm-4">
+        <div class="btn-group">
+            <button type="button" data-toggle="tooltip" class="btn btn-default" title="В Избранное" onclick="wishlist.add('47');">
+                <i class="fa fa-heart"></i>
+            </button>
+            <button type="button" data-toggle="tooltip" class="btn btn-default" title="Сравнить" onclick="compare.add('47');">
+                <i class="fa fa-exchange"></i>
+            </button>
+        </div>
+        <h1>HP LP3065</h1>
+        <ul class="list-unstyled">
+            <li>Бренд: <a href="<?=Html::encode(Url::to(['/shop/catalog/brand', 'id' => $product->brand->id]))?>"><?=$product->brand->name?></a></li>
+            <li>Product Code: Product 21</li>
+            <li>Reward Points: 300</li>
+            <li>Availability: In Stock</li>
+        </ul>
+        <ul class="list-unstyled">
+            <li>
+                <h2>$122.00</h2>
+            </li>
+            <li>Ex Tax: $100.00</li>
+            <li>Price in reward points: 400</li>
+        </ul>
+        <div id="product"> <hr>
+            <h3>Available Options</h3>
+            <div class="form-group required ">
+                <label class="control-label" for="input-option225">Delivery Date</label>
+                <div class="input-group date">
+                    <input type="text" name="option[225]" value="2011-04-22" data-date-format="YYYY-MM-DD" id="input-option225" class="form-control" />
+                    <span class="input-group-btn">
+<button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+</span></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="input-quantity">Qty</label>
+                <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
+                <input type="hidden" name="product_id" value="47" />
+                <br />
+                <button type="button" id="button-cart" data-loading-text="Loading..." class="btn btn-primary btn-lg btn-block">Add to Cart</button>
+            </div>
+        </div>
+        <div class="rating">
+            <p>
+                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
+                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
+                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
+                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
+                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
+                <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">0 reviews</a>
+                &nbsp;/&nbsp;<a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">Write a review</a>
+            </p>
+            <hr>
+
+            <div class="addthis_toolbox addthis_default_style" data-url="https://demo.opencart.com/index.php?route=product/product&amp;product_id=47">
+                <a class="addthis_button_facebook_like" fb:like:layout="button_count">
+                </a> <a class="addthis_button_tweet"></a> <a class="addthis_button_pinterest_pinit"></a>
+                <a class="addthis_counter addthis_pill_style"></a></div>
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-515eeaf54693130e"></script>
+
+        </div>
+    </div>
 </div>
-<script type="text/javascript"><!--
+
+<!--
+<script type="text/javascript">
     $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
         $.ajax({
             url: 'index.php?route=product/product/getRecurringDescription',
@@ -189,8 +194,8 @@ use yii\helpers\Url; ?>
             }
         });
     });
-    //--></script>
-<script type="text/javascript"><!--
+    </script>
+<script type="text/javascript">
     $('#button-cart').on('click', function() {
         $.ajax({
             url: 'index.php?route=checkout/cart/add',
@@ -243,8 +248,8 @@ use yii\helpers\Url; ?>
             }
         });
     });
-    //--></script>
-<script type="text/javascript"><!--
+    </script>
+<script type="text/javascript">
     $('.date').datetimepicker({
         language: 'en-gb',
         pickTime: false
@@ -312,8 +317,8 @@ use yii\helpers\Url; ?>
             }
         }, 500);
     });
-    //--></script>
-<script type="text/javascript"><!--
+    </script>
+<script type="text/javascript">
     $('#review').delegate('.pagination a', 'click', function(e) {
         e.preventDefault();
 
@@ -355,7 +360,8 @@ use yii\helpers\Url; ?>
             }
         });
     });
-
+    </script>//-->
+<?php $js = <<<EOD
     $(document).ready(function() {
         $('.thumbnails').magnificPopup({
             type:'image',
@@ -365,7 +371,9 @@ use yii\helpers\Url; ?>
             }
         });
     });
-    //--></script>
+EOD;
+$this->registerJs($js); ?>
+
 
 
 

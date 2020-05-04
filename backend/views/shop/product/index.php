@@ -73,9 +73,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'filter' => [1 => 'Все', 0 => 'Нет на складе'],
                     ],
-
                     [
-                            'attribute' => 'featured',
+                        'attribute' => 'featured',
                         'label' => 'реком.',
                         'value' => function (Product $model) {
                             $checked = '';
