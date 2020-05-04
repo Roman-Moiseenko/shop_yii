@@ -45,7 +45,7 @@ phpunit.phar
 /backend/web/robots.txt
 
 # Project exclude paths
-/backend/web/
+/backend/web/assets
 /frontend/web/assets
 /frontend/web/image
 /vagrant/
