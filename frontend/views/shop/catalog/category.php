@@ -12,7 +12,6 @@ foreach ($category->parents as $parent) {
     }
 }
 $this->params['breadcrumbs'][] = $category->name;
-
 $this->params['active_category'] = $category;
 
 

@@ -28,7 +28,7 @@ class AddToCartForm extends Model
     public function rules()
     {
         return array_filter([
-            $this->_product->modifications ? ['modification', 'required'] : false,
+            $this->_product->modifications ? ['modification', 'integer'] : false,
             ['quantity', 'required'],
         ]);
     }

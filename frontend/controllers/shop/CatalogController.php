@@ -6,10 +6,13 @@ namespace frontend\controllers\shop;
 
 use shop\entities\shop\product\Product;
 use shop\forms\shop\AddToCartForm;
+use shop\forms\shop\ReviewForm;
 use shop\readModels\shop\BrandReadRepository;
 use shop\readModels\shop\CategoryReadRepository;
 use shop\readModels\shop\ProductReadRepository;
 use shop\readModels\shop\TagReadRepository;
+use shop\services\manage\shop\ProductManageService;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -33,10 +36,15 @@ class CatalogController extends Controller
      * @var TagReadRepository
      */
     private $tags;
+    /**
+     * @var ProductManageService
+     */
+    private $service;
 
     public function __construct(
         $id,
         $module,
+        ProductManageService $service,
         ProductReadRepository $products,
         CategoryReadRepository $categories,
         BrandReadRepository $brands,
@@ -48,6 +56,7 @@ class CatalogController extends Controller
         $this->categories = $categories;
         $this->brands = $brands;
         $this->tags = $tags;
+        $this->service = $service;
     }
 
     public function actionIndex()
@@ -97,14 +106,28 @@ class CatalogController extends Controller
 
     public function actionProduct($id)
     {
-        $this->layout = '_blank';
+        $this->layout = 'blank';
         if (!$product = $this->products->find($id)) {
             throw new NotFoundHttpException('Товар не найден');
         }
         $addToCartForm = new AddToCartForm($product);
+        $reviewForm = new ReviewForm();
+
+        if ($addToCartForm->load(Yii::$app->request->post()) && $addToCartForm->validate()) {
+
+
+        }
+        if ($reviewForm->load(Yii::$app->request->post()) && $reviewForm->validate()) {
+
+            //TODO Переделать под сервисы
+            $product->addReview(Yii::$app->user->id, $reviewForm->vote, $reviewForm->text);
+            $product->save();
+
+        }
         return $this->render('product', [
             'product' => $product,
             'addToCartForm' => $addToCartForm,
+            'reviewForm' => $reviewForm,
         ]);
     }
 }

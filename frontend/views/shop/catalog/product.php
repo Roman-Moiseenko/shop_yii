@@ -1,12 +1,17 @@
 <?php
 /* @var $product \shop\entities\shop\product\Product*/
 /* @var $this \yii\web\View */
+/* @var $addToCartForm AddToCartForm */
+/* @var $reviewForm ReviewForm */
 
 use frontend\assets\MagnificPopupAsset;
+use shop\forms\shop\AddToCartForm;
+use shop\forms\shop\ReviewForm;
 use shop\helpers\PriceHelper;
 use shop\helpers\ProductHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 
 $this->title = $product->name;
 $this->registerMetaTag(['name' => 'description', 'content' => $product->meta->description]);
@@ -25,22 +30,20 @@ $this->params['active_category'] = $product->category;
 
 MagnificPopupAsset::register($this);
 ?>
-<h1><?=Html::encode($product->name)?></h1>
-
-<div class="row">
+<div class="row" xmlns:fb="http://www.w3.org/1999/xhtml">
     <div class="col-sm-8">
         <ul class="thumbnails">
             <?php foreach ($product->photos as $i => $photo): ?>
                 <?php if ($i == 0):?>
                     <li>
-                        <a class="thumbnail" href="<?=$photo->getUploadedFileUrl('file')?>">
+                        <a class="thumbnail" href="<?=$photo->getThumbFileUrl('file', 'catalog_origin')?>">
                             <img src="<?=$photo->getThumbFileUrl('file', 'catalog_product_main');?>"
                                  alt="<?=Html::encode($product->name);?>" />
                         </a>
                     </li>
                 <?php else: ?>
                     <li class="image-additional">
-                        <a class="thumbnail" href="<?=$photo->getUploadedFileUrl('file')?>">&nbsp;
+                        <a class="thumbnail" href="<?=$photo->getThumbFileUrl('file', 'catalog_origin')?>">&nbsp;
                             <img src="<?=$photo->getThumbFileUrl('file', 'catalog_product_additional');?>"
                                  alt="<?=$product->name;?>" />
                         </a>
@@ -59,68 +62,39 @@ MagnificPopupAsset::register($this);
             </div>
             <div class="tab-pane" id="tab-specification">
                 <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <td colspan="2"><strong>Memory</strong></td>
-                    </tr>
-                    </thead>
                     <tbody>
-                    <tr>
-                        <td>test 1</td>
-                        <td>16GB</td>
-                    </tr>
-                    </tbody>
-                    <thead>
-                    <tr>
-                        <td colspan="2"><strong>Processor</strong></td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>No. of Cores</td>
-                        <td>4</td>
-                    </tr>
+                    <?php foreach ($product->values as $value): ?>
+                        <?php if (!empty($value->value)): ?>
+                            <tr>
+                                <th><?= Html::encode($value->characteristic->name) ?></th>
+                                <td><?= Html::encode($value->value) ?></td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
             <div class="tab-pane" id="tab-review">
-                <form class="form-horizontal" id="form-review">
+
                     <div id="review"></div>
-                    <h2>Write a review</h2>
-                    <div class="form-group required">
-                        <div class="col-sm-12">
-                            <label class="control-label" for="input-name">Your Name</label>
-                            <input type="text" name="name" value="" id="input-name" class="form-control" />
+                    <h2>Оставить отзыв</h2>
+                    <?php if (Yii::$app->user->isGuest): ?>
+                    <div class="card">
+                        <div class="card-body">
+                            Пожалуйста, <?= Html::a('авторизуйтесь', ['/auth/auth/login'])?> для написания отзыва
                         </div>
                     </div>
-                    <div class="form-group required">
-                        <div class="col-sm-12">
-                            <label class="control-label" for="input-review">Your Review</label>
-                            <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
-                            <div class="help-block"><span class="text-danger">Note:</span> HTML is not translated!</div>
+                    <?php else:?>
+                    <?php $form = ActiveForm::begin()?>
+                    <?= $form->field($reviewForm, 'vote')->dropDownList($reviewForm->voteList(), ['prompt' => '--- Выберите ---'])->label('Рейтинг'); ?>
+
+                    <?= $form->field($reviewForm, 'text')->textarea(['rows' => 5])->label('Отзыв'); ?>
+
+                        <div class="form-group">
+                            <?=Html::submitButton('Отправить', ['class' => 'btn btn-primary btn-lg btn-block'])?>
                         </div>
-                    </div>
-                    <div class="form-group required">
-                        <div class="col-sm-12">
-                            <label class="control-label">Rating</label>
-                            &nbsp;&nbsp;&nbsp; Bad&nbsp;
-                            <input type="radio" name="rating" value="1" />
-                            &nbsp;
-                            <input type="radio" name="rating" value="2" />
-                            &nbsp;
-                            <input type="radio" name="rating" value="3" />
-                            &nbsp;
-                            <input type="radio" name="rating" value="4" />
-                            &nbsp;
-                            <input type="radio" name="rating" value="5" />
-                            &nbsp;Good</div>
-                    </div>
-                    <div class="buttons clearfix">
-                        <div class="pull-right">
-                            <button type="button" id="button-review" data-loading-text="Loading..." class="btn btn-primary">Continue</button>
-                        </div>
-                    </div>
-                </form>
+                    <?php ActiveForm::end()?>
+                    <?php endif;?>
             </div>
         </div>
     </div>
@@ -133,7 +107,7 @@ MagnificPopupAsset::register($this);
                 <i class="fa fa-exchange"></i>
             </button>
         </div>
-        <h1></h1> <!-- Заголовок товара-->
+        <h1><?=Html::encode($product->name)?></h1> <!-- Заголовок товара-->
         <ul class="list-unstyled">
             <li>Бренд: <a href="<?=Html::encode(Url::to(['/shop/catalog/brand', 'id' => $product->brand->id]))?>"><?=Html::encode($product->brand->name)?></a></li>
             <li>Артикул: <?=$product->code?></li>
@@ -152,23 +126,16 @@ MagnificPopupAsset::register($this);
             <li>На складе: <?=Html::encode(ProductHelper::remains($product));?></li>
         </ul>
         <div id="product"> <hr>
-            <h3>Available Options</h3>
-            <div class="form-group required ">
-                <label class="control-label" for="input-option225">Delivery Date</label>
-                <div class="input-group date">
-                    <input type="text" name="option[225]" value="2011-04-22" data-date-format="YYYY-MM-DD" id="input-option225" class="form-control" />
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
-                    </span>
-                </div>
-            </div>
+                <h3>Available Options</h3>
+            <?php $form = ActiveForm::begin() ?>
+            <?= $form->field($addToCartForm, 'modification')
+            ->dropDownList($addToCartForm->modificationsList(), ['prompt' => ''])->label('Модификации');?>
+            <?= $form->field($addToCartForm, 'quantity')->textInput()->label('Кол-во') ?>
+
             <div class="form-group">
-                <label class="control-label" for="input-quantity">Кол-во</label>
-                <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" />
-                <input type="hidden" name="product_id" value="47" />
-                <br />
-                <button type="button" id="button-cart" data-loading-text="Loading..." class="btn btn-primary btn-lg btn-block">Add to Cart</button>
+                <?=Html::submitButton('В корзину', ['class' => 'btn btn-primary btn-lg btn-block'])?>
             </div>
+            <?php ActiveForm::end() ?>
         </div>
         <div class="rating">
             <p>
