@@ -17,21 +17,30 @@ class CategoryUrlRule extends BaseObject implements UrlRuleInterface
     public $prefix = 'catalog';
 
     private $repository;
-    private $cache;
+    //private $cache;
 
-    public function __construct(CategoryReadRepository $repository, Cache $cache, $config = [])
+    public function __construct(CategoryReadRepository $repository, /*Cache $cache,*/ $config = [])
     {
         parent::__construct($config);
         $this->repository = $repository;
-        $this->cache = $cache;
+        //$this->cache = $cache;
     }
 
     public function parseRequest($manager, $request)
     {
-        if (preg_match('#^' . $this->prefix . '/(.*[a-z])$#is', $request->pathInfo, $matches)) {
-            $path = $matches['1'];
 
-            $result = $this->cache->getOrSet(['category_route', 'path' => $path], function () use ($path) {
+        if (preg_match('#^' . $this->prefix . '/(.*[a-z])$#is', $request->pathInfo, $matches)) {
+
+            $path = $matches['1'];
+            if (!$category = $this->repository->findBySlug($this->getPathSlug($path))) {
+                    return false;
+                }
+            if ($path != $this->getCategoryPath($category)) {
+                throw new UrlNormalizerRedirectException(['shop/catalog/category', 'id' => $category->id], 301);
+            }
+            //return ['id' => $category->id, 'path' => $this->getCategoryPath($category)];
+
+            /*$result = $this->cache->getOrSet(['category_route', 'path' => $path], function () use ($path) {
                 if (!$category = $this->repository->findBySlug($this->getPathSlug($path))) {
                     return ['id' => null, 'path' => null];
                 }
@@ -45,8 +54,8 @@ class CategoryUrlRule extends BaseObject implements UrlRuleInterface
             if ($path != $result['path']) {
                 throw new UrlNormalizerRedirectException(['shop/catalog/category', 'id' => $result['id']], 301);
             }
-
-            return ['shop/catalog/category', ['id' => $result['id']]];
+*/
+            return ['shop/catalog/category', ['id' => $category->id]];
         }
         return false;
     }
@@ -58,19 +67,23 @@ class CategoryUrlRule extends BaseObject implements UrlRuleInterface
                 throw new InvalidArgumentException('Empty id.');
             }
             $id = $params['id'];
+            if (!$category = $this->repository->find($id)) {
+                throw new InvalidArgumentException('Undefined id.');
+            }
+            $url = $this->prefix . '/' . $this->getCategoryPath($category);
 
-            $url = $this->cache->getOrSet(['category_route', 'id' => $id], function () use ($id) {
+            /*$url = $this->cache->getOrSet(['category_route', 'id' => $id], function () use ($id) {
                 if (!$category = $this->repository->find($id)) {
                     return null;
                 }
                 return $this->getCategoryPath($category);
-            }, null, new TagDependency(['tags' => ['categories']]));
+            }, null, new TagDependency(['tags' => ['categories']]));*/
 
-            if (!$url) {
+            /*if (!$url) {
                 throw new InvalidArgumentException('Undefined id.');
-            }
+            }*/
 
-            $url = $this->prefix . '/' . $url;
+            //$url = $this->prefix . '/' . $url;
             unset($params['id']);
             if (!empty($params) && ($query = http_build_query($params)) !== '') {
                 $url .= '?' . $query;

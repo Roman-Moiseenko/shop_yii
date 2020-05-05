@@ -43,7 +43,7 @@ class CategoryReadRepository
         return $query->all();
     }
 
-    public function findBySlug(string $getPathSlug)
+    public function findBySlug(string $getPathSlug): ?Category
     {
         return Category::find()->andWhere(['slug' => $getPathSlug])->andWhere(['>', 'depth', 0])->one();
     }
