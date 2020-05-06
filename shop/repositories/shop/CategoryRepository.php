@@ -6,6 +6,7 @@ namespace shop\repositories\shop;
 
 use shop\entities\shop\Category;
 use shop\repositories\NotFoundException;
+use yii\caching\TagDependency;
 
 class CategoryRepository
 {
@@ -23,6 +24,7 @@ class CategoryRepository
         if (!$category->save()) {
             throw new \RuntimeException('Saving error.');
         }
+        TagDependency::invalidate(\Yii::$app->cache, ['category']);
        // $this->dispatcher->dispatch(new EntityPersisted($category));
     }
 
@@ -31,6 +33,7 @@ class CategoryRepository
         if (!$category->delete()) {
             throw new \RuntimeException('Removing error.');
         }
+        TagDependency::invalidate(\Yii::$app->cache, ['category']);
         //$this->dispatcher->dispatch(new EntityRemoved($category));
     }
 

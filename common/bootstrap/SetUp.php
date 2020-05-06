@@ -4,12 +4,16 @@
 namespace common\bootstrap;
 
 
+use frontend\urls\CategoryUrlRule;
+use shop\readModels\shop\CategoryReadRepository;
 use shop\repositories\UserRepository;
 use shop\services\auth\ContactService;
 use shop\services\auth\PasswordResetService;
 use shop\services\auth\SignupService;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
+use yii\caching\Cache;
+use yii\di\Instance;
 
 class SetUp implements BootstrapInterface
 {
@@ -39,5 +43,12 @@ class SetUp implements BootstrapInterface
         $container->setSingleton(SignupService::class, function () {
             return new SignupService();
         });
+        $container->setSingleton('cache', function () use ($app) {
+            return $app->cache;
+        });
+        $container->set(CategoryUrlRule::class, [], [
+            Instance::of(CategoryReadRepository::class),
+            Instance::of('cache'),
+        ]);
     }
 }
