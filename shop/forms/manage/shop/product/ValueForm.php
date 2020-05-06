@@ -1,6 +1,6 @@
 <?php
 
-namespace shop\forms\manage\Shop\Product;
+namespace shop\forms\manage\shop\product;
 
 use shop\entities\Shop\Characteristic;
 use shop\entities\Shop\Product\Value;

@@ -14,7 +14,7 @@ class m170519_085957_create_shop_characteristics_table extends Migration
         $this->createTable('{{%shop_characteristics}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
-            'type' => $this->string(16)->notNull(),
+            'type' => $this->integer()->notNull(),
             'required' => $this->boolean()->notNull(),
             'default' => $this->string(),
             'variants_json' => 'JSON NOT NULL',

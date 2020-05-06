@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-md-6">
             <div class="box">
-                <div class="box-header with-border">Common</div>
+                <div class="box-header with-border">Общие</div>
                 <div class="box-body">
                     <?= DetailView::widget([
                         'model' => $product,
@@ -55,12 +55,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'brand_id',
                                 'value' => ArrayHelper::getValue($product, 'brand.name'),
                             ],
-                            'code',
-                            'name',
+                            [
+                                    'attribute' =>'code',
+                                'label' => 'Артикул',
+                                ],
+                            [
+                                'attribute' =>'name',
+                                'label' => 'Товар',
+                            ],
                             [
                                 'attribute' => 'category_id',
                                 'value' => ArrayHelper::getValue($product, 'category.name'),
-                                'label' => 'Категоря',
+                                'label' => 'Категория',
                             ],
                             [
                                 'label' => 'Дополнительные категории',
@@ -91,11 +97,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'attribute' => 'units',
                                 'label' => 'Ед.изм.',
                             ],
+                            [
+                                'attribute' => 'code1C',
+                                'label' => 'Код в 1С',
+                            ],
                         ],
                     ]) ?>
                     <br/>
                     <p>
-                        <?= Html::a('Change Price', ['price', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('Изменить цену', ['price', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
                     </p>
                 </div>
             </div>
@@ -103,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-6">
 
             <div class="box box-default">
-                <div class="box-header with-border">Characteristics</div>
+                <div class="box-header with-border">Характеристики</div>
                 <div class="box-body">
 
                     <?= DetailView::widget([
@@ -121,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="box">
-        <div class="box-header with-border">Description</div>
+        <div class="box-header with-border">Описание</div>
         <div class="box-body">
             <?= Yii::$app->formatter->asHtml($product->description, [
                 'Attr.AllowedRel' => array('nofollow'),
@@ -134,22 +144,29 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="box" id="modifications">
-        <div class="box-header with-border">Modifications</div>
+        <div class="box-header with-border">Модификации</div>
         <div class="box-body">
             <p>
-                <?= Html::a('Add Modification', ['shop/modification/create', 'product_id' => $product->id], ['class' => 'btn btn-success']) ?>
+                <?= Html::a('Добавить Модификацию', ['shop/modification/create', 'product_id' => $product->id], ['class' => 'btn btn-success']) ?>
             </p>
             <?= GridView::widget([
                 'dataProvider' => $modificationsProvider,
                 'columns' => [
-                    'code',
-                    'name',
+                    [
+                        'attribute' =>'code',
+                        'label' => 'Артикул',
+                        ],
+                    [
+                        'attribute' =>'name',
+                        'label' => 'Наименование',
+                    ],
                     [
                         'attribute' => 'price',
                         'value' => function (Modification $model) {
                             return PriceHelper::format($model->price);
                         },
                         'format' => 'raw',
+                        'label' => 'Цена',
                     ],
                     /*'quantity',*/
                     [
@@ -163,7 +180,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="box">
-        <div class="box-header with-border">SEO</div>
+        <div class="box-header with-border">Для SEO</div>
         <div class="box-body">
             <?= DetailView::widget([
                 'model' => $product,
@@ -171,14 +188,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'meta.title',
                         'value' => $product->meta->title,
+                        'label' => 'Заголовок',
                     ],
                     [
                         'attribute' => 'meta.description',
                         'value' => $product->meta->description,
+                        'label' => 'Описание',
                     ],
                     [
                         'attribute' => 'meta.keywords',
                         'value' => $product->meta->keywords,
+                        'label' => 'Ключевые слова',
                     ],
                 ],
             ]) ?>
@@ -186,7 +206,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="box" id="photos">
-        <div class="box-header with-border">Photos</div>
+        <div class="box-header with-border">Фотографии</div>
         <div class="box-body">
 
             <div class="row">
@@ -230,7 +250,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ]) ?>
 
             <div class="form-group">
-                <?= Html::submitButton('Upload', ['class' => 'btn btn-success']) ?>
+                <?= Html::submitButton('Загрузить', ['class' => 'btn btn-success']) ?>
             </div>
 
             <?php ActiveForm::end(); ?>

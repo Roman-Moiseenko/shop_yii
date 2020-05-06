@@ -7,6 +7,7 @@ namespace frontend\controllers\shop;
 use shop\entities\shop\product\Product;
 use shop\forms\shop\AddToCartForm;
 use shop\forms\shop\ReviewForm;
+use shop\forms\shop\search\SearchForm;
 use shop\readModels\shop\BrandReadRepository;
 use shop\readModels\shop\CategoryReadRepository;
 use shop\readModels\shop\ProductReadRepository;
@@ -129,5 +130,19 @@ class CatalogController extends Controller
             'addToCartForm' => $addToCartForm,
             'reviewForm' => $reviewForm,
         ]);
+    }
+
+    public function actionSearch()
+    {
+        $form = new SearchForm();
+        $form->load(\Yii::$app->request->queryParams);
+        $form->validate();
+        $dataProvider = $this->products->search($form);
+
+        return $this->render('search', [
+            'dataProvider' => $dataProvider,
+            'searchForm' => $form,
+        ]);
+
     }
 }
