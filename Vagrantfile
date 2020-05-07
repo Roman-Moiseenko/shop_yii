@@ -1,16 +1,12 @@
 require 'yaml'
 require 'fileutils'
 
-required_plugins = %w( vagrant-hostmanager vagrant-vbguest )
-required_plugins.each do |plugin|
-    exec "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
-end
-
 domains = {
-  frontend: 'y2aa-frontend.test',
-  backend:  'y2aa-backend.test'
+  frontend: 'shop.dev',
+  backend:  'backend.shop.dev',
+  api:      'api.shop.dev',
+  static:   'static.shop.dev'
 }
-
 config = {
   local: './vagrant/config/vagrant-local.yml',
   example: './vagrant/config/vagrant-local.example.yml'
@@ -73,5 +69,5 @@ Vagrant.configure(2) do |config|
   config.vm.provision 'shell', path: './vagrant/provision/always-as-root.sh', run: 'always'
 
   # post-install message (vagrant console)
-  config.vm.post_up_message = "Frontend URL: http://#{domains[:frontend]}\nBackend URL: http://#{domains[:backend]}"
+  config.vm.post_up_message = "Frontend URL: http://#{domains[:frontend]}\nBackend URL: http://#{domains[:backend]}\nAPI URL: http://#{domains[:api]}\nStatic URL: http://#{domains[:static]}"
 end
