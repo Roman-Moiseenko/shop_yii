@@ -1,0 +1,44 @@
+1. Загружаем все Категории как есть
+2. foreach (level = 1)
+ if (имя[1] = '+') {
+   Удаляем 1й символ
+ } else {
+   получаем все code1C по leave()
+   заносим code1C таблицу Hidden (скрытые/удаленные)
+   удаляем всю ветку
+ }
+
+ Дозагрузка категорий
+
+                                    Есть в базе (по code1C)
+                          нет                                               да
+                  ищем parent по parent_code1C                         parent_code1C изменился
+               есть                         нет                     нет      |                  да
+            он в Hidden                 доб.для 2 прохода   |   меняем имя   |          parent_code1C в Hidden
+           да                  нет                          |----------------|    нет                       да
+доб. code1C в Hidden    доб. в Category                     |             parent_code1C сущ.?       1. доб. code1C в Hidden
+                                                            |       нет          |      да          2. все дочерние в Hidden
+                                                            |  доб.для 2 прохода | меняем parent    3. все товары в Hidden
+                                                                                                    4. удаляем ветку и товары
+Имеются данные в дозагрузке?
+    N = count('данные')
+    Повторить для 'данные'
+    N1 = count('данные1')
+    N == N1 => Исключение со списком
+    Иначе повторить пока N>0
+
+Загрузка товаров.
+Товар есть?
+1. Да
+    parent_code1C в Category
+    1.1. Да
+        product->update
+    1.2. Нет
+        доб. code1C в Hidden
+        product->remove
+2. Нет
+    parent_code1C в Category
+    2.1. Да
+        product->create
+    2.2. Нет
+        доб. code1C в Hidden
