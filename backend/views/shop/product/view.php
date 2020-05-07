@@ -25,7 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="user-view">
 
     <p>
-
         <?= Html::a('Изменить', ['update', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Удалить', ['delete', 'id' => $product->id], [
             'class' => 'btn btn-danger',
