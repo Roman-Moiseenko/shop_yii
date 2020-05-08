@@ -38,6 +38,12 @@
                     ['label' => 'Каталог', 'icon' => 'folder-open', 'url' => ['/shop/category'], 'active' => $this->context->id == 'shop/category'],
                     ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['/user/index'], 'active' => $this->context->id == 'user'],
                     ['label' => 'Login', 'url' => ['auth/login'], 'visible' => Yii::$app->user->isGuest],
+                    ['label' => 'Загрузка данных',
+                        'items' => [
+                            ['label' => 'Загрузка каталогов', 'url' => ['/data/load/catalog']],
+                        ],
+                        ],
+
                     [
                         'label' => 'Разработчику',
                         'icon' => 'share',
