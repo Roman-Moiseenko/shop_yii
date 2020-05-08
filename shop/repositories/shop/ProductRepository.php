@@ -17,10 +17,10 @@ class ProductRepository
         return $product;
     }
 
-    public function getBy1C($code1C): Product
+    public function getByCode1C($code1C):? Product
     {
-        if (!$product = Product::find()->andWhere(['code1C' => $code1C])) {
-            throw new NotFoundException('Продукт не найден');
+        if (!$product = Product::findOne(['code1C' => $code1C])) {
+            return null;
         }
         return $product;
     }

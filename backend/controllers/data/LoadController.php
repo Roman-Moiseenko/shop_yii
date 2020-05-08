@@ -5,7 +5,8 @@ namespace backend\controllers\data;
 
 
 use shop\forms\data\FilesForm;
-use shop\services\manage\shop\CategoryManageService;
+
+use shop\services\manage\LoaderManageService;
 use Yii;
 use yii\web\Controller;
 use yii\web\UploadedFile;
@@ -14,11 +15,11 @@ class LoadController extends Controller
 {
     public $layout = 'main';
     /**
-     * @var CategoryManageService
+     * @var LoaderManageService
      */
     private $service;
 
-    public function __construct($id, $module, CategoryManageService $service, $config = [])
+    public function __construct($id, $module, LoaderManageService $service, $config = [])
 {
     parent::__construct($id, $module, $config);
     $this->service = $service;
@@ -32,7 +33,7 @@ class LoadController extends Controller
         if (Yii::$app->request->isPost) {
             $form->file_catalog = UploadedFile::getInstance($form, 'file_catalog');
             $file = $form->upload();
-            $this->service->loadFromFile($file);
+            $this->service->loadCategory($file);
 
         }
      /*   if ($form->load(Yii::$app->request->post()) ) {

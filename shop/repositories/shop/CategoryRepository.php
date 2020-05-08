@@ -19,6 +19,14 @@ class CategoryRepository
         return $category;
     }
 
+    public function getByCode1C($code1C):? Category
+    {
+        if (!$category = Category::findOne(['code1C' => $code1C])) {
+            return null;
+        }
+        return $category;
+    }
+
     public function save(Category $category): void
     {
         if (!$category->save()) {
