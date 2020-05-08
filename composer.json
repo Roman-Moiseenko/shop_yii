@@ -34,7 +34,8 @@
         "sersid/yii2-font-awesome-asset": "*",
         "cocur/slugify": "^4.0",
         "bower-asset/magnific-popup": "*",
-      "ext-gd": "*"
+      "ext-gd": "*",
+      "ext-json": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "*",

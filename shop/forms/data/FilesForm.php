@@ -7,23 +7,38 @@ use yii\web\UploadedFile;
 
 class FilesForm extends Model
 {
-    public $files;
 
-    public function rules(): array
+    /**
+     * @var UploadedFile
+     */
+    public $file_catalog;
+
+    public function rules()
+    {
+        return [
+            [['file_catalog'], 'file', 'extensions' => 'out'],
+        ];
+    }
+
+  /*  public function rules(): array
     {
         return [['files', 'each', 'rule' => ['text']]];
         //return [['catalog', 'rule' => ['*']], 'file', 'extensions' => 'out'];
-    }
+    }*/
 
-    public function beforeValidate(): bool
+    public function upload()
     {
-        if (parent::beforeValidate()) {
-            $this->files = UploadedFile::getInstances($this, 'files');
-            /*var_dump($this->files);
-            die();*/
-            return true;
-        }
-        return false;
+
+       // if ($this->validate()) {
+           //die($this->file_catalog->baseName);
+        //    echo 1;
+        $file = '/data/' . $this->file_catalog->baseName . '.' . $this->file_catalog->extension;
+            $this->file_catalog->saveAs('@staticRoot' . $file);
+
+            //  echo 2;
+          // die();
+            return $file;
+
     }
 
 }

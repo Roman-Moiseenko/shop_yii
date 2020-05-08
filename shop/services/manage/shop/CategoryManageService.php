@@ -103,4 +103,29 @@ class CategoryManageService
             throw new \DomainException('Unable to manage the root category.');
         }
     }
+
+    public function loadFromFile($file)
+    {
+        echo '<pre>';
+        $path = dirname(__DIR__, 4) . '/static';
+        foreach ($this->readFromFile($path . $file) as $row) {
+
+            $array_row = (array)json_decode($row);
+
+            print_r($array_row);
+
+        }
+        exit();
+    }
+
+    private function readFromFile($file)
+    {
+        $f = fopen($file, 'rt');
+        if (!$f) throw new \Exception();
+        while ($line = fgets($f)) {
+            yield $line;
+        }
+        fclose($f);
+
+    }
 }

@@ -12,7 +12,7 @@ use yii\helpers\Html;
 <div class="box box-default">
     <div class="box-header with-border">Photos</div>
     <div class="box-body">
-        <?= $form->field($model, 'files')->fileInput() ?>
+        <?= $form->field($model, 'file_catalog')->fileInput() ?>
 
     </div>
     <div class="form-group">
