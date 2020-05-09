@@ -275,9 +275,39 @@ class LoaderManageService
 
     private function processLoadProducts($file)
     {
+        $errors = [];
+        foreach ($this->readLineFromFile( $file) as $row) {
+            $data = (array)json_decode($row);
+            if ($product = $this->products->getByCode1C($data['code1C'])) {
+                //Товар есть в базе
+                if ($category = $this->categories->getByCode1C($data['code1C_parent'])) {
+                    //Категория есть
+                    $this->updateProduct($product, $category->id);
+                }
+            } else {
+                //Товара нет в базе
 
+
+            }
+
+            //Загрузка основных данных
+            ///Загрузка фотографий
+        }
+        return $errors;
         //TODO 1
+
+        //Обработка характеристик через регулярку
 
     }
 
+
+
+    private function regProduct(Product $product): void
+    {
+        //По code1С определяем список параметров и рег.выражение
+
+        //...
+
+
+    }
 }

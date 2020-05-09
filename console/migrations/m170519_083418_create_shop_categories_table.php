@@ -18,8 +18,8 @@ class m170519_083418_create_shop_categories_table extends Migration
             'lft' => $this->integer()->notNull(),
             'rgt' => $this->integer()->notNull(),
             'depth' => $this->integer()->notNull(),
-            'code1C' => $this->string(),
-            'id_old' => $this->integer(),
+            'code1C' => $this->string(11),
+            //'id_old' => $this->integer(),
         ], $tableOptions);
 
         $this->createIndex('{{%idx-shop_categories-slug}}', '{{%shop_categories}}', 'slug', true);
