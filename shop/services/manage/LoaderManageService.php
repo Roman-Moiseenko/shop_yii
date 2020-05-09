@@ -273,8 +273,9 @@ class LoaderManageService
         return true;
     }
 
-    private function processLoadProducts(string $string)
+    private function processLoadProducts($file)
     {
+
         //TODO 1
 
     }
