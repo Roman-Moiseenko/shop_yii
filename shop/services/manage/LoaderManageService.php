@@ -72,10 +72,12 @@ class LoaderManageService
         while ($countErrors > 0) {
             $fileError = $this->saveToFile($path, $result);
             $result = $this->processLoadCategory($fileError);
+
             $countNew = count($result);
             if ($countNew >= $countErrors) {
                 throw new \DomainException('Ошибка данных');
             }
+            unlink($fileError);
             $countErrors = $countNew;
         }
         return true;
@@ -97,7 +99,7 @@ class LoaderManageService
         $filename = $path . 'errors.load';
         $fp = fopen($filename, 'w');
         foreach ($data as $item) {
-            fwrite($fp, json_encode($item));
+            fwrite($fp, json_encode($item) . "\n");
         }
         fclose($fp);
         return $filename;
@@ -171,6 +173,10 @@ class LoaderManageService
             if ($category = $this->categories->getByCode1C($data['code1C'])) {
                 // была в общих, все подкатегории и товары перенести в скрытые
                 $this->toHidden($category);
+            } else {
+                //Еще нигде не было
+                $hidden = Hidden::create($data['code1C']);
+                $this->hidden->save($hidden);
             }
         }
         return true;
@@ -207,6 +213,7 @@ class LoaderManageService
             new Meta($name, $name, $name),
             $code1C);
         $category->appendTo($parent);
+        $category->slug = $this->checkSlug($category, $parentId);
         $this->categories->save($category);
     }
     private function toHidden(Category $_category)
@@ -240,6 +247,14 @@ class LoaderManageService
             $this->hidden->save($hidden);
             $this->products->remove($product);
         }
+    }
+    private function checkSlug(Category $category, $parentId)
+    {
+        if (Category::findOne(['slug' => $category->slug])) {
+            $parent = $this->categories->get($parentId);
+            return $category->slug . '_' . $parent->slug;
+        }
+        return $category->slug;
     }
 
 }

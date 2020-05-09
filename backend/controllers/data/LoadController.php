@@ -4,8 +4,10 @@
 namespace backend\controllers\data;
 
 
+use shop\entities\shop\Hidden;
 use shop\forms\data\FilesForm;
 
+use shop\repositories\HiddenRepository;
 use shop\services\manage\LoaderManageService;
 use Yii;
 use yii\web\Controller;
@@ -31,29 +33,24 @@ class LoadController extends Controller
         $form = new FilesForm();
 
         if (Yii::$app->request->isPost) {
-            $form->file_catalog = UploadedFile::getInstance($form, 'file_catalog');
-            $file = $form->upload();
-            $this->service->loadCategory($file);
-
-        }
-     /*   if ($form->load(Yii::$app->request->post()) ) {
             try {
-                $form->upload();
-                var_dump($form->file_catalog); exit();
-
-               // $this->service->addPhotos($product->id, $photosForm);
-                //return $this->redirect(['view', 'id' => $product->id]);
+                $form->file_catalog = UploadedFile::getInstance($form, 'file_catalog');
+                $file = $form->upload();
+                $this->service->loadCategory($file);
             } catch (\DomainException $e) {
-               // Yii::$app->errorHandler->logException($e);
-                //Yii::$app->session->setFlash('error', $e->getMessage());
+                \Yii::$app->errorHandler->logException($e);
+                \Yii::$app->session->setFlash('error', $e->getMessage());
             }
-        }*/
-        //Получаем файл
-        //Запускаем сервис(файл)
-        //рендер
-
+        }
         return $this->render('catalog', [
             'model' => $form,
         ]);
+    }
+    public function actionTemp()
+    {
+        $hidden = Hidden::create('ПР000000012');
+        $service = new HiddenRepository();
+        $service->save($hidden);
+
     }
 }

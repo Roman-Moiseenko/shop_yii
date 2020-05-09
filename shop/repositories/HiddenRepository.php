@@ -16,15 +16,15 @@ class HiddenRepository
         return $code1C;
     }
 
-    public function save(Hidden $code1C): void
+    public function save(Hidden $hidden): void
     {
-        if (!$code1C->save()) {
+        if (!$hidden->save()) {
             throw new \RuntimeException('Удаленый код 1С не сохранен');
         }
     }
-    public function remove(Hidden $code1C): void
+    public function remove(Hidden $hidden): void
     {
-        if (!$code1C->delete()) {
+        if (!$hidden->delete()) {
             throw new \RuntimeException('Ошибка удаления Удаленый код 1С');
         }
     }

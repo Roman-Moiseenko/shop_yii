@@ -25,6 +25,7 @@ class CategoryManageService
         $this->products = $products;
     }
 
+
     public function create(CategoryForm $form): Category
     {
         $parent = $this->categories->get($form->parentId);
