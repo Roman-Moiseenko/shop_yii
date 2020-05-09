@@ -80,6 +80,7 @@ class LoaderManageService
             unlink($fileError);
             $countErrors = $countNew;
         }
+        unlink($path . $file);
         return true;
     }
     private function readLineFromFile($FullFileName)
@@ -158,22 +159,24 @@ class LoaderManageService
     {
         if (!empty($data['code1C_parent'])) return false;
         if (substr($data['name'], 0, 1) == '+') { //Перемещена в общие
+            $name = str_replace('+', '', $data['name']);
             if ($category = $this->categories->getByCode1C($data['code1C'])) { //Был в каталоге
                 //Поменялось только имя
-                $this->updateCategory($category->id, $data['name'], 1);
+                $this->updateCategory($category->id, $name, 1);
                 return true;
             }
             if ($this->hidden->isFind($data['code1C'])) { //была в скрытых, удалить из Hidden
                 $this->hidden->remove($data['code1C']);
             }
             //Создать в категории
-            $name = str_replace('+', '', $data['name']);
             $this->createCategory($name, 1, $data['code1C']);
         } else { //Перемещена в скрытые
             if ($category = $this->categories->getByCode1C($data['code1C'])) {
                 // была в общих, все подкатегории и товары перенести в скрытые
                 $this->toHidden($category);
-            } else {
+                return true;
+            }
+            if (!$this->hidden->isFind($data['code1C'])) {
                 //Еще нигде не было
                 $hidden = Hidden::create($data['code1C']);
                 $this->hidden->save($hidden);
@@ -186,7 +189,7 @@ class LoaderManageService
         $category = $this->categories->get($id);
         $category->edit(
             $name,
-            '',
+            $category->slug,
             $category->title,
             $category->description,
             new Meta(
@@ -218,12 +221,13 @@ class LoaderManageService
     }
     private function toHidden(Category $_category)
     {
+        //var_dump($_category);
         /** Скрыть все вложенные категории */
         $categories = Category::find()
             ->andWhere(['>', 'lft', $_category->lft])
             ->andWhere(['<', 'rgt', $_category->rgt])
             ->andWhere(['depth' => $_category->depth + 1])
-            ->orderBy(['rgt', SORT_ASC])
+            ->orderBy('rgt')
             ->all();
         /** @var Category $category */
         //Удаляем все вложенные категории
@@ -240,7 +244,8 @@ class LoaderManageService
     }
     private function productsToHiddenByCategory($category_id)
     {
-        if (!$products = Product::find()->andWhere(['category_id' => $category_id])) return false;
+        if (!$products = Product::find()->andWhere(['category_id' => $category_id])->asArray()->all()) return false;
+        var_dump($products); exit();
         /** @var Product $product */
         foreach ($products as $product) {
             $hidden = Hidden::create($product->code1C);
