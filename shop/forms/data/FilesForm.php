@@ -32,8 +32,8 @@ class FilesForm extends Model
        // if ($this->validate()) {
            //die($this->file_catalog->baseName);
         //    echo 1;
-        $file = '/data/' . $this->file_catalog->baseName . '.' . $this->file_catalog->extension;
-            $this->file_catalog->saveAs('@staticRoot' . $file);
+        $file = $this->file_catalog->baseName . '.' . $this->file_catalog->extension;
+            $this->file_catalog->saveAs('@staticRoot/data/' . $file);
 
             //  echo 2;
           // die();
