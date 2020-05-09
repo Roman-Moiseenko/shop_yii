@@ -46,6 +46,24 @@ class LoadController extends Controller
             'model' => $form,
         ]);
     }
+
+    public function actionProducts()
+    {
+        $form = new FilesForm();
+        if (Yii::$app->request->isPost) {
+            try {
+                $form->file_catalog = UploadedFile::getInstance($form, 'file_catalog');
+                $file = $form->upload();
+                $this->service->loadProducts($file);
+            } catch (\DomainException $e) {
+                \Yii::$app->errorHandler->logException($e);
+                \Yii::$app->session->setFlash('error', $e->getMessage());
+            }
+        }
+        return $this->render('catalog', [
+            'model' => $form,
+        ]);
+    }
     public function actionTemp()
     {
         $hidden = Hidden::create('ПР000000012');

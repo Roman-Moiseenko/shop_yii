@@ -63,16 +63,15 @@ class LoaderManageService
 
 
 
-    /** Точка входа для загрузки каталога */
+    /** Точка входа для загрузки Каталога */
     public function loadCategory($file)
     {
         $path = dirname(__DIR__, 3) . '/static/data/';
         $result = $this->processLoadCategory($path . $file);
         $countErrors = count($result);
         while ($countErrors > 0) {
-            $fileError = $this->saveToFile($path, $result);
+            $fileError = $this->saveToFile($path, $result, 'catalog_');
             $result = $this->processLoadCategory($fileError);
-
             $countNew = count($result);
             if ($countNew >= $countErrors) {
                 throw new \DomainException('Ошибка данных');
@@ -95,9 +94,9 @@ class LoaderManageService
         fclose($file);
     }
     /** Сохраняем не попавшие в базу результат проверки в файл, для повторной обработки*/
-    private function saveToFile($path, array $data): string
+    private function saveToFile($path, array $data, $prefix = ''): string
     {
-        $filename = $path . 'errors.load';
+        $filename = $path . $prefix .'errors.load';
         $fp = fopen($filename, 'w');
         foreach ($data as $item) {
             fwrite($fp, json_encode($item) . "\n");
@@ -245,7 +244,6 @@ class LoaderManageService
     private function productsToHiddenByCategory($category_id)
     {
         if (!$products = Product::find()->andWhere(['category_id' => $category_id])->asArray()->all()) return false;
-        var_dump($products); exit();
         /** @var Product $product */
         foreach ($products as $product) {
             $hidden = Hidden::create($product->code1C);
@@ -260,6 +258,25 @@ class LoaderManageService
             return $category->slug . '_' . $parent->slug;
         }
         return $category->slug;
+    }
+    /** Точка входа для загрузки Товаров */
+    public function loadProducts(string $file)
+    {
+        $path = dirname(__DIR__, 3) . '/static/data/';
+        $result = $this->processLoadProducts($path . $file);
+        $countErrors = count($result);
+        if ($countErrors != 0) {
+            $fileError = $this->saveToFile($path, $result, 'product_');
+            throw new \DomainException('Ошибка данных');
+        }
+        unlink($path . $file);
+        return true;
+    }
+
+    private function processLoadProducts(string $string)
+    {
+        //TODO 1
+
     }
 
 }
