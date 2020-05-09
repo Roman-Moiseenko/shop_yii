@@ -41,7 +41,8 @@
                     ['label' => 'Загрузка данных',
                         'items' => [
                             ['label' => 'Загрузка каталогов', 'url' => ['/data/load/catalog']],
-                            ['label' => 'Проверка Hidden', 'url' => ['/data/load/temp']],
+                            ['label' => 'Загрузка товаров', 'url' => ['/data/load/products']],
+                          //  ['label' => 'Проверка Hidden', 'url' => ['/data/load/temp']],
                         ],
                         ],
 

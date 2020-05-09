@@ -24,13 +24,13 @@ class ProductReadRepository
 {
     public function getAll(): DataProviderInterface
     {
-        $query = Product::find()->alias('p')->NotEmpty('p')->with('mainPhoto');
+        $query = Product::find()->alias('p')->active('p')->NotEmpty('p')->with('mainPhoto');
         return $this->getProvider($query);
     }
 
     public function getAllByCategory(Category $category): DataProviderInterface
     {
-        $query = Product::find()->alias('p')->NotEmpty('p')->with('mainPhoto', 'category');
+        $query = Product::find()->alias('p')->active('p')->NotEmpty('p')->with('mainPhoto', 'category');
         $ids = ArrayHelper::merge([$category->id], $category->getLeaves()->select('id')->column());
         $query->joinWith(['categoryAssignments ca'], false);
         $query->andWhere(['or', ['p.category_id' => $ids], ['ca.category_id' => $ids]]);
@@ -40,14 +40,14 @@ class ProductReadRepository
 
     public function getAllByBrand(Brand $brand): DataProviderInterface
     {
-        $query = Product::find()->alias('p')->NotEmpty('p')->with('mainPhoto');
+        $query = Product::find()->alias('p')->active('p')->NotEmpty('p')->with('mainPhoto');
         $query->andWhere(['p.brand_id' => $brand->id]);
         return $this->getProvider($query);
     }
 
     public function getAllByTag(Tag $tag): DataProviderInterface
     {
-        $query = Product::find()->alias('p')->NotEmpty('p')->with('mainPhoto');
+        $query = Product::find()->alias('p')->active('p')->NotEmpty('p')->with('mainPhoto');
         $query->joinWith(['tagAssignments ta'], false);
         $query->andWhere(['ta.tag_id' => $tag->id]);
         $query->groupBy('p.id');
@@ -56,12 +56,12 @@ class ProductReadRepository
 
     public function find($id): ?Product
     {
-        return Product::find()->NotEmpty()->andWhere(['id'=> $id])->one();
+        return Product::find()->andWhere(['id'=> $id])->one();
     }
 
     public function getFeatured($limit)
     {
-        return Product::find()->NotEmpty()->andWhere(['featured' => true])->limit($limit)->all();
+        return Product::find()->active()->NotEmpty()->andWhere(['featured' => true])->limit($limit)->all();
     }
 
     private function getProvider(ActiveQuery $query): ActiveDataProvider

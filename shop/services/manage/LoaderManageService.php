@@ -5,6 +5,7 @@ namespace shop\services\manage;
 
 
 use shop\entities\Meta;
+use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
 use shop\entities\shop\Hidden;
 use shop\entities\shop\product\Product;
@@ -15,6 +16,7 @@ use shop\repositories\shop\CategoryRepository;
 use shop\repositories\shop\ProductRepository;
 use shop\repositories\shop\TagRepository;
 use shop\services\TransactionManager;
+use yii\web\UploadedFile;
 
 class LoaderManageService
 {
@@ -62,7 +64,6 @@ class LoaderManageService
     }
 
 
-
     /** Точка входа для загрузки Каталога */
     public function loadCategory($file)
     {
@@ -82,6 +83,7 @@ class LoaderManageService
         unlink($path . $file);
         return true;
     }
+
     private function readLineFromFile($FullFileName)
     {
         $file = fopen($FullFileName, 'rt');
@@ -93,10 +95,11 @@ class LoaderManageService
         }
         fclose($file);
     }
+
     /** Сохраняем не попавшие в базу результат проверки в файл, для повторной обработки*/
     private function saveToFile($path, array $data, $prefix = ''): string
     {
-        $filename = $path . $prefix .'errors.load';
+        $filename = $path . $prefix . 'errors.load';
         $fp = fopen($filename, 'w');
         foreach ($data as $item) {
             fwrite($fp, json_encode($item) . "\n");
@@ -104,11 +107,12 @@ class LoaderManageService
         fclose($fp);
         return $filename;
     }
+
     /** Процесс загрузки категории в базу */
     private function processLoadCategory($file): array
     {
         $errors = [];
-        foreach ($this->readLineFromFile( $file) as $row) {
+        foreach ($this->readLineFromFile($file) as $row) {
             $data = (array)json_decode($row);
             if ($this->isEmpty($data)) continue;
             /** В отдельную функцию */
@@ -154,6 +158,7 @@ class LoaderManageService
         }
         return $errors;
     }
+
     private function isEmpty(array $data): bool
     {
         if (!empty($data['code1C_parent'])) return false;
@@ -183,6 +188,7 @@ class LoaderManageService
         }
         return true;
     }
+
     private function updateCategory(int $id, string $name, int $parentId)
     {
         $category = $this->categories->get($id);
@@ -204,6 +210,7 @@ class LoaderManageService
         }
         $this->categories->save($category);
     }
+
     private function createCategory(string $name, int $parentId, $code1C)
     {
         $parent = $this->categories->get($parentId);
@@ -218,6 +225,7 @@ class LoaderManageService
         $category->slug = $this->checkSlug($category, $parentId);
         $this->categories->save($category);
     }
+
     private function toHidden(Category $_category)
     {
         //var_dump($_category);
@@ -241,16 +249,21 @@ class LoaderManageService
         $this->hidden->save($hidden);
         $this->categories->remove($_category);
     }
+
     private function productsToHiddenByCategory($category_id)
     {
         if (!$products = Product::find()->andWhere(['category_id' => $category_id])->asArray()->all()) return false;
         /** @var Product $product */
         foreach ($products as $product) {
-            $hidden = Hidden::create($product->code1C);
-            $this->hidden->save($hidden);
-            $this->products->remove($product);
+            $product->changeMainCategory(1);
+            $product->draft();
+            $this->products->save($product);
+            // $hidden = Hidden::create($product->code1C);
+            // $this->hidden->save($hidden);
+            //$this->products->remove($product);
         }
     }
+
     private function checkSlug(Category $category, $parentId)
     {
         if (Category::findOne(['slug' => $category->slug])) {
@@ -259,6 +272,7 @@ class LoaderManageService
         }
         return $category->slug;
     }
+
     /** Точка входа для загрузки Товаров */
     public function loadProducts(string $file)
     {
@@ -276,7 +290,7 @@ class LoaderManageService
     private function processLoadProducts($file)
     {
         $errors = [];
-        foreach ($this->readLineFromFile( $file) as $row) {
+        foreach ($this->readLineFromFile($file) as $row) {
             $data = (array)json_decode($row);
             if ($product = $this->products->getByCode1C($data['code1C'])) {
                 //Товар есть в базе
@@ -284,29 +298,82 @@ class LoaderManageService
                     //Категория есть
                     $this->updateProduct($product, $category->id);
                 }
+                if ($this->hidden->isFind($data['code1C_parent'])) {
+                    //Категория скрыта => пропускаем товар
+                    continue;
+                }
+                $errors[] = $data;
             } else {
                 //Товара нет в базе
-
-
+                if ($category = $this->categories->getByCode1C($data['code1C_parent'])) {
+                    //Создаем товар,
+                    $this->createProduct($data, $category->id);
+                    continue;
+                }
+                $errors[] = $data['code1C_parent'];
+                $errors[] = $data;
             }
-
-            //Загрузка основных данных
-            ///Загрузка фотографий
         }
         return $errors;
-        //TODO 1
+    }
 
-        //Обработка характеристик через регулярку
+    private function createProduct(array $data, int $id)
+    {
+        //Загрузка основных данных
+        $product = Product::create(
+            $this->getBrandFromName($data['name']),
+            $id,
+            '',
+            $data['name'],
+            $data['descr'],
+            $data['code1C'],
+            new Meta(
+                $data['name'],
+                $data['name'],
+                ''
+            ),
+            $data['unit'],
+            $data['remains']
+        );
+        $idImage = $data['id'];
+        $path = dirname(__DIR__, 3) . '/static/products/';
+        if (!file_exists($filePhoto = $path . $idImage .'.jpg')) {
+            $filePhoto = $path . 'no-image.jpg';
+        }
+
+        $product->addPhoto(new UploadedFile(['name' => $filePhoto]));
+        $this->products->save($product);
+        ///Загрузка фотографий
 
     }
 
+    private function updateProduct(Product $product, int $id)
+    {
+        //TODO
 
+        //if $name изменилось => regProduct()
+    }
 
     private function regProduct(Product $product): void
     {
         //По code1С определяем список параметров и рег.выражение
-
+//TODO
         //...
+    }
+
+    private function getBrandFromName($name):? int
+    {
+        /** @var Brand[] $brands */
+        $brands = Brand::find()->all();
+        foreach ($brands as $brand) {
+            if (strpos($name, $brand->name) !== false) return $brand->id;
+        }
+        $brand = Brand::findOne(['name' => 'NONAME']);
+        return $brand->id ?? null; //NONAME
+    }
+
+    public function updateBrand()
+    {
 
 
     }

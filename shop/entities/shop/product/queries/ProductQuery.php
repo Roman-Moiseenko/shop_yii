@@ -4,6 +4,7 @@
 namespace shop\entities\shop\product\queries;
 
 
+use shop\entities\shop\product\Product;
 use yii\db\ActiveQuery;
 
 class ProductQuery extends ActiveQuery
@@ -12,5 +13,8 @@ class ProductQuery extends ActiveQuery
     {
         return $this->andWhere(['>', ($alias ? $alias . '.' : '') . 'remains', 0]);
     }
-
+    public function active($alias = null)
+    {
+        return $this->andWhere([($alias ? $alias . '.' : '') . 'status' =>Product::STATUS_ACTIVE]);
+    }
 }

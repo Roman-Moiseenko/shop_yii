@@ -34,6 +34,7 @@ use yii\web\UploadedFile;
  * @property Meta $meta
  * @property Brand $brand
  * @property Category $category
+ * @property integer $status
  * @property CategoryAssignment[] $categoryAssignments
  * @property Value[] $values
  * @property Photo[] $photos
@@ -46,7 +47,8 @@ use yii\web\UploadedFile;
  */
 class Product extends ActiveRecord
 {
-
+    const STATUS_ACTIVE = 1;
+    const STATUS_DRAFT = 0;
     public $meta;
 
     public static function create($brandId, $categoryId, $code,
@@ -65,7 +67,40 @@ class Product extends ActiveRecord
         $product->remains = $remains;
         $product->created_at = time();
         $product->featured = false;
+        $product->status = Product::STATUS_ACTIVE;
         return $product;
+    }
+
+    public function activate(): void
+    {
+        if ($this->isActive()) {
+            throw new \DomainException('Product is already active.');
+        }
+        $this->status = self::STATUS_ACTIVE;
+    }
+
+    public function draft(): void
+    {
+        if ($this->isDraft()) {
+            throw new \DomainException('Product is already draft.');
+        }
+        $this->status = self::STATUS_DRAFT;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status == self::STATUS_ACTIVE;
+    }
+
+
+    public function isDraft(): bool
+    {
+        return $this->status == self::STATUS_DRAFT;
+    }
+
+    public function isAvailable(): bool
+    {
+        return $this->quantity > 0;
     }
 
     public function addFeatured()

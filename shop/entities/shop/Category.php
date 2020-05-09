@@ -32,7 +32,7 @@ class Category extends ActiveRecord
 {
     public $meta;
 
-    public static function create($name, $slug, $title, $description, Meta $meta, $code1C = null, $id_old = null): self
+    public static function create($name, $slug, $title, $description, Meta $meta, $code1C = null): self
     {
         $category = new static();
         $category->name = $name;
@@ -43,7 +43,6 @@ class Category extends ActiveRecord
         $category->meta = $meta;
 
         $category->code1C = $code1C;
-        $category->id_old = $id_old;
 
         return $category;
     }
