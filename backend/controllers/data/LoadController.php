@@ -82,11 +82,18 @@ class LoadController extends Controller
         ]);
     }
 
-    public function actionTemp()
+    public function actionAttributes()
     {
-        $hidden = Hidden::create('ПР000000012');
-        $service = new HiddenRepository();
-        $service->save($hidden);
+        if (Yii::$app->request->isPost) {
+            try {
+                $this->service->updateAttributes();
+            } catch (\DomainException $e) {
+                \Yii::$app->errorHandler->logException($e);
+                \Yii::$app->session->setFlash('error', $e->getMessage());
+            }
+        }
+        return $this->render('attributes', [
 
+        ]);
     }
 }

@@ -15,15 +15,15 @@ class m170519_181139_create_shop_products_table extends Migration
             'created_at' => $this->integer()->unsigned()->notNull(),
             'code' => $this->string()->notNull(),
             'name' => $this->string()->notNull(),
-            'price_old' => $this->integer(),
-            'price_new' => $this->integer(),
+            'price_old' => $this->float(),
+            'price_new' => $this->float(),
             'rating' => $this->decimal(3, 2),
             'meta_json' => $this->text(),
             'code1C' => $this->string(11),
-            //'unit_id' => $this->string(), //TODO Переделать в последующем на class Units(id, name, discription) //(5, шт, штуки)
+
         ], $tableOptions);
 
-        $this->createIndex('{{%idx-shop_products-code}}', '{{%shop_products}}', 'code', true);
+       // $this->createIndex('{{%idx-shop_products-code}}', '{{%shop_products}}', 'code', true);
         
         $this->createIndex('{{%idx-shop_products-category_id}}', '{{%shop_products}}', 'category_id');
         $this->createIndex('{{%idx-shop_products-brand_id}}', '{{%shop_products}}', 'brand_id');

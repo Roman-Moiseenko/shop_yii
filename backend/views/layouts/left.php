@@ -43,6 +43,7 @@
                             ['label' => 'Загрузка каталогов', 'url' => ['/data/load/catalog']],
                             ['label' => 'Загрузка товаров', 'url' => ['/data/load/products']],
                             ['label' => 'Обновить бренды', 'url' => ['/data/load/brands']],
+                            ['label' => 'Обновить Аттрибуты', 'url' => ['/data/load/attributes']],
                           //  ['label' => 'Проверка Hidden', 'url' => ['/data/load/temp']],
                         ],
                         ],

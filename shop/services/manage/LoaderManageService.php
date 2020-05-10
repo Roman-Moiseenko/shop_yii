@@ -298,6 +298,7 @@ class LoaderManageService
                 if ($category = $this->categories->getByCode1C($data['code1C_parent'])) {
                     //Категория есть
                     $this->updateProduct($product, $category->id, $data);
+                    continue;
                 }
                 if ($this->hidden->isFind($data['code1C_parent'])) {
                     //Категория скрыта => пропускаем товар
@@ -374,15 +375,28 @@ class LoaderManageService
 
     private function updateProduct(Product $product, int $id, array $data)
     {
-        //TODO
+        if ($product->name !== $data['name']) {
+            $product->name = $data['name'];
+            $this->regProduct($product);
+        }
+        if ($product->code1C !== $data['code1C']) $product->code1C = $data['code1C'];
+        if ($product->units !== $data['unit']) $product->units = $data['unit'];
+
+        $product->setRemains($data['remains']);
+
+        $price_old = ($product->price_new > (float)$data['price']) ? $product->price_new : 0;
+        $product->updatePrice($data['price'], $price_old);
 
 
+        $this->products->save($product);
         //if $name изменилось => regProduct()
     }
 
     private function regProduct(Product $product): void
     {
         //По code1С определяем список параметров и рег.выражение
+       // $code1C_parent = Category::find()->select('code1C')->andWhere(['id' => $product->category_id])->one();
+
 //TODO
         //...
 
@@ -419,5 +433,26 @@ class LoaderManageService
         $product->changeMainCategory(1);
         $product->draft();
         $this->products->save($product);
+    }
+
+    public function updateAttributes()
+    {
+
+        $regs = Reg::find()->all();
+
+        //$products = Product::find()->active()->all();
+        foreach ($regs as $reg) {
+            $idCategory = $reg->category_id;
+            $categories = Category::find()->select('id')->andWhere('Все вложенные')->asArray()->all();
+            $products = Product::find()->andWhere(['category_id' => $categories])->all();
+            foreach ($products as $product) {
+                $value = '';
+                preg_match($reg->reg, $product->name, $value);
+                $product->setValue($reg->attribute, $value[1]);
+                $this->products->save($product);
+            }
+
+            $this->regProduct($product);
+        }
     }
 }
