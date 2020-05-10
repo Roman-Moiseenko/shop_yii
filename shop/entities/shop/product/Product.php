@@ -376,6 +376,12 @@ class Product extends ActiveRecord
         $this->tagAssignments = [];
     }
     // Photos
+    public function addPhotoClass(Photo $photo): void
+    {
+        $photos = $this->photos;
+        $photos[] = $photo;
+        $this->updatePhotos($photos);
+    }
 
     public function addPhoto(UploadedFile $file): void
     {

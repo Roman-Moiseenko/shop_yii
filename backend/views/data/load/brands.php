@@ -1,5 +1,5 @@
 <?php
-/** @var $title string */
+
 use kartik\file\FileInput;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
@@ -10,13 +10,10 @@ use yii\helpers\Html;
     'options' => ['enctype'=>'multipart/form-data']
 ]); ?>
 <div class="box box-default">
-    <div class="box-header with-border"><?= $title ?></div>
-    <div class="box-body">
-        <?= $form->field($model, 'file_catalog')->fileInput() ?>
+    <div class="box-header with-border">Обновить Бренды</div>
 
-    </div>
     <div class="form-group">
-        <?= Html::submitButton('Загрузить', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Обновить', ['class' => 'btn btn-success']) ?>
     </div>
 </div>
 <?php ActiveForm::end(); ?>

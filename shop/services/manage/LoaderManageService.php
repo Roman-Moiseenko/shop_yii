@@ -8,6 +8,7 @@ use shop\entities\Meta;
 use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
 use shop\entities\shop\Hidden;
+use shop\entities\Shop\Product\Photo;
 use shop\entities\shop\product\Product;
 use shop\forms\manage\shop\CategoryForm;
 use shop\repositories\HiddenRepository;
@@ -255,9 +256,7 @@ class LoaderManageService
         if (!$products = Product::find()->andWhere(['category_id' => $category_id])->asArray()->all()) return false;
         /** @var Product $product */
         foreach ($products as $product) {
-            $product->changeMainCategory(1);
-            $product->draft();
-            $this->products->save($product);
+            $this->hideProduct($product);
             // $hidden = Hidden::create($product->code1C);
             // $this->hidden->save($hidden);
             //$this->products->remove($product);
@@ -276,6 +275,8 @@ class LoaderManageService
     /** Точка входа для загрузки Товаров */
     public function loadProducts(string $file)
     {
+        set_time_limit(0);
+        ini_set('memory_limit', '2000M');
         $path = dirname(__DIR__, 3) . '/static/data/';
         $result = $this->processLoadProducts($path . $file);
         $countErrors = count($result);
@@ -296,18 +297,24 @@ class LoaderManageService
                 //Товар есть в базе
                 if ($category = $this->categories->getByCode1C($data['code1C_parent'])) {
                     //Категория есть
-                    $this->updateProduct($product, $category->id);
+                    $this->updateProduct($product, $category->id, $data);
                 }
                 if ($this->hidden->isFind($data['code1C_parent'])) {
                     //Категория скрыта => пропускаем товар
+                    $this->hideProduct($product);
                     continue;
                 }
                 $errors[] = $data;
+                $this->hideProduct($product);
             } else {
                 //Товара нет в базе
                 if ($category = $this->categories->getByCode1C($data['code1C_parent'])) {
                     //Создаем товар,
                     $this->createProduct($data, $category->id);
+                    continue;
+                }
+                if ($this->hidden->isFind($data['code1C_parent'])) {
+                    //Категория скрыта => пропускаем товар
                     continue;
                 }
                 $errors[] = $data['code1C_parent'];
@@ -335,21 +342,40 @@ class LoaderManageService
             $data['unit'],
             $data['remains']
         );
+        $product->updatePrice($data['price'], 0);
         $idImage = $data['id'];
         $path = dirname(__DIR__, 3) . '/static/products/';
         if (!file_exists($filePhoto = $path . $idImage .'.jpg')) {
             $filePhoto = $path . 'no-image.jpg';
         }
-
-        $product->addPhoto(new UploadedFile(['name' => $filePhoto]));
+        //$product->setRemains($data['remains']);
         $this->products->save($product);
-        ///Загрузка фотографий
 
+        ///Загрузка фотографий
+        $idProduct = $product->id;
+        $photo = new Photo();
+        $photo->file = $filePhoto;
+        $photo->product_id = $idProduct;
+        $photo->sort = 0;
+        $photo->save();
+        $photo->file = $photo->id . '.jpg';
+        $photo->save();
+        $path_product = dirname(__DIR__, 3) . '/static/origin/products/' . $idProduct . '/';
+        mkdir($path_product);
+        copy($filePhoto, $path_product . $photo->id . '.jpg');
+
+        $product->addPhotoClass($photo);// mainPhoto = $photo->id;
+        $this->products->save($product);
+        $this->regProduct($product);
+        
+        unset($photo);
+        unset($product);
     }
 
-    private function updateProduct(Product $product, int $id)
+    private function updateProduct(Product $product, int $id, array $data)
     {
         //TODO
+
 
         //if $name изменилось => regProduct()
     }
@@ -359,6 +385,8 @@ class LoaderManageService
         //По code1С определяем список параметров и рег.выражение
 //TODO
         //...
+
+        $this->products->save($product);
     }
 
     private function getBrandFromName($name):? int
@@ -366,7 +394,7 @@ class LoaderManageService
         /** @var Brand[] $brands */
         $brands = Brand::find()->all();
         foreach ($brands as $brand) {
-            if (strpos($name, $brand->name) !== false) return $brand->id;
+            if (mb_stripos($name, $brand->name, 0, 'UTF-8') !== false) return $brand->id;
         }
         $brand = Brand::findOne(['name' => 'NONAME']);
         return $brand->id ?? null; //NONAME
@@ -375,6 +403,21 @@ class LoaderManageService
     public function updateBrand()
     {
 
+        $brands = Brand::find()->andWhere(['<>', 'name', 'NONAME'])->all();
+        $idNoName = Brand::findOne(['name' => 'NONAME']);
+        foreach ($brands as $brand) {
+            $products = Product::find()->select('id')->active()
+                ->andWhere(['brand_id' => $idNoName])
+                ->andWhere(['LIKE', 'name', $brand->name])
+                ->column();
+            Product::updateAll(['brand_id' => $brand->id], ['id' => $products]);
+        }
+    }
 
+    private function hideProduct(Product $product)
+    {
+        $product->changeMainCategory(1);
+        $product->draft();
+        $this->products->save($product);
     }
 }

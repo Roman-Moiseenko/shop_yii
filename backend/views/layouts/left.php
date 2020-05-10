@@ -42,6 +42,7 @@
                         'items' => [
                             ['label' => 'Загрузка каталогов', 'url' => ['/data/load/catalog']],
                             ['label' => 'Загрузка товаров', 'url' => ['/data/load/products']],
+                            ['label' => 'Обновить бренды', 'url' => ['/data/load/brands']],
                           //  ['label' => 'Проверка Hidden', 'url' => ['/data/load/temp']],
                         ],
                         ],

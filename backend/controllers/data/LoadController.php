@@ -22,10 +22,10 @@ class LoadController extends Controller
     private $service;
 
     public function __construct($id, $module, LoaderManageService $service, $config = [])
-{
-    parent::__construct($id, $module, $config);
-    $this->service = $service;
-}
+    {
+        parent::__construct($id, $module, $config);
+        $this->service = $service;
+    }
 
     public function actionCatalog()
     {
@@ -44,6 +44,7 @@ class LoadController extends Controller
         }
         return $this->render('catalog', [
             'model' => $form,
+            'title' => 'Загрузить каталоги',
         ]);
     }
 
@@ -62,8 +63,25 @@ class LoadController extends Controller
         }
         return $this->render('catalog', [
             'model' => $form,
+            'title' => 'Загрузить товары',
         ]);
     }
+
+    public function actionBrands()
+    {
+        if (Yii::$app->request->isPost) {
+            try {
+                $this->service->updateBrand();
+            } catch (\DomainException $e) {
+                \Yii::$app->errorHandler->logException($e);
+                \Yii::$app->session->setFlash('error', $e->getMessage());
+            }
+        }
+        return $this->render('brands', [
+
+        ]);
+    }
+
     public function actionTemp()
     {
         $hidden = Hidden::create('ПР000000012');
