@@ -45,7 +45,7 @@ class ProductCreateForm extends CompositeForm
     public function rules(): array
     {
         return [
-            [['brandId', 'code', 'name'/*, 'weight'*/], 'required'],
+            [['brandId', 'name'], 'required'],
             [['code', 'name'], 'string', 'max' => 255],
             [['code1C'], 'string', 'max' => 9],
             [['brandId'], 'integer'],
@@ -53,7 +53,6 @@ class ProductCreateForm extends CompositeForm
             [['code'], 'unique', 'targetClass' => Product::class],
             ['description', 'string'],
             ['description', 'string'],
-           /* ['weight', 'integer', 'min' => 0],*/
         ];
     }
 

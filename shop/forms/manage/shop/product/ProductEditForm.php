@@ -51,14 +51,13 @@ class ProductEditForm extends CompositeForm
     public function rules(): array
     {
         return [
-            [['brandId', 'code', 'name'/*, 'weight'*/], 'required'],
+            [['brandId', 'name'], 'required'],
             [['brandId'], 'integer'],
             [['code', 'name'], 'string', 'max' => 255],
             [['code1C'], 'string', 'max' => 9],
             [['units'], 'string'],
             [['code'], 'unique', 'targetClass' => Product::class, 'filter' => $this->_product ? ['<>', 'id', $this->_product->id] : null],
             ['description', 'string'],
-        /*    ['weight', 'integer', 'min' => 0],*/
         ];
     }
 
