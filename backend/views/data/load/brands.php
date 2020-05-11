@@ -4,7 +4,10 @@ use kartik\file\FileInput;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
+$this->title = 'Обновить Бренды';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="user-view">
 
 <?php $form = ActiveForm::begin([
     'options' => ['enctype'=>'multipart/form-data']
@@ -17,3 +20,4 @@ use yii\helpers\Html;
     </div>
 </div>
 <?php ActiveForm::end(); ?>
+</div>

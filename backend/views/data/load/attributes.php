@@ -4,8 +4,12 @@ use kartik\file\FileInput;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
+$this->title = 'Обновить Атрибуты';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="user-view">
 
+    <p>
 <?php $form = ActiveForm::begin([
     'options' => ['enctype'=>'multipart/form-data']
 ]); ?>
@@ -17,3 +21,4 @@ use yii\helpers\Html;
     </div>
 </div>
 <?php ActiveForm::end(); ?>
+</div>
