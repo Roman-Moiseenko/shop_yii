@@ -37,6 +37,7 @@
                     ['label' => 'Атрибуты', 'icon' => 'bars', 'url' => ['/shop/characteristic'], 'active' => $this->context->id == 'shop/characteristic'],
                     ['label' => 'Каталог', 'icon' => 'folder-open', 'url' => ['/shop/category'], 'active' => $this->context->id == 'shop/category'],
                     ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['/user/index'], 'active' => $this->context->id == 'user'],
+                    ['label' => 'Регулярки', 'icon' => 'registered', 'url' => ['/data/reg-attribute'], 'active' => Yii::$app->controller->id == '/data/reg-attribute'],
                     ['label' => 'Login', 'url' => ['auth/login'], 'visible' => Yii::$app->user->isGuest],
                     ['label' => 'Загрузка данных',
                         'items' => [

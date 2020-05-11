@@ -96,4 +96,5 @@ class LoadController extends Controller
 
         ]);
     }
+
 }

@@ -238,8 +238,8 @@ class ProductManageService
 
     public function remove($id): void
     {
-        $categories = $this->categories->get($id);
-        $this->categories->remove($categories);
+        $product = $this->products->get($id);
+        $this->products->remove($product);
     }
 /*    public function activate($id): void
     {

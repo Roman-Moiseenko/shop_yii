@@ -10,6 +10,7 @@ use shop\entities\shop\Category;
 use shop\entities\shop\Hidden;
 use shop\entities\Shop\Product\Photo;
 use shop\entities\shop\product\Product;
+use shop\entities\shop\RegAttribute;
 use shop\forms\manage\shop\CategoryForm;
 use shop\repositories\HiddenRepository;
 use shop\repositories\shop\BrandRepository;
@@ -438,21 +439,42 @@ class LoaderManageService
     public function updateAttributes()
     {
 
-        $regs = Reg::find()->all();
-
-        //$products = Product::find()->active()->all();
+       /* $dd = '3';
+        $ddd = '1';
+        $d = $dd + $ddd;
+        if (is_numeric($dd)) echo '====>';
+        echo $d;
+        exit();*/
+        $regs = RegAttribute::find()->all();
         foreach ($regs as $reg) {
-            $idCategory = $reg->category_id;
-            $categories = Category::find()->select('id')->andWhere('Все вложенные')->asArray()->all();
-            $products = Product::find()->andWhere(['category_id' => $categories])->all();
-            foreach ($products as $product) {
-                $value = '';
-                preg_match($reg->reg, $product->name, $value);
-                $product->setValue($reg->attribute, $value[1]);
-                $this->products->save($product);
-            }
 
-            $this->regProduct($product);
+            $categories = Category::find()->select('id')
+                ->andWhere(['>=', 'lft', $reg->category->lft])
+                ->andWhere(['<=', 'rgt', $reg->category->rgt])
+                ->andWhere(['>', 'depth', $reg->category->depth])
+                ->asArray()->column();
+
+            $products = Product::find()
+                ->andWhere(['category_id' => array_merge([$reg->category_id], $categories)])
+                ->all();
+            foreach ($products as $product) {
+               preg_match_all($reg->reg_match, $product->name, $value);
+               //echo '<pre>';print_r($value); exit();
+               if ($count = count($value[1]) > 0    ) {
+                   if ((count($value[1]) > 1) && ($value[1][0] == 3)) {
+                       $val = 0;
+                       foreach ($value[1] as $item) {
+                           $val += (int)$item;
+                       }
+                   } else {
+                       $val = $value[1][0];
+                   }
+                   $product->setValue($reg->characteristic_id, $val);
+                   $this->products->save($product);
+               } else {
+                   //Запись в  файл
+               }
+            }
         }
     }
 }
