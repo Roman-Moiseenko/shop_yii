@@ -1,52 +1,38 @@
 <?php
-
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\DataProviderInterface */
 /* @var $searchForm \shop\forms\Shop\Search\SearchForm */
-
-use shop\helpers\ListHelper;
 use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
+use yii\helpers\Html; ?>
 
-$this->title = 'Расширенный поиск';
 
-$this->params['breadcrumbs'][] = $this->title;
-?>
-
-<h1><?= Html::encode($this->title) ?></h1>
-<div class="block-search">
 <div class="panel panel-default">
     <div class="panel-body">
-
-        <?php $form = ActiveForm::begin(['action' => [''], 'method' => 'get']) ?>
+        <?php $form = ActiveForm::begin(['action' => ['/shop/catalog/category', 'id' => $this->params['id_category']], 'method' => 'get']) ?>
 
         <div class="row">
-            <div class="col-md-4">
-                <?= $form->field($searchForm, 'text')->textInput()->label('Товар (имя или код)') ?>
-            </div>
-            <div class="col-md-4">
-                <?= $form->field($searchForm, 'category')->dropDownList($searchForm->categoriesList(), ['prompt' => '', 'class' => 'change-attr form-control'])->label('Категория')?>
-            </div>
-            <div class="col-md-4">
-                <?= $form->field($searchForm, 'brand')->dropDownList(ListHelper::brands(), ['prompt' => ''])->label('Бренд') ?>
+            <div class="col-md-12">
+                <?= $form->field($searchForm, 'brand')->dropDownList($searchForm->brandsList(), ['prompt' => ''])->label('Бренд') ?>
             </div>
         </div>
 
         <?php foreach ($searchForm->values as $i => $value): ?>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-12">
                     <?php $text =''; if ($value->isAttributeSafe('from') && $value->isAttributeSafe('to')) {$text = ' (введите диапозон)';} ?>
                     <?= Html::encode($value->getCharacteristicName() . $text) ?>
                 </div>
+            </div>
+            <div class="row">
                 <?php if ($variants = $value->variantsList()): ?>
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <?= $form->field($value, '[' . $i . ']equal')->dropDownList($variants, ['prompt' => ''])->label(false) ?>
                     </div>
                 <?php elseif ($value->isAttributeSafe('from') && $value->isAttributeSafe('to')): ?>
-                    <div class="col-md-2">
+                    <div class="col-md-6">
                         <?= $form->field($value, '[' . $i . ']from')->textInput()->label(false)  ?>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-6">
                         <?= $form->field($value, '[' . $i . ']to')->textInput()->label(false)  ?>
                     </div>
                 <?php endif ?>
@@ -54,21 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endforeach; ?>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <?= Html::submitButton('Найти', ['class' => 'btn btn-primary btn-lg btn-block']) ?>
             </div>
-            <div class="col-md-6">
-                <?= Html::a('Очистить', [''], ['class' => 'btn btn-default btn-lg btn-block']) ?>
-            </div>
         </div>
-
         <?php ActiveForm::end() ?>
-        </div>
     </div>
 </div>
-
-<?= $this->render('_list', [
-    'dataProvider' => $dataProvider
-]) ?>
-
-

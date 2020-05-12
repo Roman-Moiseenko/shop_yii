@@ -4,7 +4,10 @@
 namespace frontend\controllers\shop;
 
 
+use shop\entities\shop\Category;
+use shop\entities\shop\Characteristic;
 use shop\entities\shop\product\Product;
+use shop\entities\Shop\Product\Value;
 use shop\forms\shop\AddToCartForm;
 use shop\forms\shop\ReviewForm;
 use shop\forms\shop\search\SearchForm;
@@ -76,10 +79,27 @@ class CatalogController extends Controller
             throw new NotFoundHttpException('Категория не найдена');
         }
         $dataProvider = $this->products->getAllByCategory($category);
-        return $this->render('category', [
-            'dataProvider' => $dataProvider,
-            'category' => $category,
-        ]);
+
+        if ($category->depth < 2) {
+            return $this->render('category', [
+                'dataProvider' => $dataProvider,
+                'category' => $category,
+            ]);
+        } else {
+            $this->layout = 'catalog_filter';
+            $form = new SearchForm();
+            $form->category = $id;
+            $form->setAttribute($id);
+            $form->load(\Yii::$app->request->queryParams);
+            $form->validate();
+            $dataProvider = $this->products->search($form);
+            //echo '<pre>';print_r($form->values); exit();
+            return $this->render('category_filter', [
+                'dataProvider' => $dataProvider,
+                'category' => $category,
+                'searchForm' => $form,
+            ]);
+        }
     }
     public function actionBrand($id)
     {
@@ -143,6 +163,23 @@ class CatalogController extends Controller
             'dataProvider' => $dataProvider,
             'searchForm' => $form,
         ]);
+    }
 
+    public function actionGetsearch()
+    {
+        $this->layout = '_blank';
+        if(\Yii::$app->request->isAjax) {
+            $form = new SearchForm();
+            $form->text = \Yii::$app->request->bodyParams['text'];
+            $form->brand = \Yii::$app->request->bodyParams['brand'];
+        if (isset(\Yii::$app->request->bodyParams['id'])) {
+            $id = \Yii::$app->request->bodyParams['id'];
+            $form->category = $id;
+            $form->setAttribute($id);
+        }
+            return $this->render('_search', [
+                'searchForm' => $form,
+            ]);
+        }
     }
 }

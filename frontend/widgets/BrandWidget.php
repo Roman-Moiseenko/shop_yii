@@ -1,8 +1,6 @@
 <?php
 
-
 namespace frontend\widgets;
-
 
 use shop\readModels\shop\BrandReadRepository;
 use yii\base\Widget;

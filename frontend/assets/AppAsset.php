@@ -23,6 +23,7 @@ class AppAsset extends AssetBundle
     public $js = [
         'js/common.js',
         'js/swiper.jquery.js',
+        'js/site.js',
     ];
     public $depends = [
       //  'frontend\assets\MagnificPopupAsset',

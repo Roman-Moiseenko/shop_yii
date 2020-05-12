@@ -14,6 +14,7 @@ foreach ($category->parents as $parent) {
 $this->params['breadcrumbs'][] = $category->name;
 $this->params['active_category'] = $category;
 
+$this->params['id_category'] = $category->id;
 
 use yii\helpers\Html; ?>
 

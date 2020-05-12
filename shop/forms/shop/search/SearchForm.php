@@ -7,6 +7,8 @@ namespace shop\forms\shop\search;
 use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
 use shop\entities\shop\Characteristic;
+use shop\entities\shop\product\Product;
+use shop\entities\Shop\Product\Value;
 use shop\forms\CompositeForm;
 use yii\helpers\ArrayHelper;
 
@@ -22,12 +24,29 @@ class SearchForm extends CompositeForm
 
     public function __construct($config = [])
     {
-        $this->values = array_map(function (Characteristic $characteristic) {
+        /*$this->values = array_map(function (Characteristic $characteristic) {
             return new ValueForSearchForm($characteristic);
-        }, Characteristic::find()->orderBy('sort')->all());
+        }, Characteristic::find()->orderBy('sort')->all());*/
+        $this->values = [];
         parent::__construct($config);
     }
 
+    public function setAttribute($category_id)
+    {
+        $category = Category::findOne(['id' => $category_id]);
+        $categories = Category::find()->select('id')
+            ->andWhere(['>=', 'lft', $category->lft])
+            ->andWhere(['<=', 'rgt', $category->rgt])
+            ->asArray()->column();
+        $products = Product::find()->select('id')->andWhere(['category_id' => $categories])->asArray()->column();
+        $char_id = Value::find()->select('characteristic_id')->andWhere(['product_id' => $products])->asArray()->column();
+        //$attr = Characteristic::find()->andWhere(['id' => $char_id])->orderBy('sort')->all();
+
+        $this->values = array_map(function (Characteristic $characteristic) {
+            return new ValueForSearchForm($characteristic);
+        }, Characteristic::find()->andWhere(['id' => $char_id])->orderBy('sort')->all());
+
+    }
     public function rules()
     {
         return [
@@ -48,6 +67,19 @@ class SearchForm extends CompositeForm
 
     public function brandsList(): array
     {
+        if (!empty($this->category))
+        {
+            $category = Category::findOne(['id' => $this->category]);
+            $categories = Category::find()->select('id')
+                ->andWhere(['>=', 'lft', $category->lft])
+                ->andWhere(['<=', 'rgt', $category->rgt])
+                ->asArray()->column();
+            $products = Product::find()->select('brand_id')
+                ->andWhere(['category_id' => $categories])
+                ->orderBy('brand_id')->asArray()->column();
+
+            return ArrayHelper::map(Brand::find()->andWhere(['id' => $products])->orderBy('name')->asArray()->all(), 'id', 'name');
+        }
         return ArrayHelper::map(Brand::find()->orderBy('name')->asArray()->all(), 'id', 'name');
     }
 
