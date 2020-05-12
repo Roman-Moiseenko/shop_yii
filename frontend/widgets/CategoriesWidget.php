@@ -13,6 +13,7 @@ class CategoriesWidget extends Widget
 {
     /** @var $active Category|null */
     public $active;
+    public $sub = false;
     private $categories;
 
     public function __construct(CategoryReadRepository $categories, $config = [])
@@ -31,7 +32,7 @@ class CategoriesWidget extends Widget
                 ['/shop/catalog/category', 'id' => $category->id],
                 ['class' => $active ? 'list-group-item active' : 'list-group-item']
             );
-        }, $this->categories->getTreeWithSubsOf($this->active))), [
+        }, $this->categories->getTreeWithSubsOf($this->active, $this->sub))), [
             'class' => 'list-group',
         ]);
     }

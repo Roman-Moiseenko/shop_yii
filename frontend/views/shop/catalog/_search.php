@@ -2,6 +2,8 @@
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\DataProviderInterface */
 /* @var $searchForm \shop\forms\Shop\Search\SearchForm */
+
+use shop\helpers\ListHelper;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html; ?>
 
@@ -14,7 +16,7 @@ use yii\helpers\Html; ?>
         <?= $form->field($searchForm, 'text')->textInput()->label('Товар (имя или код)') ?>
     </div>
     <div class="col-md-4">
-        <?= $form->field($searchForm, 'category')->dropDownList($searchForm->categoriesList(), ['prompt' => '', 'class' => 'change-attr form-control'])->label('Категория')?>
+        <?= $form->field($searchForm, 'category')->dropDownList(ListHelper::categories(), ['prompt' => '', 'class' => 'change-attr form-control'])->label('Категория')?>
     </div>
     <div class="col-md-4">
         <?= $form->field($searchForm, 'brand')->dropDownList($searchForm->brandsList(), ['prompt' => ''])->label('Бренд') ?>

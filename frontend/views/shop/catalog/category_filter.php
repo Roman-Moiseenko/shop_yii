@@ -17,13 +17,17 @@ $this->params['breadcrumbs'][] = $category->name;
 $this->params['active_category'] = $category;
 
 
+use frontend\widgets\CategoriesWidget;
 use frontend\widgets\SearchWidget;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html; ?>
 <aside id="column-left" class="col-sm-3 hidden-xs">
 
     <!-- Виджет Категории, подкатегории -->
-
+    <?= CategoriesWidget::widget([
+        'active' => $this->params['active_category'] ?? null,
+        'sub' => true,
+    ]); ?>
 
 
     <div class="panel panel-default">

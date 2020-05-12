@@ -25,10 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($searchForm, 'text')->textInput()->label('Товар (имя или код)') ?>
             </div>
             <div class="col-md-4">
-                <?= $form->field($searchForm, 'category')->dropDownList($searchForm->categoriesList(), ['prompt' => '', 'class' => 'change-attr form-control'])->label('Категория')?>
+                <?= $form->field($searchForm, 'category')->dropDownList(ListHelper::categories(), ['prompt' => '', 'class' => 'change-attr form-control'])->label('Категория')?>
             </div>
             <div class="col-md-4">
-                <?= $form->field($searchForm, 'brand')->dropDownList(ListHelper::brands(), ['prompt' => ''])->label('Бренд') ?>
+                <?= $form->field($searchForm, 'brand')->dropDownList($searchForm->brandsList(), ['prompt' => ''])->label('Бренд') ?>
             </div>
         </div>
 

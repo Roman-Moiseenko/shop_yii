@@ -27,9 +27,10 @@ class CategoryReadRepository
         return Category::find()->andWhere(['id' => $id])->andWhere(['>', 'depth', 0])->one();
     }
 
-    public function getTreeWithSubsOf(Category $category = null): array
+    public function getTreeWithSubsOf(Category $category = null, $sub = false): array
     {
-        $query = Category::find()->andWhere(['>', 'depth', 0])->orderBy('lft');
+        $depth = $sub ? $category->depth : 0;
+        $query = Category::find()->andWhere(['>', 'depth', $depth])->orderBy('lft');
 
         if ($category) {
             $criteria = ['or', ['depth' => 1]];

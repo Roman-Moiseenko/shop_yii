@@ -103,7 +103,8 @@ class ProductReadRepository
 
         if ($form->category) {
             if ($category = Category::findOne($form->category)) {
-                $ids = ArrayHelper::merge([$category->id], $category->getChildren()->select('id')->column());
+                $ids = ArrayHelper::merge([$category->id], $category->getLeaves()->select('id')->column());
+
                 $query->joinWith(['categoryAssignments ca'], false);
                 $query->andWhere(['or', ['p.category_id' => $ids], ['ca.category_id' => $ids]]);
                 $query->groupBy('p.id');

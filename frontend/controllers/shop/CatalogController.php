@@ -155,9 +155,17 @@ class CatalogController extends Controller
     public function actionSearch()
     {
         $form = new SearchForm();
+        if (isset(\Yii::$app->request->queryParams['category'])) {
+            $id = \Yii::$app->request->queryParams['category'];
+            $form->category = $id;
+            $form->setAttribute($id);
+        }
+
         $form->load(\Yii::$app->request->queryParams);
         $form->validate();
         $dataProvider = $this->products->search($form);
+
+
 
         return $this->render('search', [
             'dataProvider' => $dataProvider,
