@@ -5,7 +5,6 @@
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html; ?>
 
-
 <div class="panel panel-default">
     <div class="panel-body">
 <?php $form = ActiveForm::begin(['action' => ['/shop/catalog/search'], 'method' => 'get']) ?>
@@ -25,7 +24,7 @@ use yii\helpers\Html; ?>
 <?php foreach ($searchForm->values as $i => $value): ?>
     <div class="row">
         <div class="col-md-4">
-            <?php $text =''; if ($value->isAttributeSafe('from') && $value->isAttributeSafe('to')) {$text = ' (введите диапозон)';} ?>
+            <?php $text =''; if ($value->isAttributeSafe('from') && $value->isAttributeSafe('to')) {$text = ' (введите диапазон)';} ?>
             <?= Html::encode($value->getCharacteristicName() . $text) ?>
         </div>
         <?php if ($variants = $value->variantsList()): ?>

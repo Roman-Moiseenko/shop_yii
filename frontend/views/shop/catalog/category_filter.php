@@ -22,6 +22,7 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Html; ?>
 <aside id="column-left" class="col-sm-3 hidden-xs">
 
+    <!-- Виджет Категории, подкатегории -->
 
     <div class="panel panel-default">
         <div class="panel-body">
@@ -36,7 +37,7 @@ use yii\helpers\Html; ?>
             <?php foreach ($searchForm->values as $i => $value): ?>
                 <div class="row">
                     <div class="col-md-12">
-                        <?php $text =''; if ($value->isAttributeSafe('from') && $value->isAttributeSafe('to')) {$text = ' (введите диапозон)';} ?>
+                        <?php $text =''; if ($value->isAttributeSafe('from') && $value->isAttributeSafe('to')) {$text = ' (введите диапазон)';} ?>
                         <?= Html::encode($value->getCharacteristicName() . $text) ?>
                     </div>
                 </div>

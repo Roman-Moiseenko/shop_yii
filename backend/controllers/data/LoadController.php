@@ -5,6 +5,7 @@ namespace backend\controllers\data;
 
 
 use shop\entities\shop\Hidden;
+use shop\forms\data\BrandLoadForm;
 use shop\forms\data\FilesForm;
 
 use shop\repositories\HiddenRepository;
@@ -67,20 +68,31 @@ class LoadController extends Controller
         ]);
     }
 
-    public function actionBrands()
+    public function actionBrands($category = null, $brand = null)
     {
+        $form = new BrandLoadForm();
+
         if (Yii::$app->request->isPost) {
             try {
-                $this->service->updateBrand();
+
+                if (isset(\Yii::$app->request->bodyParams['BrandLoadForm'])) {
+                    $category = \Yii::$app->request->bodyParams['BrandLoadForm']['category'];
+                    $brand = \Yii::$app->request->bodyParams['BrandLoadForm']['brand'];
+                    $this->service->setBrand($category, $brand);
+                } else {
+                    $this->service->updateBrand();
+                }
             } catch (\DomainException $e) {
                 \Yii::$app->errorHandler->logException($e);
                 \Yii::$app->session->setFlash('error', $e->getMessage());
             }
         }
         return $this->render('brands', [
-
+            'model' => $form
         ]);
     }
+
+
 
     public function actionAttributes()
     {

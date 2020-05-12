@@ -438,13 +438,6 @@ class LoaderManageService
 
     public function updateAttributes()
     {
-
-       /* $dd = '3';
-        $ddd = '1';
-        $d = $dd + $ddd;
-        if (is_numeric($dd)) echo '====>';
-        echo $d;
-        exit();*/
         $regs = RegAttribute::find()->all();
         foreach ($regs as $reg) {
 
@@ -459,7 +452,6 @@ class LoaderManageService
                 ->all();
             foreach ($products as $product) {
                preg_match_all($reg->reg_match, $product->name, $value);
-               //echo '<pre>';print_r($value); exit();
                if ($count = count($value[1]) > 0    ) {
                    if ((count($value[1]) > 1) && ($value[1][0] == 3)) {
                        $val = 0;
@@ -476,5 +468,21 @@ class LoaderManageService
                }
             }
         }
+    }
+
+    public function setBrand($category_id, $brand_id)
+    {
+        $category = Category::findOne(['id' => $category_id]);
+        $categories = Category::find()->select('id')
+            ->andWhere(['>=', 'lft', $category->lft])
+            ->andWhere(['<=', 'rgt', $category->rgt])
+            ->andWhere(['>=', 'depth', $category->depth])
+            ->asArray()->column();
+
+        $list = implode(',', $categories);
+        \Yii::$app->db->createCommand(
+            'UPDATE shop_products SET brand_id = ' . $brand_id . ' WHERE category_id IN (' . $list . ')'
+        )->execute();
+
     }
 }

@@ -25,7 +25,7 @@ class ListHelper
 
     public static function brands(): array
     {
-        return ArrayHelper::map(Brand::find()->orderBy('id')->asArray()->all(),
+        return ArrayHelper::map(Brand::find()->orderBy('name')->asArray()->all(),
             'id',
             function (array $brand) {
                 return $brand['name'];
