@@ -464,7 +464,7 @@ class LoaderManageService
                    $product->setValue($reg->characteristic_id, $val);
                    $this->products->save($product);
                } else {
-                   //Запись в  файл
+                   //TODO Запись в  файл
                }
             }
         }

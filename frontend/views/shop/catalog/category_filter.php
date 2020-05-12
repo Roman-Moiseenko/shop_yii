@@ -24,6 +24,8 @@ use yii\helpers\Html; ?>
 
     <!-- Виджет Категории, подкатегории -->
 
+
+
     <div class="panel panel-default">
         <div class="panel-body">
             <?php $form = ActiveForm::begin(['action' => ['/shop/catalog/category', 'id' => $category->id], 'method' => 'get']) ?>
