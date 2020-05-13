@@ -56,7 +56,7 @@ class ProductReadRepository
 
     public function find($id): ?Product
     {
-        return Product::find()->andWhere(['id'=> $id])->one();
+        return Product::find()->andWhere(['id' => $id])->one();
     }
 
     public function getFeatured($limit)
@@ -66,7 +66,7 @@ class ProductReadRepository
 
     private function getProvider(ActiveQuery $query): ActiveDataProvider
     {
-        return  new ActiveDataProvider([
+        return new ActiveDataProvider([
                 'query' => $query,
                 'sort' => [
                     'defaultOrder' => ['id' => SORT_DESC],
@@ -207,5 +207,17 @@ class ProductReadRepository
             'sort' => $sort,
         ]);
 */
+    }
+
+    public function getWishlist($userId)
+    {
+        //TODO
+        return new ActiveDataProvider([
+            'query' => Product::find()
+                ->alias('p')->active('p')
+                ->joinWith('wishlistItems w', false, 'INNER JOIN')
+                ->andWhere(['w.user_id' => $userId]),
+            'sort' => false,
+        ]);
     }
 }

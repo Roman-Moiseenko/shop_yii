@@ -5,6 +5,7 @@
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html; ?>
 
+НЕ ИСПОЛЬЗУЕТСЯ
 
 <div class="panel panel-default">
     <div class="panel-body">

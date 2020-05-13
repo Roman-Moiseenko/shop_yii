@@ -11,6 +11,7 @@ use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
 use shop\entities\shop\product\queries\ProductQuery;
 use shop\entities\shop\Tag;
+use shop\entities\user\WishlistItem;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\UploadedFile;
@@ -184,6 +185,8 @@ class Product extends ActiveRecord
         $values[] = Value::create($id, $value);
         $this->values = $values;
     }
+
+
     public function getValue($id): Value
     {
         $values = $this->values;
@@ -565,5 +568,8 @@ class Product extends ActiveRecord
     {
         return new ProductQuery(static::class);
     }
-
+    public function getWishlistItems(): ActiveQuery
+    {
+        return $this->hasMany(WishlistItem::class, ['product_id' => 'id']);
+    }
 }

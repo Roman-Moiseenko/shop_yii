@@ -24,6 +24,7 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property Network[] $networks
+ * @property WishlistItem[] $wishlistItems
  * property string $password write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -150,6 +151,32 @@ class User extends ActiveRecord implements IdentityInterface
      */
 
     /** Repository ===================> */
+
+    public function addToWishlist($productId): void
+    {
+        $items = $this->wishlistItems;
+        foreach ($items as $item) {
+            if ($item->isForProduct($productId)) {
+                throw new \DomainException('Уже в избранном.');
+            }
+        }
+        $items[] = WishlistItem::create($productId);
+        $this->wishlistItems = $items;
+    }
+
+    public function removeFromWishlist($productId): void
+    {
+        $items = $this->wishlistItems;
+        foreach ($items as $i => $item) {
+            if ($item->isForProduct($productId)) {
+                unset($items[$i]);
+                $this->wishlistItems = $items;
+                return;
+            }
+        }
+        throw new \DomainException('Не найден в избранном.');
+    }
+
     public static function findIdentity($id)
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
@@ -303,5 +330,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function removeVerificationToken()
     {
         $this->verification_token = null;
+    }
+
+    public function getWishlistItems(): ActiveQuery
+    {
+        return $this->hasMany(WishlistItem::class, ['user_id' => 'id']);
     }
 }

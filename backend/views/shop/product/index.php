@@ -1,6 +1,7 @@
 <?php
 
 use shop\entities\shop\product\Product;
+use shop\helpers\ListHelper;
 use shop\helpers\PriceHelper;
 //use shop\helpers\ProductHelper;
 use yii\grid\ActionColumn;
@@ -41,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'Бренд',
                         'attribute' => 'brand_id',
                         'value' => 'brand.name',
-                        'filter' => $searchModel->brandList(),
+                        'filter' => ListHelper::brands(),
                     ],
                     [
                         'label' => 'Товар',

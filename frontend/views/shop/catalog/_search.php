@@ -7,6 +7,7 @@ use shop\helpers\ListHelper;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html; ?>
 
+<!-- ДЛЯ РАСШИРЕННОГО ПОИСКА -->
 <div class="panel panel-default">
     <div class="panel-body">
 <?php $form = ActiveForm::begin(['action' => ['/shop/catalog/search'], 'method' => 'get']) ?>

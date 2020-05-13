@@ -45,9 +45,9 @@ class UserRepository
         return (bool) User::findByPasswordResetToken($token);
     }
 
-    public function save(User $user, $runValidation = true, $attributeNames = null): void
+    public function save(User $user): void
     {
-        if (!$user->save($runValidation, $attributeNames)) {
+        if (!$user->save()) {
             throw new \RuntimeException('Ошибка сохранения.');
         }
         //$this->dispatcher->dispatchAll($user->releaseEvents());

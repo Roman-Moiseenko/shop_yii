@@ -100,7 +100,7 @@ MagnificPopupAsset::register($this);
     </div>
     <div class="col-sm-4">
         <div class="btn-group">
-            <button type="button" data-toggle="tooltip" class="btn btn-default" title="В Избранное" onclick="wishlist.add('47');">
+            <button type="button" data-toggle="tooltip" class="btn btn-default"  title="В избранное" href="<?= Url::to(['/cabinet/wishlist/add', 'id' => $product->id]) ?>" data-method="post">
                 <i class="fa fa-heart"></i>
             </button>
             <button type="button" data-toggle="tooltip" class="btn btn-default" title="Сравнить" onclick="compare.add('47');">
