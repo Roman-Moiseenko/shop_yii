@@ -65,7 +65,7 @@ use yii\helpers\Html; ?>
 
             <div class="row">
                 <div class="col-md-12">
-                    <?= Html::submitButton('Найти', ['class' => 'btn btn-primary btn-lg btn-block']) ?>
+                    <?= Html::submitButton('Показать', ['class' => 'btn btn-primary btn-lg btn-block']) ?>
                 </div>
             </div>
             <?php ActiveForm::end() ?>

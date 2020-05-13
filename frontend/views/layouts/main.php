@@ -4,6 +4,7 @@
 /* @var $content string */
 
 
+use shop\helpers\WishlistHelper;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
@@ -39,15 +40,15 @@ AppAsset::register($this);
                 <li class="dropdown"><a href="/index.php?route=account/account" title="Мой кабинет" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <span class="hidden-xs hidden-sm hidden-md">Мой кабинет</span> <span class="caret"></span></a>
                     <ul class="dropdown-menu dropdown-menu-right">
                         <?php if (Yii::$app->user->isGuest): ?>
-                            <li><a href="<?= Html::encode(Url::to(['/auth/auth/login'])) ?>">Login</a></li>
-                            <li><a href="<?= Html::encode(Url::to(['/auth/signup/request'])) ?>">Signup</a></li>
+                            <li><a href="<?= Html::encode(Url::to(['/auth/auth/login'])) ?>">Войти</a></li>
+                            <li><a href="<?= Html::encode(Url::to(['/auth/signup/request'])) ?>">Регистрация</a></li>
                         <?php else: ?>
-                            <li><a href="<?= Html::encode(Url::to(['/cabinet/default/index'])) ?>">Cabinet</a></li>
-                            <li><a href="<?= Html::encode(Url::to(['/auth/auth/logout'])) ?>" data-method="post">Logout</a></li>
+                            <li><a href="<?= Html::encode(Url::to(['/cabinet/default/index'])) ?>">Кабинет</a></li>
+                            <li><a href="<?= Html::encode(Url::to(['/auth/auth/logout'])) ?>" data-method="post">Выйти</a></li>
                         <?php endif; ?>
                     </ul>
                 </li>
-                <li><a href="<?= Url::to(['/cabinet/wishlist/index']) ?>" id="wishlist-total" title="Избранное (0)"><i class="fa fa-heart"></i> <span class="hidden-xs hidden-sm hidden-md">Избранное (0)</span></a></li>
+                <li><a href="<?= Url::to(['/cabinet/wishlist/index']) ?>" id="wishlist-total" title="Избранное (0)"><i class="fa fa-heart"></i> <span class="hidden-xs hidden-sm hidden-md">Избранное (<?= WishlistHelper::count()?>)</span></a></li>
                 <li><a href="<?= Url::to(['/shop/cart/index']) ?>" title="Корзина"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">Корзина</span></a></li>
                 <li><a href="/index.php?route=checkout/checkout" title="Checkout"><i class="fa fa-share"></i> <span class="hidden-xs hidden-sm hidden-md">Checkout</span></a></li>
             </ul>
