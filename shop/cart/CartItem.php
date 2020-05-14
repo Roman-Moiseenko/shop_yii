@@ -8,6 +8,7 @@ use shop\entities\shop\product\Product;
 
 class CartItem
 {
+    /** @var Product */
     private $product;
     private $quantity;
     public function __construct($product, $quantity)
@@ -46,6 +47,8 @@ class CartItem
 
     public function plus($quantity)
     {
+        /** Превышение остатка */
+        if ($this->quantity + $quantity > $this->product->remains) return new static($this->product, $this->product->remains);
         return new static($this->product, $this->quantity + $quantity);
     }
     public function sub($quantity):? self
@@ -54,6 +57,8 @@ class CartItem
     }
     public function set($quantity)
     {
+        /** Превышение остатка */
+        if ($quantity > $this->product->remains) return new static($this->product, $this->product->remains);
         return new static($this->product, $quantity);
     }
 }
