@@ -2,10 +2,21 @@
 
 namespace shop\cart;
 
+use shop\cart\storage\StorageInterface;
+
 class Cart
 {
     /** @var CartItem[] */
     private $items;
+    /**
+     * @var StorageInterface
+     */
+    private $storage;
+
+    public function __construct(StorageInterface $storage)
+    {
+        $this->storage = $storage;
+    }
 
     /** @return CartItem[] */
     public function getItems(): array
@@ -86,13 +97,13 @@ class Cart
     private function loadItems(): void
     {
         if ($this->items === null) {
-            return \Yii::$app->session->get('cart', []);
+            $this->items = $this->storage->load();
         }
     }
 
     private function saveItems(): void
     {
-        \Yii::$app->session->set('cart', $this->items);
+        $this->storage->save($this->items);
     }
 
     public function clear()

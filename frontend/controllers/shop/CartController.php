@@ -4,6 +4,7 @@
 namespace frontend\controllers\shop;
 
 
+use shop\forms\shop\AddToCartForm;
 use shop\readModels\shop\ProductReadRepository;
 use shop\repositories\NotFoundException;
 use shop\services\shop\CartService;
@@ -59,12 +60,22 @@ class CartController extends Controller
             throw new NotFoundHttpException('Товар не найден');
         }
 
-        try {
+      /*  try {
             $this->service->add($product->id, 1);
         } catch (\DomainException $e) {
             \Yii::$app->errorHandler->logException($e);
             \Yii::$app->session->setFlash('error', $e->getMessage());
-        }
+        }*/
+        $form = new AddToCartForm($product);
+        if ($form->load(\Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $this->service->add($product->id, $form);
+                return $this->redirect(['index']);
+            } catch (\DomainException $e) {
+                \Yii::$app->errorHandler->logException($e);
+                \Yii::$app->session->setFlash('error', $e->getMessage());
+            }
 
+        }
     }
 }

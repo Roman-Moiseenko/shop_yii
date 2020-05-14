@@ -12,6 +12,7 @@ use yii\helpers\ArrayHelper;
 
 class AddToCartForm extends Model
 {
+    /** @var float $quantity */
     public $quantity;
     private $_product;
 
