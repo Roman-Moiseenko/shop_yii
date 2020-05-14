@@ -69,4 +69,26 @@ class CartController extends Controller
             \Yii::$app->session->setFlash('error', $e->getMessage());
         }
     }
+
+    public function actionQuantity($id)
+    {
+        try {
+            $this->service->set($id, (int)\Yii::$app->request->post('quantity'));
+        } catch (\DomainException $e) {
+            \Yii::$app->errorHandler->logException($e);
+            \Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+        return $this->redirect(['index']);
+    }
+    public function actionRemove($id)
+    {
+        try {
+            $this->service->remove($id);
+        } catch (\DomainException $e) {
+            \Yii::$app->errorHandler->logException($e);
+            \Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+        return $this->redirect(['index']);
+    }
+
 }
