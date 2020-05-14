@@ -12,11 +12,8 @@ use yii\helpers\ArrayHelper;
 
 class AddToCartForm extends Model
 {
-    public $modification;
     public $quantity;
-
     private $_product;
-
 
     public function __construct(Product $product, $config = [])
     {
@@ -27,16 +24,8 @@ class AddToCartForm extends Model
 
     public function rules()
     {
-        return array_filter([
-            $this->_product->modifications ? ['modification', 'integer'] : false,
+        return [
             ['quantity', 'required'],
-        ]);
-    }
-
-    public function modificationsList(): array
-    {
-        return ArrayHelper::map($this->_product->modifications, 'id', function (Modification $modification) {
-            return $modification->code . ' - ' . $modification->name . ' (' . PriceHelper::format($modification->price ?: $this->_product->price_new) . ')';
-        });
+        ];
     }
 }

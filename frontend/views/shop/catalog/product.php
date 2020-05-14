@@ -126,10 +126,9 @@ MagnificPopupAsset::register($this);
             <li>На складе: <?=Html::encode(ProductHelper::remains($product));?></li>
         </ul>
         <div id="product"> <hr>
-                <h3>Available Options</h3>
+                <h3>Придумать название</h3>
             <?php $form = ActiveForm::begin() ?>
-            <?= $form->field($addToCartForm, 'modification')
-            ->dropDownList($addToCartForm->modificationsList(), ['prompt' => ''])->label('Модификации');?>
+            <?php //TODO Возможно добавить какие нибудь услуги? ?>
             <?= $form->field($addToCartForm, 'quantity')->textInput()->label('Кол-во') ?>
 
             <div class="form-group">
