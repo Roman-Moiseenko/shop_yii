@@ -60,22 +60,13 @@ class CartController extends Controller
             throw new NotFoundHttpException('Товар не найден');
         }
 
-      /*  try {
+        try {
             $this->service->add($product->id, 1);
+            \Yii::$app->session->setFlash('success', 'Добавлен в корзину!');
+            return $this->redirect(\Yii::$app->request->referrer);
         } catch (\DomainException $e) {
             \Yii::$app->errorHandler->logException($e);
             \Yii::$app->session->setFlash('error', $e->getMessage());
-        }*/
-        $form = new AddToCartForm($product);
-        if ($form->load(\Yii::$app->request->post()) && $form->validate()) {
-            try {
-                $this->service->add($product->id, $form);
-                return $this->redirect(['index']);
-            } catch (\DomainException $e) {
-                \Yii::$app->errorHandler->logException($e);
-                \Yii::$app->session->setFlash('error', $e->getMessage());
-            }
-
         }
     }
 }

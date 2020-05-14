@@ -2,6 +2,8 @@
 
 namespace shop\cart;
 
+use shop\cart\cost\calculator\CalculatorInterface;
+use shop\cart\cost\Cost;
 use shop\cart\storage\StorageInterface;
 
 class Cart
@@ -12,10 +14,12 @@ class Cart
      * @var StorageInterface
      */
     private $storage;
+    private $calculator;
 
-    public function __construct(StorageInterface $storage)
+    public function __construct(StorageInterface $storage, CalculatorInterface $calculator)
     {
         $this->storage = $storage;
+        $this->calculator = $calculator;
     }
 
     /** @return CartItem[] */
@@ -31,14 +35,15 @@ class Cart
         return count($this->items);
     }
 
-    public function getCost(): float
+    public function getCost(): Cost
     {
         $this->loadItems();
-        $coast = 0.0;
+        return $this->calculator->getCoast($this->items);
+        /*$coast = 0.0;
         foreach ($this->items as $item) {
             $coast += (float)($item->getCost());
         }
-        return $coast;
+        return $coast;*/
     }
 
     public function add(CartItem $item)

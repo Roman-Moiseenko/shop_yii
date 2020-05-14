@@ -32,10 +32,10 @@ class CartService
         return $this->cart;
     }
 
-    public function add($productId, AddToCartForm $form): void
+    public function add($productId, $quantity): void
     {
         $product = $this->products->get($productId);
-        $this->cart->add(new CartItem($product, $form->quantity));
+        $this->cart->add(new CartItem($product, $quantity));
     }
 
     public function set($id, $quantity): void
@@ -43,10 +43,10 @@ class CartService
         $this->cart->set($id, $quantity);
     }
 
-    public function sub($productId, AddToCartForm $form): void
+    public function sub($productId, $quantity): void
     {
         $product = $this->products->get($productId);
-        $this->cart->sub(new CartItem($product, $form->quantity));
+        $this->cart->sub(new CartItem($product, $quantity));
     }
 
     public function remove($id)

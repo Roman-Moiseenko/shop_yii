@@ -30,7 +30,7 @@ class CartItem
         return $this->product;
     }
 
-    public function getQuantity(): int
+    public function getQuantity()//: int
     {
         return $this->quantity;
     }
