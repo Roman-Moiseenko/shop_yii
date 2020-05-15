@@ -131,13 +131,13 @@ class CatalogController extends Controller
         if (!$product = $this->products->find($id)) {
             throw new NotFoundHttpException('Товар не найден');
         }
-        $addToCartForm = new AddToCartForm($product);
+       // $addToCartForm = new AddToCartForm($product);
         $reviewForm = new ReviewForm();
 
-        if ($addToCartForm->load(Yii::$app->request->post()) && $addToCartForm->validate()) {
+    /*    if ($addToCartForm->load(Yii::$app->request->post()) && $addToCartForm->validate()) {
 
 
-        }
+        }*/
         if ($reviewForm->load(Yii::$app->request->post()) && $reviewForm->validate()) {
 
             //TODO Переделать под сервисы
@@ -147,7 +147,7 @@ class CatalogController extends Controller
         }
         return $this->render('product', [
             'product' => $product,
-            'addToCartForm' => $addToCartForm,
+         //   'addToCartForm' => $addToCartForm,
             'reviewForm' => $reviewForm,
         ]);
     }

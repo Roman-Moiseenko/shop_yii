@@ -48,7 +48,11 @@ class CategorySearch extends Category
             'query' => $query,
             'sort' => [
                 'defaultOrder' => ['lft' => SORT_ASC]
-            ]
+            ],
+            'pagination' => [
+                'defaultPageSize' => 600,
+                'pageSizeLimit' => [100, 600],
+            ],
         ]);
 
         $this->load($params);

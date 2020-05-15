@@ -59,9 +59,14 @@ class CartController extends Controller
         if (!$product = $this->products->find($id)) {
             throw new NotFoundHttpException('Товар не найден');
         }
-
+        $quantity = \Yii::$app->request->post('quantity');
+        if (empty($quantity)) $quantity = 1; //TODO При 0 => empty !!!!
+        if ($quantity < 1) {
+            \Yii::$app->session->setFlash('error', 'Кол-во товара должно быть больше 0 !');
+            return $this->redirect(\Yii::$app->request->referrer);
+        }
         try {
-            $this->service->add($product->id, 1);
+            $this->service->add($product->id, $quantity);
             \Yii::$app->session->setFlash('success', 'Добавлен в корзину!');
             return $this->redirect(\Yii::$app->request->referrer);
         } catch (\DomainException $e) {
@@ -88,7 +93,8 @@ class CartController extends Controller
             \Yii::$app->errorHandler->logException($e);
             \Yii::$app->session->setFlash('error', $e->getMessage());
         }
-        return $this->redirect(['index']);
+        return $this->redirect(\Yii::$app->request->referrer);
+        //return $this->redirect(['index']);
     }
 
 }

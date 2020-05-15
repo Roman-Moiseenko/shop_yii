@@ -4,6 +4,7 @@
 /* @var $content string */
 
 
+use frontend\widgets\CartWidget;
 use shop\helpers\WishlistHelper;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -70,14 +71,9 @@ AppAsset::register($this);
 <button type="button" class="btn btn-default btn-lg"><i class="fa fa-search"></i></button>
 </span>
                 </div></div>
-            <div class="col-sm-3"><div id="cart" class="btn-group btn-block">
-                    <button type="button" data-toggle="dropdown" data-loading-text="Loading..." class="btn btn-inverse btn-block btn-lg dropdown-toggle"><i class="fa fa-shopping-cart"></i> <span id="cart-total">0 item(s) - $0.00</span></button>
-                    <ul class="dropdown-menu pull-right">
-                        <li>
-                            <p class="text-center">Ваша корзина пуста.</p>
-                        </li>
-                    </ul>
-                </div>
+            <div class="col-sm-3">
+                <!-- КОРЗИНА ВИДЖЕТ -->
+                <?= CartWidget::widget()?>
             </div>
         </div>
     </div>

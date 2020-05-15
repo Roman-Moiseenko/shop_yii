@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td class="text-left">
                         <?= Html::beginForm(['quantity', 'id' => $item->getId()]); ?>
                         <div class="input-group btn-block" style="max-width: 200px;">
-                            <input type="text" name="quantity" value="<?= $item->getQuantity() ?>" size="1" class="form-control" />
+                            <input type="text" name="quantity" value="<?= $item->getQuantity() ?>" size="1" class="form-control"  />
                             <span class="input-group-btn">
                                     <button type="submit" title="" class="btn btn-primary" data-original-title="Update"><i class="fa fa-refresh"></i></button>
                                     <a title="Remove" class="btn btn-danger" href="<?= Url::to(['remove', 'id' => $item->getId()]) ?>" data-method="post"><i class="fa fa-times-circle"></i></a>
@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $cost = $cart->getCost() ?>
             <table class="table table-bordered">
                 <tr>
-                    <td class="text-right"><strong>Sub-Total:</strong></td>
+                    <td class="text-right"><strong>Итого:</strong></td>
                     <td class="text-right"><?= PriceHelper::format($cost->getOrigin()) ?></td>
                 </tr>
                 <?php foreach ($cost->getDiscounts() as $discount): ?>
@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </tr>
                 <?php endforeach; ?>
                 <tr>
-                    <td class="text-right"><strong>Итого:</strong></td>
+                    <td class="text-right"><strong>К оплате:</strong></td>
                     <td class="text-right"><?= PriceHelper::format($cost->getTotal()) ?></td>
                 </tr>
             </table>

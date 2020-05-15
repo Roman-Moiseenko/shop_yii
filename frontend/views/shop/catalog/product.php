@@ -125,16 +125,17 @@ MagnificPopupAsset::register($this);
             <li></li>
             <li>На складе: <?=Html::encode(ProductHelper::remains($product));?></li>
         </ul>
-        <div id="product"> <hr>
-                <h3>Придумать название</h3>
-            <?php $form = ActiveForm::begin() ?>
-            <?php //TODO Возможно добавить какие нибудь услуги? ?>
-            <?= $form->field($addToCartForm, 'quantity')->textInput()->label('Кол-во') ?>
-
+        <div id="product" class="required"> <hr>
+                <h3></h3>
+            <?= Html::beginForm(['/shop/cart/add', 'id' => $product->id]); ?>
+            <label class="control-label" for="quantity-product-to-cart">Кол-во</label>
+                <input id="quantity-product-to-cart" type="text" name="quantity" value="1" size="1" class="form-control" required />
+<p></p>
             <div class="form-group">
                 <?=Html::submitButton('В корзину', ['class' => 'btn btn-primary btn-lg btn-block'])?>
             </div>
-            <?php ActiveForm::end() ?>
+            <?= Html::endForm() ?>
+
         </div>
         <div class="rating">
             <p>

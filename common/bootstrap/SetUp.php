@@ -17,6 +17,7 @@ use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\caching\Cache;
 use yii\di\Instance;
+use yii\web\Session;
 
 class SetUp implements BootstrapInterface
 {
@@ -56,7 +57,7 @@ class SetUp implements BootstrapInterface
 
         $container->setSingleton(Cart::class, function () use ($app) {
             return new Cart(
-                new SessionStorage('cart'),
+                new SessionStorage('cart', new Session()),
                 new SimpleCost()
             );
         });
