@@ -211,7 +211,6 @@ class ProductReadRepository
 
     public function getWishlist($userId)
     {
-        //TODO
         return new ActiveDataProvider([
             'query' => Product::find()
                 ->alias('p')->active('p')

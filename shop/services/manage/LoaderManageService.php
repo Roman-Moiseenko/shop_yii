@@ -488,7 +488,6 @@ class LoaderManageService
 
     private function LogErrorPregMatch(Product $product, RegAttribute $reg): void
     {
-        //TODO Запись в  файл
         $filename = dirname(__DIR__, 3) . '/static/data/errors_preg_match.load';
         $fp = fopen($filename, 'a');
         fwrite($fp, $product->id . '.' . $product->name . ' => ' . $reg->reg_match . "\n");

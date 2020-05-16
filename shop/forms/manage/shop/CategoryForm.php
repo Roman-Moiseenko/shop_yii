@@ -50,7 +50,6 @@ class CategoryForm extends CompositeForm
             ['code1C', 'string', 'max' => 11],
             [['description'], 'string'],
             ['slug', SlugValidator::class],
-            //TODO Валидация code1C?????
             [['name', 'slug'], 'unique', 'targetClass' => Category::class, 'filter' => $this->_category ? ['<>', 'id', $this->_category->id] : null]
 
         ];
