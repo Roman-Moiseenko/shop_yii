@@ -18,6 +18,7 @@ use shop\repositories\shop\CategoryRepository;
 use shop\repositories\shop\ProductRepository;
 use shop\repositories\shop\TagRepository;
 use shop\services\TransactionManager;
+use yii\db\Exception;
 use yii\web\UploadedFile;
 
 class LoaderManageService
@@ -388,20 +389,28 @@ class LoaderManageService
         $price_old = ($product->price_new > (float)$data['price']) ? $product->price_new : 0;
         $product->updatePrice($data['price'], $price_old);
 
-
         $this->products->save($product);
-        //if $name изменилось => regProduct()
     }
 
     private function regProduct(Product $product): void
     {
-        //По code1С определяем список параметров и рег.выражение
-       // $code1C_parent = Category::find()->select('code1C')->andWhere(['id' => $product->category_id])->one();
+        /** Низкоуровневый запрос */
+       $sql =   'SELECT r.* FROM ' . RegAttribute::tableName() . ' AS r ' .
+                'LEFT JOIN ' . Category::tableName() .' c ON c.id=r.category_id WHERE ' .
+                'c.lft <= (SELECT lft FROM ' . Category::tableName() .' WHERE id=(SELECT category_id FROM ' . Product::tableName() . ' WHERE id = ' . $product->id .')) ' .
+                ' AND '.
+                'c.rgt >= (SELECT rgt FROM ' . Category::tableName() .' WHERE id=(SELECT category_id FROM ' . Product::tableName() . ' WHERE id = ' . $product->id .'))';
 
-//TODO
-        //...
+        try {
+            $results = \Yii::$app->db->createCommand($sql)->queryAll();
 
-        $this->products->save($product);
+            foreach ($results as $result) {
+                $reg = RegAttribute::create($result['category_id'], $result['reg_match'], $result['characteristic_id']);
+                $this->pregMatchAttribute($product, $reg);
+            }
+        } catch (Exception $e) {
+            \Yii::$app->errorHandler->logException($e);
+        }
     }
 
     private function getBrandFromName($name):? int
@@ -438,6 +447,7 @@ class LoaderManageService
 
     public function updateAttributes()
     {
+        /** @var RegAttribute $regs */
         $regs = RegAttribute::find()->all();
         foreach ($regs as $reg) {
 
@@ -451,22 +461,27 @@ class LoaderManageService
                 ->andWhere(['category_id' => array_merge([$reg->category_id], $categories)])
                 ->all();
             foreach ($products as $product) {
-               preg_match_all($reg->reg_match, $product->name, $value);
-               if ($count = count($value[1]) > 0    ) {
-                   if ((count($value[1]) > 1) && ($value[1][0] == 3)) {
-                       $val = 0;
-                       foreach ($value[1] as $item) {
-                           $val += (int)$item;
-                       }
-                   } else {
-                       $val = $value[1][0];
-                   }
-                   $product->setValue($reg->characteristic_id, $val);
-                   $this->products->save($product);
-               } else {
-                   //TODO Запись в  файл
-               }
+               $this->pregMatchAttribute($product, $reg);
             }
+        }
+    }
+
+    private function pregMatchAttribute(Product $product, RegAttribute $reg)
+    {
+        preg_match_all($reg->reg_match, $product->name, $value);
+        if ($count = count($value[1]) > 0    ) {
+            if ((count($value[1]) > 1) && ($value[1][0] == 3)) {
+                $val = 0;
+                foreach ($value[1] as $item) {
+                    $val += (int)$item;
+                }
+            } else {
+                $val = $value[1][0];
+            }
+            $product->setValue($reg->characteristic_id, $val);
+            $this->products->save($product);
+        } else {
+            //TODO Запись в  файл
         }
     }
 

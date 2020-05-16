@@ -45,17 +45,18 @@ class CartItem
         return $this->product->price_new;
     }
 
-    public function plus($quantity)
+    public function plus($quantity): self
     {
         /** Превышение остатка */
         if ($this->quantity + $quantity > $this->product->remains) return new static($this->product, $this->product->remains);
         return new static($this->product, $this->quantity + $quantity);
     }
+    /** Не используется */
     public function sub($quantity):? self
     {
         return ($this->quantity > $quantity) ? new static($this->product, $this->quantity - $quantity) : null;
     }
-    public function set($quantity)
+    public function set($quantity): self
     {
         /** Превышение остатка */
         if ($quantity > $this->product->remains) return new static($this->product, $this->product->remains);
