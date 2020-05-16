@@ -481,8 +481,18 @@ class LoaderManageService
             $product->setValue($reg->characteristic_id, $val);
             $this->products->save($product);
         } else {
-            //TODO Запись в  файл
+
+            $this->LogErrorPregMatch($product, $reg);
         }
+    }
+
+    private function LogErrorPregMatch(Product $product, RegAttribute $reg): void
+    {
+        //TODO Запись в  файл
+        $filename = dirname(__DIR__, 3) . '/static/data/errors_preg_match.load';
+        $fp = fopen($filename, 'a');
+        fwrite($fp, $product->id . '.' . $product->name . ' => ' . $reg->reg_match . "\n");
+        fclose($fp);
     }
 
     public function setBrand($category_id, $brand_id)
