@@ -15,20 +15,14 @@ class Discount
      * @var string
      */
     private $name;
-    //Абсолютная (руб) или Относительная (%)
-    private $absolute;
 
-    public function __construct(float $value, string $name, bool $absolute = true)
+
+    public function __construct(float $value, string $name)
     {
         $this->value = $value;
         $this->name = $name;
-        $this->absolute = $absolute;
     }
 
-    public function isAbsolute()
-    {
-        return $this->absolute;
-    }
     public function getValue()
     {
         return $this->value;
@@ -44,10 +38,6 @@ class Discount
 
     public function getString(): string
     {
-        if ($this->isAbsolute()) {
-            return $this->value . ' руб.';
-        } else {
-            return $this->value . ' %';
-        }
+        return $this->value . ' %';
     }
 }

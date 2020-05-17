@@ -39,11 +39,6 @@ class Cart
     {
         $this->loadItems();
         return $this->calculator->getCoast($this->items);
-        /*$coast = 0.0;
-        foreach ($this->items as $item) {
-            $coast += (float)($item->getCost());
-        }
-        return $coast;*/
     }
 
     public function add(CartItem $item)

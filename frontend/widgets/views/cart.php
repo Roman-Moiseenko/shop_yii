@@ -48,8 +48,8 @@ use yii\helpers\Url;
                     </tr>
                     <tr>
                         <?php foreach ($cart->getCost()->getDiscounts() as $discount):?>
-                            <td class="text-right"><strong><?= Html::encode($discount->name)?></strong></td>
-                            <td class="text-right"><strong><?= $discount->getString()?></strong></td>
+                            <td class="text-right"><strong><?= Html::encode($discount->getName())?> (<?= $discount->getString()?>)</strong></td>
+                            <td class="text-right"><strong><?= PriceHelper::format($cart->getCost()->getOrigin() * $discount->getValue() /100) ?></strong></td>
                         <?php endforeach;?>
                     </tr>
                     <tr>

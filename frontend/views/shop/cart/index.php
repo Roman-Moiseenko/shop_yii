@@ -73,8 +73,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 </tr>
                 <?php foreach ($cost->getDiscounts() as $discount): ?>
                     <tr>
-                        <td class="text-right"><strong><?= Html::encode($discount->getName()) ?>:</strong></td>
-                        <td class="text-right"><?= PriceHelper::format($discount->getValue()) ?></td>
+                        <td class="text-right"><strong><?= Html::encode($discount->getName()) ?> (<?= $discount->getString()?>):</strong></td>
+                        <td class="text-right"><?= PriceHelper::format($cart->getCost()->getOrigin() * $discount->getValue() /100) ?></td>
                     </tr>
                 <?php endforeach; ?>
                 <tr>

@@ -29,16 +29,12 @@ class Cost
     {
         $val = $this->value;
         return $val - array_sum(array_map(function (Discount $discount) use($val) {
-            if ($discount->isAbsolute()) {
-                    return $discount->getValue();
-                } else {
-                    return $val * (1 - $discount->getValue()/100); // процентная скидка
-                }
+                    return $val * ($discount->getValue()/100); // процентная скидка
             }, $this->discounts));
     }
 
     /**
-     * @return array
+     * @return Discount[]
      */
     public function getDiscounts(): array
     {
