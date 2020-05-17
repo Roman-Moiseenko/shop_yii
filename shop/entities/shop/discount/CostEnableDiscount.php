@@ -15,4 +15,9 @@ class CostEnableDiscount extends EnabledDiscountInterface
         if ((int)$discount->_from <= $cost->getOrigin() && $cost->getOrigin() <= (int)$discount->_to) return true;
         return false;
     }
+
+    public static function getName(): string
+    {
+        return  ' По сумме покупок';
+    }
 }

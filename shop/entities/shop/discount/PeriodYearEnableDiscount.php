@@ -19,4 +19,8 @@ class PeriodYearEnableDiscount extends EnabledDiscountInterface
         if ($from <= $now && $now <= $to) return true;
         return false;
     }
+    public static function getName(): string
+    {
+        return  ' По периоду текущего года';
+    }
 }

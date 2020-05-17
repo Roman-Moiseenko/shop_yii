@@ -18,4 +18,8 @@ class FullTimeEnableDiscount extends EnabledDiscountInterface
         if ($from <= $now && $now <= $to) return true;
         return false;
     }
+    public static function getName(): string
+    {
+        return  ' По точному периоду';
+    }
 }

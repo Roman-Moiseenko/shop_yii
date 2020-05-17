@@ -16,4 +16,9 @@ class PeriodWeekEnableDiscount extends EnabledDiscountInterface
         if ((int)$discount->_from <= $now_w && $now_w <= (int)$discount->_to) return true;
         return false;
     }
+
+    public static function getName(): string
+    {
+        return  ' По дням недели';
+    }
 }

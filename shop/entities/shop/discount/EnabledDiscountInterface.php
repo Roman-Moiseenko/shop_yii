@@ -15,4 +15,6 @@ abstract class EnabledDiscountInterface
     {
         return static::class;
     }
+
+    abstract public static function getName(): string;
 }
