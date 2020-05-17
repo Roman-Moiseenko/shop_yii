@@ -60,7 +60,11 @@ class Cart
         $this->loadItems();
         foreach ($this->items as $i => $current) {
             if ($current->getId() == $id) {
-                $this->items[$i] = $current->set($quantity);
+                if ($quantity <= 0) {
+                    unset($this->items[$i]);
+                } else {
+                    $this->items[$i] = $current->set($quantity);
+                }
                 $this->saveItems();
                 return;
             }

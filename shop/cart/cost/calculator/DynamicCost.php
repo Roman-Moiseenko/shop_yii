@@ -8,7 +8,7 @@ namespace shop\cart\cost\calculator;
 
 use shop\cart\cost\Cost;
 use shop\cart\cost\Discount;
-use shop\entities\shop\Discount as DiscountEntity;
+use shop\entities\shop\discount\Discount as DiscountEntity;
 
 class DynamicCost implements CalculatorInterface
 {
@@ -44,7 +44,7 @@ class DynamicCost implements CalculatorInterface
     {
         //  Находим максимальную
         $max = 0; $n = 0;
-        /* @var $item \shop\entities\shop\Discount */
+        /* @var $item \shop\entities\shop\discount\Discount */
         foreach ($discounts as $i => $item)
         {
             if ($item->percent > $max) {

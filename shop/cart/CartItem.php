@@ -59,6 +59,7 @@ class CartItem
     public function set($quantity): self
     {
         /** Превышение остатка */
+
         if ($quantity > $this->product->remains) return new static($this->product, $this->product->remains);
         return new static($this->product, $quantity);
     }
