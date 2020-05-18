@@ -72,7 +72,6 @@ class ProductController extends Controller
     public function actionFeatured($id, $featured)
     {
        $this->service->changeFeatured($id, ($featured == 1) ? false : true);
-        //echo !((bool)$featured);
     }
     /**
      * Displays a single Product model.

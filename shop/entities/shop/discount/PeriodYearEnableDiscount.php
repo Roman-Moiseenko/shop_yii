@@ -25,8 +25,10 @@ class PeriodYearEnableDiscount extends EnabledDiscountInterface
     }
     public static function getCaption(string $from_to): string
     {
-        $now_y = date('Y');
-        $date = date($now_y . '-' . $from_to . ' 00:00:00');
-        return date('d F Y', $date);
+        preg_match('/([0-9]{1,2})-([0-9]{1,2})/is', $from_to, $math);
+        $day = $math[1];
+        $month = (int)$math[2];
+        return $day . ' ' . MonthHelper::month($month);
     }
+
 }

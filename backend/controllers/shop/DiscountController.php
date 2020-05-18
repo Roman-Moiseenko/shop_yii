@@ -105,7 +105,7 @@ class DiscountController extends Controller
     public function actionUpdate($id)
     {
         $discount = $this->findModel($id);
-        $form = new DiscountForm();
+        $form = new DiscountForm($discount);
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $this->service->edit($id, $form);
@@ -148,5 +148,14 @@ class DiscountController extends Controller
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionActivate($id)
+    {
+        if (\Yii::$app->request->isAjax) {
+            $activate = \Yii::$app->request->bodyParams['activate'];
+            $this->service->activate($id, ($activate == 1) ? false : true);
+            echo $id . ' => ' . $activate;
+        }
     }
 }

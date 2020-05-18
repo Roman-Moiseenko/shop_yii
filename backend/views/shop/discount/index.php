@@ -28,6 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'percent',
                 'options' => ['width' => '50px'],
+                'value' => function (Discount $discount) {
+                    return $discount->percent . ' %';
+                },
                 'label' => '%%'],
             [
                 'attribute' => 'name',
@@ -40,9 +43,14 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                     'attribute' => 'active',
             'label' => 'Активна',
-                'value' => function (Discount $discount) {
-                    return $discount->active ? 'Да' : 'Нет';
+                'value' => function (Discount $model) {
+                    $checked = '';
+                    if ($model->active) $checked = 'checked';
+                    return '<input type="checkbox" class="discount-check" data-id="' .
+                        $model->id . '" value="' . $model->active . '" ' . $checked . '>';
                 },
+
+                'format' => 'raw',
                 'filter' => [1 => 'Да', 0 => 'Нет'],
                 'options' => ['width' => '50px'],
             ],

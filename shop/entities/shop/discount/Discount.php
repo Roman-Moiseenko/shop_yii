@@ -24,25 +24,27 @@ use yii\db\ActiveRecord;
 class Discount extends ActiveRecord
 {
 
-    public static function create($percent, $name, $from, $to, $sort,  EnabledDiscountInterface $enabledDiscount): self
+    public static function create($name, $percent, $active, $from, $to, $type_class): self
     {
         $discount = new static();
         $discount->percent = $percent;
         $discount->name = $name;
         $discount->_from = $from;
         $discount->_to = $to;
-        $discount->type_class = $enabledDiscount->getType();
-        $discount->active = true;
+        $discount->active = $active;
+        $discount->type_class = $type_class;
+
         return $discount;
     }
 
-    public function edit($percent, $name, $from, $to, EnabledDiscountInterface $enabledDiscount): void
+    public function edit($name, $percent, $active, $from, $to, $type_class): void
     {
         $this->percent = $percent;
         $this->name = $name;
+        $this->active = $active;
         $this->_from = $from;
         $this->_to = $to;
-        $this->type_class = $enabledDiscount->getType();
+        $this->type_class = $type_class;
     }
 
     public function activate(): void

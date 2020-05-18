@@ -7,14 +7,12 @@ use yii\helpers\Html;
 /* @var $discount shop\entities\shop\discount\Discount */
 /* @var  $model DiscountForm*/
 
-$this->title = 'Update Discount: ' . $discount->name;
-$this->params['breadcrumbs'][] = ['label' => 'Discounts', 'url' => ['index']];
+$this->title = 'Редактировать скидку: ' . $discount->name;
+$this->params['breadcrumbs'][] = ['label' => 'Скидки', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $discount->name, 'url' => ['view', 'id' => $discount->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Измменить';
 ?>
 <div class="discount-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

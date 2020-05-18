@@ -25,7 +25,7 @@ class DynamicCost implements CalculatorInterface
 
     public function getCoast(array $items): Cost
     {
-        $discounts = DiscountEntity::find()->active()->orderBy('sort')->all();
+        $discounts = DiscountEntity::find()->active()->all();
         $cost = $this->next->getCoast($items);
         //Только действующие скидки
         $disc = [];
