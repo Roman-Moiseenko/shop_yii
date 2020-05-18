@@ -31,7 +31,6 @@ class DiscountService
             $form->_to,
             $form->type_class
         );
-
         $this->discounts->save($discount);
         return $discount;
     }
@@ -46,9 +45,7 @@ class DiscountService
             $form->_to,
             $form->type_class
         );
-
         $this->discounts->save($discount);
-
     }
 
     public function remove($id): void
