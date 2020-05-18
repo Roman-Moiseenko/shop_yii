@@ -155,7 +155,6 @@ class DiscountController extends Controller
         if (\Yii::$app->request->isAjax) {
             $activate = \Yii::$app->request->bodyParams['activate'];
             $this->service->activate($id, ($activate == 1) ? false : true);
-            echo $id . ' => ' . $activate;
         }
     }
 }
