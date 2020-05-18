@@ -2,6 +2,8 @@
 
 namespace backend\controllers\shop;
 
+use shop\forms\shop\DiscountForm;
+use shop\services\shop\DiscountService;
 use Yii;
 use shop\entities\shop\discount\Discount;
 use backend\forms\Shop\DiscountSearch;
@@ -14,6 +16,18 @@ use yii\filters\VerbFilter;
  */
 class DiscountController extends Controller
 {
+
+    /**
+     * @var DiscountService
+     */
+    private $service;
+
+    public function __construct($id, $module, DiscountService $service, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->service = $service;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -21,7 +35,7 @@ class DiscountController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -64,14 +78,20 @@ class DiscountController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Discount();
+        $form = new DiscountForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $discount = $this->service->create($form);
+                return $this->redirect(['view', 'id' => $discount->id]);
+            } catch (\DomainException $e)
+            {
+                \Yii::$app->errorHandler->logException($e);
+                \Yii::$app->session->setFlash('error', $e->getMessage());
+            }
         }
-
         return $this->render('create', [
-            'model' => $model,
+            'model' => $form,
         ]);
     }
 
@@ -84,14 +104,21 @@ class DiscountController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $discount = $this->findModel($id);
+        $form = new DiscountForm();
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $this->service->edit($id, $form);
+                return $this->redirect(['view', 'id' => $discount->id]);
+        } catch (\DomainException $e)
+            {
+                \Yii::$app->errorHandler->logException($e);
+                \Yii::$app->session->setFlash('error', $e->getMessage());
+            }
         }
-
         return $this->render('update', [
-            'model' => $model,
+            'model' => $form,
+            'discount' => $discount,
         ]);
     }
 
@@ -104,8 +131,7 @@ class DiscountController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $this->service->remove($id);
         return $this->redirect(['index']);
     }
 
@@ -116,12 +142,11 @@ class DiscountController extends Controller
      * @return Discount the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): Discount
     {
         if (($model = Discount::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

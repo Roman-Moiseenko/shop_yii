@@ -20,4 +20,9 @@ class CostEnableDiscount extends EnabledDiscountInterface
     {
         return  ' По сумме покупок';
     }
+
+    public static function getCaption(string $from_to): string
+    {
+        return $from_to . ' &#8381;';
+    }
 }

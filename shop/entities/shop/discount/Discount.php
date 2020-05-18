@@ -13,12 +13,12 @@ use shop\entities\shop\queries\DiscountQuery;
 use yii\db\ActiveRecord;
 
 /**
+ * @property integer $id
  * @property integer $percent
  * @property string $name
  * @property string $_from
  * @property string $_to
  * @property bool $active
- * @property integer $sort
  * @property string $type_class
  */
 class Discount extends ActiveRecord
@@ -32,19 +32,17 @@ class Discount extends ActiveRecord
         $discount->_from = $from;
         $discount->_to = $to;
         $discount->type_class = $enabledDiscount->getType();
-        $discount->sort = $sort;
         $discount->active = true;
         return $discount;
     }
 
-    public function edit($percent, $name, $from, $to, $sort,  EnabledDiscountInterface $enabledDiscount): void
+    public function edit($percent, $name, $from, $to, EnabledDiscountInterface $enabledDiscount): void
     {
         $this->percent = $percent;
         $this->name = $name;
         $this->_from = $from;
         $this->_to = $to;
         $this->type_class = $enabledDiscount->getType();
-        $this->sort = $sort;
     }
 
     public function activate(): void
@@ -109,5 +107,10 @@ class Discount extends ActiveRecord
     public static function find(): DiscountQuery
     {
         return new DiscountQuery(static::class);
+    }
+
+    public static function getNamespace(): string
+    {
+        return __NAMESPACE__;
     }
 }

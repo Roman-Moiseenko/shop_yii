@@ -1,13 +1,15 @@
 <?php
 
+use shop\forms\shop\DiscountForm;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model shop\entities\shop\discount\Discount */
+/* @var $discount shop\entities\shop\discount\Discount */
+/* @var  $model DiscountForm*/
 
-$this->title = 'Update Discount: ' . $model->name;
+$this->title = 'Update Discount: ' . $discount->name;
 $this->params['breadcrumbs'][] = ['label' => 'Discounts', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $discount->name, 'url' => ['view', 'id' => $discount->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="discount-update">

@@ -17,4 +17,5 @@ abstract class EnabledDiscountInterface
     }
 
     abstract public static function getName(): string;
+    abstract public static function getCaption(string $from_to): string ;
 }

@@ -22,4 +22,11 @@ class FullTimeEnableDiscount extends EnabledDiscountInterface
     {
         return  ' По точному периоду';
     }
+
+    public static function getCaption(string $from_to): string
+    {
+        $date = date($from_to . ' 00:00:00');
+        return date('d F Y', $date);
+    }
+
 }

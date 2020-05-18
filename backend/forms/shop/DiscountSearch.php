@@ -17,8 +17,8 @@ class DiscountSearch extends Discount
     public function rules()
     {
         return [
-            [['id', 'percent', 'active', 'sort'], 'integer'],
-            [['name', '_from', '_to', 'type_class'], 'safe'],
+            [['percent', 'active'], 'integer'],
+            [['type_class'], 'safe'],
         ];
     }
 
@@ -52,22 +52,17 @@ class DiscountSearch extends Discount
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+             $query->where('0=1');
             return $dataProvider;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
             'percent' => $this->percent,
             'active' => $this->active,
-            'sort' => $this->sort,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', '_from', $this->_from])
-            ->andFilterWhere(['like', '_to', $this->_to])
-            ->andFilterWhere(['like', 'type_class', $this->type_class]);
+        $query->andFilterWhere(['like', 'type_class', $this->type_class]);
 
         return $dataProvider;
     }

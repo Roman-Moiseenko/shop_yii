@@ -1,5 +1,6 @@
 <?php
 
+use shop\helpers\DiscountHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -9,29 +10,47 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="discount-form">
-
+    <div class="row">
+        <div class="col-md-6">
     <?php $form = ActiveForm::begin(); ?>
+    <div class="box box-default">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <?= $form->field($model, 'name')->textInput(['maxlength' => true])->label('Название') ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <?= $form->field($model, 'percent')->textInput()->label('Процент') ?>
+                </div>
+                <div class="col-md-6">
+                    <?= $form->field($model, 'active')->dropDownList([1 => 'Да', 2 => 'Нет'],['prompt' => ''])->label('Активная') ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <?= $form->field($model, 'type_class')->dropDownList(DiscountHelper::discounts(), ['prompt' => ''])->label('Тип скидки') ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <?= $form->field($model, '_from')->textInput(['maxlength' => true])->label('Нижняя граница')
+                        ->hint('Для дат формат такой: ГГГГ-ММ-ДД, ММ-ДД, или день нед. 0-6 (0-Вс, 6-Сб)') ?>
+                </div>
+                <div class="col-md-6">
+                    <?= $form->field($model, '_to')->textInput(['maxlength' => true])->label('Верхняя граница') ?>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'id')->textInput() ?>
-
-    <?= $form->field($model, 'percent')->textInput() ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'active')->textInput() ?>
-
-    <?= $form->field($model, 'sort')->textInput() ?>
-
-    <?= $form->field($model, '_from')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, '_to')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'type_class')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
-
+        </div>
+    </div>
 </div>

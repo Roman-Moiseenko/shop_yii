@@ -1,5 +1,7 @@
 <?php
 
+use shop\entities\shop\discount\Discount;
+use shop\helpers\DiscountHelper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -7,36 +9,64 @@ use yii\widgets\DetailView;
 /* @var $model shop\entities\shop\discount\Discount */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Discounts', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Скидки', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="discount-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Удалить скидку?',
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Создать скидку', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
-            'percent',
-            'name',
-            'active',
-            'sort',
-            '_from',
-            '_to',
-            'type_class',
+            [
+                'attribute' => 'percent',
+                'label' => '%%'],
+            [
+                'attribute' => 'name',
+                'label' => 'Название',
+            ],
+            [
+                'attribute' => 'active',
+                'label' => 'Активна',
+                'value' => function (Discount $model) {
+                    return $model->active ? 'Да' : 'Нет';
+                },
+            ],
+            [
+                'attribute' => '_from',
+                'label' => 'Нижн.граница',
+                'value' => function (Discount $model) {
+                    return (Discount::getNamespace() . '\\' . $model->type_class)::getCaption($model->_from);
+                },
+                'format' => 'raw',
+            ],
+            [
+                'attribute' => '_to',
+                'label' => 'Верхн.граница',
+                'value' => function (Discount $model) {
+                    return (Discount::getNamespace() . '\\' . $model->type_class)::getCaption($model->_to);
+                },
+                'format' => 'raw',
+            ],
+            [
+                'attribute' => 'type_class',
+                'value' => function (Discount $model) {
+                    return (Discount::getNamespace() . '\\' . $model->type_class)::getName();
+                },
+                'label' => 'Тип скидки',
+            ],
         ],
     ]) ?>
 

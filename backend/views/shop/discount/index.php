@@ -1,5 +1,7 @@
 <?php
 
+use shop\entities\shop\discount\Discount;
+use shop\helpers\DiscountHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -7,15 +9,12 @@ use yii\grid\GridView;
 /* @var $searchModel backend\forms\Shop\DiscountSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Discounts';
+$this->title = 'Скидки';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="discount-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Discount', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать скидку', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -26,14 +25,51 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'percent',
-            'name',
-            'active',
-            'sort',
-            //'_from',
-            //'_to',
-            //'type_class',
+            [
+                'attribute' => 'percent',
+                'options' => ['width' => '50px'],
+                'label' => '%%'],
+            [
+                'attribute' => 'name',
+                'label' => 'Название',
+                'value' => function (Discount $discount) {
+                    return Html::a(Html::encode($discount->name), ['view', 'id' => $discount->id]);
+                },
+                'format' => 'raw',
+            ],
+            [
+                    'attribute' => 'active',
+            'label' => 'Активна',
+                'value' => function (Discount $discount) {
+                    return $discount->active ? 'Да' : 'Нет';
+                },
+                'filter' => [1 => 'Да', 0 => 'Нет'],
+                'options' => ['width' => '50px'],
+            ],
+            [
+                'attribute' => '_from',
+                'label' => 'Нижн.граница',
+                'value' => function (Discount $discount) {
+                    return (Discount::getNamespace() . '\\' . $discount->type_class)::getCaption($discount->_from);
+                },
+                'format' => 'raw',
+            ],
+            [
+                'attribute' => '_to',
+                'label' => 'Верхн.граница',
+                'value' => function (Discount $discount) {
+                    return (Discount::getNamespace() . '\\' . $discount->type_class)::getCaption($discount->_to);
+                },
+                'format' => 'raw',
+            ],
+            [
+                'attribute' => 'type_class',
+                'value' => function (Discount $discount) {
+                    return (Discount::getNamespace() . '\\' . $discount->type_class)::getName();
+                },
+                'filter' => DiscountHelper::discounts(),
+                'label' => 'Тип скидки',
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
