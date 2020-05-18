@@ -84,8 +84,7 @@ class DiscountController extends Controller
             try {
                 $discount = $this->service->create($form);
                 return $this->redirect(['view', 'id' => $discount->id]);
-            } catch (\DomainException $e)
-            {
+            } catch (\DomainException $e) {
                 \Yii::$app->errorHandler->logException($e);
                 \Yii::$app->session->setFlash('error', $e->getMessage());
             }
@@ -110,8 +109,7 @@ class DiscountController extends Controller
             try {
                 $this->service->edit($id, $form);
                 return $this->redirect(['view', 'id' => $discount->id]);
-        } catch (\DomainException $e)
-            {
+            } catch (\DomainException $e) {
                 \Yii::$app->errorHandler->logException($e);
                 \Yii::$app->session->setFlash('error', $e->getMessage());
             }
