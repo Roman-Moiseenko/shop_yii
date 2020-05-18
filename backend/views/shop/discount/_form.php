@@ -35,17 +35,18 @@ use yii\widgets\ActiveForm;
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <?= $form->field($model, '_from')->textInput(['maxlength' => true])->label('Нижняя граница')
-                        ->hint('Для дат формат такой: ГГГГ-ММ-ДД, ММ-ДД, или день нед. 0-6 (0-Вс, 6-Сб)') ?>
+                    <?= $form->field($model, '_from')->textInput(['maxlength' => true])->label('Нижняя граница') ?>
                 </div>
                 <div class="col-md-6">
                     <?= $form->field($model, '_to')->textInput(['maxlength' => true])->label('Верхняя граница') ?>
                 </div>
+
             </div>
+            <div class="hint-block">Для границ формат по датам:<br>
+                ДД-ММ-ГГГГ (полный или точный период), ДД-ММ (текущий год), ДД (ежемесячный),
+                <br>день нед. 0-6 (0-Вс, 6-Сб)</div>
         </div>
     </div>
-
-
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>

@@ -23,12 +23,17 @@ class PeriodMonthEnableDiscount extends EnabledDiscountInterface
 
     public static function getName(): string
     {
-        return  ' По числам месяца';
+        return  'По числам месяца';
     }
     public static function getCaption(string $from_to): string
     {
-        preg_match('/([0-9]{1,2})/is', $from_to, $math);
-        $day = (int)$math[1];
-        return $day;
+        try {
+            preg_match('/([0-9]{1,2})/is', $from_to, $math);
+            $day = (int)$math[1];
+            return $day;
+        } catch (\DomainException $e) {
+            
+        }
+
     }
 }

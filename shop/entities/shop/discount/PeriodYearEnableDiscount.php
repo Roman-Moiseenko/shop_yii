@@ -6,6 +6,7 @@ namespace shop\entities\shop\discount;
 
 use shop\cart\cost\Cost;
 use shop\entities\shop\discount\Discount;
+use shop\helpers\MonthHelper;
 
 class PeriodYearEnableDiscount extends EnabledDiscountInterface
 {
@@ -21,7 +22,7 @@ class PeriodYearEnableDiscount extends EnabledDiscountInterface
     }
     public static function getName(): string
     {
-        return  ' По периоду текущего года';
+        return  'По периоду текущего года';
     }
     public static function getCaption(string $from_to): string
     {

@@ -6,6 +6,7 @@ namespace shop\entities\shop\discount;
 
 use shop\cart\cost\Cost;
 use shop\entities\shop\discount\Discount;
+use shop\helpers\MonthHelper;
 
 class FullTimeEnableDiscount extends EnabledDiscountInterface
 {
@@ -20,7 +21,7 @@ class FullTimeEnableDiscount extends EnabledDiscountInterface
     }
     public static function getName(): string
     {
-        return  ' По точному периоду';
+        return  'По точному периоду';
     }
 
     public static function getCaption(string $from_to): string

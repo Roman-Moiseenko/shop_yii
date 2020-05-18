@@ -18,7 +18,7 @@ class CostEnableDiscount extends EnabledDiscountInterface
 
     public static function getName(): string
     {
-        return  ' По сумме покупок';
+        return  'По сумме покупок';
     }
 
     public static function getCaption(string $from_to): string

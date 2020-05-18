@@ -1,7 +1,7 @@
 <?php
 
 
-namespace shop\entities\shop\discount;
+namespace shop\helpers;
 
 
 class MonthHelper

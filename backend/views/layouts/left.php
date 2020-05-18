@@ -14,17 +14,6 @@
             </div>
         </div>
 
-        <!-- search form -->
-        <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Search..."/>
-              <span class="input-group-btn">
-                <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-        </form>
-        <!-- /.search form -->
 
         <?= dmstr\widgets\Menu::widget(
             [
@@ -38,15 +27,14 @@
                     ['label' => 'Атрибуты', 'icon' => 'bars', 'url' => ['/shop/characteristic'], 'active' => $this->context->id == 'shop/characteristic'],
                     ['label' => 'Каталог', 'icon' => 'folder-open', 'url' => ['/shop/category'], 'active' => $this->context->id == 'shop/category'],
                     ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['/user/index'], 'active' => $this->context->id == 'user'],
-                    ['label' => 'Регулярки', 'icon' => 'registered', 'url' => ['/data/reg-attribute'], 'active' => Yii::$app->controller->id == '/data/reg-attribute'],
+                    ['label' => 'Регулярки', 'icon' => 'registered', 'url' => ['/data/reg-attribute'], 'active' => $this->context->id == 'data/reg-attribute'],
                     ['label' => 'Login', 'url' => ['auth/login'], 'visible' => Yii::$app->user->isGuest],
                     ['label' => 'Загрузка данных',
                         'items' => [
-                            ['label' => 'Загрузка каталогов', 'url' => ['/data/load/catalog']],
-                            ['label' => 'Загрузка товаров', 'url' => ['/data/load/products']],
-                            ['label' => 'Обновить бренды', 'url' => ['/data/load/brands']],
-                            ['label' => 'Обновить Аттрибуты', 'url' => ['/data/load/attributes']],
-                          //  ['label' => 'Проверка Hidden', 'url' => ['/data/load/temp']],
+                            ['label' => 'Загрузка каталогов', 'icon' => 'upload', 'url' => ['/data/load/catalog']],
+                            ['label' => 'Загрузка товаров', 'icon' => 'upload', 'url' => ['/data/load/products']],
+                            ['label' => 'Обновить бренды', 'icon' => 'save', 'url' => ['/data/load/brands']],
+                            ['label' => 'Обновить Аттрибуты', 'icon' => 'save', 'url' => ['/data/load/attributes']],
                         ],
                         ],
 
@@ -55,6 +43,8 @@
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
+                            ['label' => 'Закрой и не открывай,', 'icon' => 'share', 'url' => ['/'],],
+                            ['label' => 'сломаешь что-нибудь!', 'icon' => 'share', 'url' => ['/'],],
                             ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
                             ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],],
                         ],
