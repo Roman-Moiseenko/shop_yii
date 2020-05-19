@@ -65,17 +65,21 @@ class CatalogController extends Controller
 
     public function actionIndex()
     {
-        $dataProvider = $this->products->getAll();
         $category = $this->categories->getRoot();
+        $search = Yii::$app->request->queryParams['search'] ?? '';
+        if ($search != '') {
+            $form = new SearchForm();
+            $form->text = $search;
+            $dataProvider = $this->products->search($form);
+        } else {
+            $dataProvider = $this->products->getAll();
+        }
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'category' => $category,
-            ]);
+        ]);
     }
 
-    //TODO Сделать поиск по имени товара, либо новый контроллер, либо в текущий,
-    // поиск через ajax=GET
-    // или ActiveForm в главном шблоне
     public function actionCategory($id)
     {
         if (!$category = $this->categories->find($id)) {
@@ -103,6 +107,7 @@ class CatalogController extends Controller
             ]);
         }
     }
+
     public function actionBrand($id)
     {
         if (!$brand = $this->brands->find($id)) {
@@ -133,13 +138,13 @@ class CatalogController extends Controller
         if (!$product = $this->products->find($id)) {
             throw new NotFoundHttpException('Товар не найден');
         }
-       // $addToCartForm = new AddToCartForm($product);
+        // $addToCartForm = new AddToCartForm($product);
         $reviewForm = new ReviewForm();
 
-    /*    if ($addToCartForm->load(Yii::$app->request->post()) && $addToCartForm->validate()) {
+        /*    if ($addToCartForm->load(Yii::$app->request->post()) && $addToCartForm->validate()) {
 
 
-        }*/
+            }*/
         if ($reviewForm->load(Yii::$app->request->post()) && $reviewForm->validate()) {
 
             //TODO Переделать под сервисы
@@ -149,7 +154,7 @@ class CatalogController extends Controller
         }
         return $this->render('product', [
             'product' => $product,
-         //   'addToCartForm' => $addToCartForm,
+            //   'addToCartForm' => $addToCartForm,
             'reviewForm' => $reviewForm,
         ]);
     }
@@ -168,8 +173,6 @@ class CatalogController extends Controller
         $form->validate();
         $dataProvider = $this->products->search($form);
 
-
-
         return $this->render('search', [
             'dataProvider' => $dataProvider,
             'searchForm' => $form,
@@ -179,15 +182,15 @@ class CatalogController extends Controller
     public function actionGetsearch()
     {
         $this->layout = '_blank';
-        if(\Yii::$app->request->isAjax) {
+        if (\Yii::$app->request->isAjax) {
             $form = new SearchForm();
             $form->text = \Yii::$app->request->bodyParams['text'];
             $form->brand = \Yii::$app->request->bodyParams['brand'];
-        if (isset(\Yii::$app->request->bodyParams['id'])) {
-            $id = \Yii::$app->request->bodyParams['id'];
-            $form->category = $id;
-            $form->setAttribute($id);
-        }
+            if (isset(\Yii::$app->request->bodyParams['id'])) {
+                $id = \Yii::$app->request->bodyParams['id'];
+                $form->category = $id;
+                $form->setAttribute($id);
+            }
             return $this->render('_search', [
                 'searchForm' => $form,
             ]);

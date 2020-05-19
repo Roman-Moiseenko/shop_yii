@@ -104,7 +104,6 @@ class ProductReadRepository
         if ($form->category) {
             if ($category = Category::findOne($form->category)) {
                 $ids = ArrayHelper::merge([$category->id], $category->getLeaves()->select('id')->column());
-
                 $query->joinWith(['categoryAssignments ca'], false);
                 $query->andWhere(['or', ['p.category_id' => $ids], ['ca.category_id' => $ids]]);
                 $query->groupBy('p.id');
@@ -129,9 +128,13 @@ class ProductReadRepository
                 $query->andWhere(['p.id' => $productIds]);
             }
         }
-
+        /******  Поиск оп тексту ***/
         if (!empty($form->text)) {
-            $query->andWhere(['or', ['like', 'code', $form->text], ['like', 'name', $form->text]]);
+            $form->text = trim(htmlspecialchars($form->text));
+            $words = explode(' ', $form->text);
+            foreach ($words as $word) {
+                $query->andWhere(['or', ['like', 'code', $word], ['like', 'name', $word]]);
+            }
         }
         $query->groupBy('p.id');
         return $this->getProvider($query);

@@ -10,6 +10,7 @@ use frontend\widgets\CategoriesWidget;?>
 
         <?= CategoriesWidget::widget([
                 'active' => $this->params['active_category'] ?? null,
+           // 'showcount' => true,
         ]); ?>
         <div class="swiper-viewport">
             <div id="banner0" class="swiper-container">
