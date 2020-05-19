@@ -48,7 +48,9 @@ class CartItem
     public function plus($quantity): self
     {
         /** Превышение остатка */
-        if ($this->quantity + $quantity > $this->product->remains) return new static($this->product, $this->product->remains);
+        if ($this->quantity + $quantity > $this->product->remains)
+            throw new \DomainException('Превышение остатков! Нельзя добавить в корзину больше, чем на складе!');
+           // return new static($this->product, $this->product->remains);
         return new static($this->product, $this->quantity + $quantity);
     }
     /** Не используется */
@@ -60,7 +62,9 @@ class CartItem
     {
         /** Превышение остатка */
 
-        if ($quantity > $this->product->remains) return new static($this->product, $this->product->remains);
+        if ($quantity > $this->product->remains)
+            throw new \DomainException('Превышение остатков! Нельзя добавить в корзину больше, чем на складе!');
+            //return new static($this->product, $this->product->remains);
         return new static($this->product, $quantity);
     }
 }

@@ -638,6 +638,9 @@ h2.price {
 	text-align: center;
 	text-transform: uppercase;
 }
+.product-thumb .button-group button:disabled {
+	color: #843534;
+}
 .product-thumb .button-group button + button {
 	width: 20%;
 	border-left: 1px solid #ddd;

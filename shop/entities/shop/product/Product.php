@@ -93,7 +93,6 @@ class Product extends ActiveRecord
         return $this->status == self::STATUS_ACTIVE;
     }
 
-
     public function isDraft(): bool
     {
         return $this->status == self::STATUS_DRAFT;
@@ -101,7 +100,7 @@ class Product extends ActiveRecord
 
     public function isAvailable(): bool
     {
-        return $this->quantity > 0;
+        return $this->remains > 0;
     }
 
     public function addFeatured()
@@ -160,7 +159,6 @@ class Product extends ActiveRecord
             self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
     }
-
 
     public function setRemains($remains)
     {

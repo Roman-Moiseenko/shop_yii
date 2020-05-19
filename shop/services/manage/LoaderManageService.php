@@ -232,25 +232,33 @@ class LoaderManageService
     private function toHidden(Category $_category)
     {
         //var_dump($_category);
-        /** Скрыть все вложенные категории */
-        $categories = Category::find()
-            ->andWhere(['>', 'lft', $_category->lft])
-            ->andWhere(['<', 'rgt', $_category->rgt])
-            ->andWhere(['depth' => $_category->depth + 1])
-            ->orderBy('rgt')
-            ->all();
-        /** @var Category $category */
-        //Удаляем все вложенные категории
-        foreach ($categories as $category) {
-            $this->productsToHiddenByCategory($category->id); //Скрыть все продукты из этих категорий
-            $hidden = Hidden::create($category->code1C);
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            /** Скрыть все вложенные категории */
+            $categories = Category::find()
+                ->andWhere(['>', 'lft', $_category->lft])
+                ->andWhere(['<', 'rgt', $_category->rgt])
+                ->andWhere(['depth' => $_category->depth + 1])
+                ->orderBy('rgt')
+                ->all();
+            /** @var Category $category */
+            //Удаляем все вложенные категории
+            foreach ($categories as $category) {
+                $this->productsToHiddenByCategory($category->id); //Скрыть все продукты из этих категорий
+                $hidden = Hidden::create($category->code1C);
+                $this->hidden->save($hidden);
+                $this->categories->remove($category);
+            }
+            //Удаляем саму категорию
+            $hidden = Hidden::create($_category->code1C);
             $this->hidden->save($hidden);
-            $this->categories->remove($category);
+            $this->categories->remove($_category);
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            \Yii::$app->errorHandler->logException($e);
         }
-        //Удаляем саму категорию
-        $hidden = Hidden::create($_category->code1C);
-        $this->hidden->save($hidden);
-        $this->categories->remove($_category);
+
     }
 
     private function productsToHiddenByCategory($category_id)
@@ -259,9 +267,6 @@ class LoaderManageService
         /** @var Product $product */
         foreach ($products as $product) {
             $this->hideProduct($product);
-            // $hidden = Hidden::create($product->code1C);
-            // $this->hidden->save($hidden);
-            //$this->products->remove($product);
         }
     }
 
@@ -351,7 +356,6 @@ class LoaderManageService
         if (!file_exists($filePhoto = $path . $idImage .'.jpg')) {
             $filePhoto = $path . 'no-image.jpg';
         }
-        //$product->setRemains($data['remains']);
         $this->products->save($product);
 
         ///Загрузка фотографий
@@ -394,6 +398,8 @@ class LoaderManageService
 
     private function regProduct(Product $product): void
     {
+
+        //TODO Переделать под ООП, см.ответ с форума
         /** Низкоуровневый запрос */
        $sql =   'SELECT r.* FROM ' . RegAttribute::tableName() . ' AS r ' .
                 'LEFT JOIN ' . Category::tableName() .' c ON c.id=r.category_id WHERE ' .
@@ -450,13 +456,11 @@ class LoaderManageService
         /** @var RegAttribute $regs */
         $regs = RegAttribute::find()->all();
         foreach ($regs as $reg) {
-
             $categories = Category::find()->select('id')
                 ->andWhere(['>=', 'lft', $reg->category->lft])
                 ->andWhere(['<=', 'rgt', $reg->category->rgt])
                 ->andWhere(['>', 'depth', $reg->category->depth])
                 ->asArray()->column();
-
             $products = Product::find()
                 ->andWhere(['category_id' => array_merge([$reg->category_id], $categories)])
                 ->all();
@@ -481,7 +485,6 @@ class LoaderManageService
             $product->setValue($reg->characteristic_id, $val);
             $this->products->save($product);
         } else {
-
             $this->LogErrorPregMatch($product, $reg);
         }
     }

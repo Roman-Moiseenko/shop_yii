@@ -142,8 +142,6 @@ class CatalogController extends Controller
         $reviewForm = new ReviewForm();
 
         /*    if ($addToCartForm->load(Yii::$app->request->post()) && $addToCartForm->validate()) {
-
-
             }*/
         if ($reviewForm->load(Yii::$app->request->post()) && $reviewForm->validate()) {
 

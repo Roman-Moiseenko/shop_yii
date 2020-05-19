@@ -27,6 +27,7 @@ class AddToCartForm extends Model
     {
         return [
             ['quantity', 'required'],
+            ['quantity', 'integer', 'max' => $this->_product->remains],
         ];
     }
 }

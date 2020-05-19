@@ -8,6 +8,7 @@ use frontend\urls\CategoryUrlRule;
 use shop\cart\Cart;
 use shop\cart\cost\calculator\DynamicCost;
 use shop\cart\cost\calculator\SimpleCost;
+use shop\cart\storage\CookieStorage;
 use shop\cart\storage\SessionStorage;
 use shop\readModels\shop\CategoryReadRepository;
 use shop\repositories\UserRepository;
@@ -58,7 +59,7 @@ class SetUp implements BootstrapInterface
 
         $container->setSingleton(Cart::class, function () use ($app) {
             return new Cart(
-                new SessionStorage('cart', new Session()),
+                new CookieStorage('cart', 3600*24*30),
                 new DynamicCost(new SimpleCost())
             );
         });

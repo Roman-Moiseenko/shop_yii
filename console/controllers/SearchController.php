@@ -13,7 +13,7 @@ class SearchController extends Controller
 {
     public function actionReindex()
     {
-        $query = Product::find()->NotEmpty()->active()
+        $query = Product::find()/*->NotEmpty()*/->active()
             ->with(['category', 'tagAssignments', 'values'])
             ->orderBy('id');
         $this->stdout('Очистка' . PHP_EOL);

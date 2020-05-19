@@ -127,15 +127,17 @@ MagnificPopupAsset::register($this);
         </ul>
         <div id="product" class="required"> <hr>
                 <h3></h3>
+            <?php if ($product->isAvailable()): ?>
             <?= Html::beginForm(['/shop/cart/add', 'id' => $product->id]); ?>
             <label class="control-label" for="quantity-product-to-cart">Кол-во</label>
                 <input id="quantity-product-to-cart" type="text" name="quantity" value="1" size="1" class="form-control" required />
-<p></p>
+                <p></p>
             <div class="form-group">
                 <?=Html::submitButton('В корзину', ['class' => 'btn btn-primary btn-lg btn-block'])?>
             </div>
             <?= Html::endForm() ?>
-
+            <?php else: ?>
+            <?php endif;?>
         </div>
         <div class="rating">
             <p>
