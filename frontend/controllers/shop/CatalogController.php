@@ -73,6 +73,9 @@ class CatalogController extends Controller
             ]);
     }
 
+    //TODO Сделать поиск по имени товара, либо новый контроллер, либо в текущий,
+    // поиск через ajax=GET
+    // или ActiveForm в главном шблоне
     public function actionCategory($id)
     {
         if (!$category = $this->categories->find($id)) {
@@ -93,7 +96,6 @@ class CatalogController extends Controller
             $form->load(\Yii::$app->request->queryParams);
             $form->validate();
             $dataProvider = $this->products->search($form);
-            //echo '<pre>';print_r($form->values); exit();
             return $this->render('category_filter', [
                 'dataProvider' => $dataProvider,
                 'category' => $category,
@@ -155,6 +157,7 @@ class CatalogController extends Controller
     public function actionSearch()
     {
         $form = new SearchForm();
+
         if (isset(\Yii::$app->request->queryParams['category'])) {
             $id = \Yii::$app->request->queryParams['category'];
             $form->category = $id;

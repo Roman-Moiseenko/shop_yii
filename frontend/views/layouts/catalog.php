@@ -9,7 +9,7 @@ use frontend\widgets\CategoriesWidget;?>
     <aside id="column-left" class="col-sm-3 hidden-xs">
 
         <?= CategoriesWidget::widget([
-                'active' => $this->params['active_category'] ?? null
+                'active' => $this->params['active_category'] ?? null,
         ]); ?>
         <div class="swiper-viewport">
             <div id="banner0" class="swiper-container">

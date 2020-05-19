@@ -4,6 +4,7 @@ return [
     'hostInfo' => $params['frontendHostInfo'],
     'enablePrettyUrl' => true,
     'showScriptName' => false,
+    'cache' => false,
     'rules' => [
         '' => 'site/index',
         'contact' => 'contact/index',
