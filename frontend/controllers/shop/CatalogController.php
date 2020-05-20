@@ -140,15 +140,12 @@ class CatalogController extends Controller
         }
         // $addToCartForm = new AddToCartForm($product);
         $reviewForm = new ReviewForm();
-
         /*    if ($addToCartForm->load(Yii::$app->request->post()) && $addToCartForm->validate()) {
             }*/
         if ($reviewForm->load(Yii::$app->request->post()) && $reviewForm->validate()) {
-
             //TODO Переделать под сервисы
             $product->addReview(Yii::$app->user->id, $reviewForm->vote, $reviewForm->text);
             $product->save();
-
         }
         return $this->render('product', [
             'product' => $product,

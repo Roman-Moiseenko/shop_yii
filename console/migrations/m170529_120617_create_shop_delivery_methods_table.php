@@ -12,10 +12,10 @@ class m170529_120617_create_shop_delivery_methods_table extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
             'cost' => $this->integer()->notNull(),
-            'min_weight' => $this->integer(),
-            'max_weight' => $this->integer(),
-            'sort' => $this->integer()->notNull(),
+            'amount_cart_min' => $this->integer()->notNull(),
         ], $tableOptions);
+
+        $this->createIndex('{{%idx-shop_delivery_methods-amount_cart_min}}', '{{%shop_delivery_methods}}', ['amount_cart_min', 'name'], true);
     }
 
     public function down()
