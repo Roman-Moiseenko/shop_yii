@@ -19,11 +19,12 @@ class PeriodWeekEnableDiscount extends EnabledDiscountInterface
 
     public static function getName(): string
     {
-        return  'По дням недели';
+        return 'По дням недели';
     }
+
     public static function getCaption(string $from_to): string
     {
-        $weeks = ["Вс", "Пн","Вт","Ср","Чт","Пт","Сб"];
+        $weeks = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
         return $weeks[$from_to];
     }
 }

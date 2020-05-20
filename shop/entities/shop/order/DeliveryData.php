@@ -7,8 +7,8 @@ namespace shop\entities\shop\order;
 class DeliveryData
 {
 
-    private $index;
-    private $address;
+    public $index;
+    public $address;
 
     public function __construct($index, $address)
     {

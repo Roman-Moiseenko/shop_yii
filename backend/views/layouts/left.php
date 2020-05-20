@@ -8,7 +8,7 @@
                 <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/ >
             </div>
             <div class="pull-left info">
-                <p><?=Yii::$app->user->identity->username?></p>
+                <p><?= Yii::$app->user->identity->username ?></p>
 
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
@@ -17,7 +17,7 @@
 
         <?= dmstr\widgets\Menu::widget(
             [
-                'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
+                'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
                 'items' => [
                     ['label' => 'Меню', 'options' => ['class' => 'header']],
                     ['label' => 'Скидки', 'icon' => 'money', 'url' => ['/shop/discount'], 'active' => Yii::$app->controller->id == 'shop/discount'],
@@ -38,7 +38,7 @@
                             ['label' => 'Обновить бренды', 'icon' => 'save', 'url' => ['/data/load/brands']],
                             ['label' => 'Обновить Аттрибуты', 'icon' => 'save', 'url' => ['/data/load/attributes']],
                         ],
-                        ],
+                    ],
 
                     [
                         'label' => 'Разработчику',

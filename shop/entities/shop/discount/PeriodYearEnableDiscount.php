@@ -20,10 +20,12 @@ class PeriodYearEnableDiscount extends EnabledDiscountInterface
         if ($from <= $now && $now <= $to) return true;
         return false;
     }
+
     public static function getName(): string
     {
-        return  'По периоду текущего года';
+        return 'По периоду текущего года';
     }
+
     public static function getCaption(string $from_to): string
     {
         preg_match('/([0-9]{1,2})-([0-9]{1,2})/is', $from_to, $math);

@@ -21,7 +21,6 @@ class MonthHelper
             10 =>   'октября',
             11 =>   'ноября',
             12 =>   'декабря'
-
         ];
         return $months[$n];
     }
