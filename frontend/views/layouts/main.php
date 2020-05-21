@@ -51,7 +51,7 @@ AppAsset::register($this);
                     </li>
                     <li><a href="<?= Url::to(['/cabinet/wishlist/index']) ?>" id="wishlist-total" title="Избранное (0)"><i class="fa fa-heart"></i> <span class="hidden-xs hidden-sm hidden-md">Избранное (<?= WishlistHelper::count()?>)</span></a></li>
                     <li><a href="<?= Url::to(['/shop/cart/index']) ?>" title="Корзина"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">Корзина</span></a></li>
-                    <li><a href="/index.php?route=checkout/checkout" title="Checkout"><i class="fa fa-share"></i> <span class="hidden-xs hidden-sm hidden-md">Checkout</span></a></li>
+                    <li><a href="<?= Url::to('/shop/checkout/index') ?>" title="Checkout"><i class="fa fa-share"></i> <span class="hidden-xs hidden-sm hidden-md">Оплатить</span></a></li>
                 </ul>
             </div>
         </div>

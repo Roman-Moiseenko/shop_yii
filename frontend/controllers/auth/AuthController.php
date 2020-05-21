@@ -11,7 +11,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 
-class AuthController extends Controller
+class   AuthController extends Controller
 {
     public  $layout = 'cabinet';
     /**

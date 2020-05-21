@@ -29,7 +29,7 @@ class Cost
     {
         $val = $this->value;
         return $val - array_sum(array_map(function (Discount $discount) use($val) {
-                    return $val * ($discount->getValue()/100); // процентная скидка
+                    return $val * ($discount->getValue() / 100); // процентная скидка
             }, $this->discounts));
     }
 
@@ -39,5 +39,11 @@ class Cost
     public function getDiscounts(): array
     {
         return $this->discounts;
+    }
+
+    public function getPercent(): int
+    {
+        if (count($this->discounts) == 0) return 0;
+        return array_sum(array_map(function (Discount $discount) {return $discount->getValue();}, $this->discounts));
     }
 }

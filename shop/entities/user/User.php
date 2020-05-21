@@ -24,6 +24,11 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property Network[] $networks
+ *
+ * @property string $phone
+ * @property string delivery_town
+ * @property string delivery_address
+ *
  * @property WishlistItem[] $wishlistItems
  * property string $password write-only password
  */
@@ -44,6 +49,16 @@ class User extends ActiveRecord implements IdentityInterface
         $user->generateAuthKey();
         //$user->generateEmailVerificationToken();
         return $user;
+    }
+
+    public function editPhone($phone)
+    {
+        $this->phone = $phone;
+    }
+
+    public function editDelivery()
+    {
+
     }
 
     public function edit(string $username, string $email): void

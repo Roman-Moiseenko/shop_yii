@@ -31,8 +31,9 @@ class DeliveryForm extends Model
         ];
     }
 
-    public function deliveryMethodList(): array
+    public function deliveryMethodsList(): array
     {
+        //
         $methods = DeliveryMethod::find()->availableForAmount($this->_amount)->orderBy('name')->all();
 
         return ArrayHelper::map($methods, 'id', function (DeliveryMethod $method) {

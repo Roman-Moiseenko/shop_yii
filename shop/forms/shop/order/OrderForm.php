@@ -18,13 +18,15 @@ class OrderForm extends CompositeForm
     public function __construct($amount, $config = [])
     {
         $this->delivery = new DeliveryForm($amount);
-        $this->customer = new CustomerForm();
+        $this->customer = new CustomerForm(\Yii::$app->user->id);
         parent::__construct($config);
     }
 
     public function rules()
     {
-        return [['note'], 'string'];
+        return [
+            [['note'], 'string'],
+        ];
     }
 
     protected function internalForms(): array

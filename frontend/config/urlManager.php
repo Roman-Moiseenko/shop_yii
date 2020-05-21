@@ -11,6 +11,7 @@ return [
         'signup' => 'auth/signup/index',
         'reset/<_a:[\w-]+>' => 'auth/reset/<_a>',
         '<_a:login|logout>' => 'auth/auth/<_a>',
+        'site/login' => 'auth/auth/login',
         '<_a:about>' => 'site/<_a>',
 
         'cabinet' => 'cabinet/default/index',

@@ -487,6 +487,12 @@ class Product extends ActiveRecord
         $this->category_id = $categoryId;
     }
 
+    public function checkout($quantity)
+    {
+        if ($quantity  > $this->remains)
+            throw new \DomainException('Кол-во заказа превышает остатки на складе.');
+        $this->remains -= $quantity;
+    }
     ##########################
 
     public function afterSave($insert, $changedAttributes)

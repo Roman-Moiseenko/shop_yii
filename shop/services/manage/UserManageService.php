@@ -38,4 +38,14 @@ class UserManageService
         $this->users->save($user);
         return $user;
     }
+
+    public function setPhone()
+    {
+        //TODO
+    }
+
+    public function setDelivery()
+    {
+        //TODO
+    }
 }
