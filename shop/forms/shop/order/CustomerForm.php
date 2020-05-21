@@ -15,9 +15,8 @@ class CustomerForm extends Model
     {
         if ($userId) {
             $user = User::findOne($userId);
-            //TODO сделать заполнение данных с таблицы Users
             $this->name = $user->username;
-
+            $this->phone = $user->phone;
         }
         parent::__construct($config);
     }

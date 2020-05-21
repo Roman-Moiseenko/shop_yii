@@ -1,6 +1,9 @@
 <?php
 namespace shop\entities\user;
 
+use shop\entities\shop\order\CustomerData;
+use shop\entities\shop\order\DeliveryData;
+use shop\entities\shop\order\Status;
 use shop\entities\user\Network;
 use Yii;
 use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
@@ -8,6 +11,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\Json;
 use yii\web\IdentityInterface;
 
 /**
@@ -28,7 +32,8 @@ use yii\web\IdentityInterface;
  * @property string $phone
  * @property string delivery_town
  * @property string delivery_address
- *
+ * @property DeliveryData $deliveryData
+ * @property FullName $fullname
  * @property WishlistItem[] $wishlistItems
  * property string $password write-only password
  */
@@ -37,6 +42,7 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
+    public $deliveryData;
 
     public static function create(string $username, string $email, string $password): self
     {
@@ -56,9 +62,9 @@ class User extends ActiveRecord implements IdentityInterface
         $this->phone = $phone;
     }
 
-    public function editDelivery()
+    public function editDelivery(DeliveryData $delivery)
     {
-
+        $this->deliveryData = $delivery;
     }
 
     public function edit(string $username, string $email): void
@@ -351,4 +357,22 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(WishlistItem::class, ['user_id' => 'id']);
     }
+
+    public function afterFind(): void
+    {
+        $this->deliveryData = new DeliveryData(
+            $this->getAttribute('delivery_town'),
+            $this->getAttribute('delivery_address')
+        );
+        parent::afterFind();
+    }
+
+    public function beforeSave($insert): bool
+    {
+        $this->setAttribute('delivery_town', $this->deliveryData->town);
+        $this->setAttribute('delivery_address', $this->deliveryData->address);
+
+        return parent::beforeSave($insert);
+    }
+
 }
