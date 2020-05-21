@@ -12,11 +12,12 @@ $this->title = 'Личный кабинет';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="cabinet-index">
-    <h1><?= Html::encode($this->title) ?></h1>
+
 
     <div class="panel panel-default">
-        <div class="panel-heading">Основные сведения</div>
+        <div class="panel-heading"><h2><?= Html::encode($this->title) ?></h2></div>
         <div class="panel-body">
+            <legend><b>Основные сведения</b></legend>
             <table width="100%">
                 <tr>
                     <td align="right" width="15%" class="userinfo">Логин: </td>
@@ -26,20 +27,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td align="right" class="userinfo">Эл.почта: </td>
                     <td class="userinfo">&#160;<?= $user->email ?></td>
                 </tr>
+                <tr>
+                    <td class="userinfo">
+                        <?= Html::a('Редактировать', ['cabinet/profile/editprofile'], ['class' => 'btn btn-default small']) ?>
+                    </td>
+                </tr>
             </table>
 
-        </div>
-
-            <p class="">
-                <?= Html::a('Редактировать', ['cabinet/profile/editprofile'], ['class' => 'btn btn-default']) ?>
-            </p>
-
-    </div>
-    <div class="row">
-        <div class="col-sm-6">
-    <div class="panel panel-default">
-        <div class="panel-heading">Контактные данные</div>
-        <div class="panel-body">
+            <p></p><br>
+            <legend><b>Контактные данные</b></legend>
             <table width="100%">
                 <tr>
                     <td align="right" width="15%" class="userinfo">Фамилия: </td>
@@ -57,17 +53,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td align="right" class="userinfo">Телефон: </td>
                     <td class="userinfo">&#160;<?= $user->phone ?></td>
                 </tr>
+                <tr>
+                    <td class="userinfo">
+                        <?= Html::a('Редактировать', ['cabinet/profile/editcontact'], ['class' => 'btn btn-default small']) ?>
+                    </td>
+                </tr>
             </table>
-        </div>
-        <p>
-            <?= Html::a('Редактировать', ['cabinet/profile/editcontact'], ['class' => 'btn btn-default']) ?>
-        </p>
-    </div>
-        </div>
-        <div class="col-sm-6">
-    <div class="panel panel-default">
-        <div class="panel-heading">Адрес</div>
-        <div class="panel-body">
+            <p></p><br>
+            <legend><b>Адрес (для доставки)</b></legend>
             <table width="100%">
                 <tr>
                     <td align="right" width="15%" class="userinfo">Нас.пункт: </td>
@@ -77,14 +70,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td align="right" class="userinfo">Адрес: </td>
                     <td class="userinfo">&#160;<?= $user->deliveryData->address ?></td>
                 </tr>
+                <tr>
+                    <td class="userinfo">
+                        <?= Html::a('Редактировать', ['cabinet/profile/editdelivery'], ['class' => 'btn btn-default small']) ?>
+                    </td>
+                </tr>
             </table>
         </div>
-        <p>
-            <?= Html::a('Редактировать', ['cabinet/profile/editdelivery'], ['class' => 'btn btn-default']) ?>
-        </p>
+
+
+
     </div>
-        </div>
-    </div>
+
 
     <h2>Attach profile</h2>
     <?= yii\authclient\widgets\AuthChoice::widget([
