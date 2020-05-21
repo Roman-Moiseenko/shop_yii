@@ -16,4 +16,9 @@ class FullName
         $this->firstname = $firstname;
         $this->secondname = $secondname;
     }
+
+    public function getFullname(): string
+    {
+        return  $this->surname . ' ' . $this->firstname . (!empty($this->secondname) ? ' ' . $this->secondname : '') ;
+    }
 }

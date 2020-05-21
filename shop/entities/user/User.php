@@ -43,6 +43,7 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
     public $deliveryData;
+    public $fullname;
 
     public static function create(string $username, string $email, string $password): self
     {
@@ -65,6 +66,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function editDelivery(DeliveryData $delivery)
     {
         $this->deliveryData = $delivery;
+    }
+
+    public function editFullName(FullName $fullName)
+    {
+        $this->fullname = $fullName;
     }
 
     public function edit(string $username, string $email): void
@@ -364,6 +370,16 @@ class User extends ActiveRecord implements IdentityInterface
             $this->getAttribute('delivery_town'),
             $this->getAttribute('delivery_address')
         );
+/*
+        $st = Json::encode([
+            'surname' => 'Петров',
+            'firstname' => 'Петр',
+            'secondname' => 'Петрович'
+        ]);
+*/
+        $fullname = Json::decode($this->getAttribute('fullname_json'));
+        //print_r($fullname); exit();
+        $this->fullname = new FullName($fullname['surname'], $fullname['firstname'], $fullname['secondname']);
         parent::afterFind();
     }
 
@@ -372,6 +388,11 @@ class User extends ActiveRecord implements IdentityInterface
         $this->setAttribute('delivery_town', $this->deliveryData->town);
         $this->setAttribute('delivery_address', $this->deliveryData->address);
 
+        $this->setAttribute('fullname_json', Json::encode([
+            'surname' =>$this->fullname->surname,
+            'firstname' =>$this->fullname->firstname,
+            'secondname' =>$this->fullname->secondname
+        ]));
         return parent::beforeSave($insert);
     }
 

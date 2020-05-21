@@ -21,13 +21,10 @@ class DeliveryForm extends Model
     {
         $this->_amount = $amount;
 
-        {
-            $userId = \Yii::$app->user->id;
-            $user = User::findOne($userId);
-            $this->town = $user->deliveryData->town;
-            $this->address = $user->deliveryData->address;
-        }
-
+        $userId = \Yii::$app->user->id;
+        $user = User::findOne($userId);
+        $this->town = $user->deliveryData->town;
+        $this->address = $user->deliveryData->address;
         parent::__construct($config);
     }
 

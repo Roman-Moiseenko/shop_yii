@@ -50,13 +50,13 @@ $this->params['breadcrumbs'][] = $this->title;
             </tbody>
         </table>
     </div>
-    
+
     <br />
 
     <?php $cost = $cart->getCost() ?>
     <table class="table table-bordered">
         <tr>
-            <td class="text-right"><strong>Итого:</strong></td>
+            <td class="text-right"  width="70%"><strong>Итого:</strong></td>
             <td class="text-right"><?= PriceHelper::format($cost->getOrigin()) ?></td>
         </tr>
         <tr>
@@ -66,36 +66,38 @@ $this->params['breadcrumbs'][] = $this->title;
     </table>
 
     <?php $form = ActiveForm::begin() ?>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">Покупатель</div>
-        <div class="panel-body">
-            <?= $form->field($model->customer, 'phone')->textInput() ?>
-            <?= $form->field($model->customer, 'name')->textInput() ?>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Данные клиента</div>
+                <div class="panel-body">
+                    <?= $form->field($model->customer, 'phone')->textInput()->label('Телефон') ?>
+                    <?= $form->field($model->customer, 'name')->textInput()->label('Ф.И.О.') ?>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Комментарий к заказу</div>
+                <div class="panel-body">
+                    <?= $form->field($model, 'note')->textarea(['rows' => 3])->label('Пояснение') ?>
+                </div>
+            </div>
         </div>
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">Доставка</div>
-        <div class="panel-body">
-            <?= $form->field($model->delivery, 'method')->dropDownList($model->delivery->deliveryMethodsList(), ['prompt' => '--- Выберите ---', 'encode' => false]) ?>
-            <?= $form->field($model->delivery, 'town')->textInput() ?>
-            <?= $form->field($model->delivery, 'address')->textarea(['rows' => 3]) ?>
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Доставка</div>
+                <div class="panel-body">
+                    <?= $form->field($model->delivery, 'method')->dropDownList($model->delivery->deliveryMethodsList(), ['prompt' => '--- Выберите ---', 'encode' => false])->label('Доставка') ?>
+                    <?= $form->field($model->delivery, 'town')->textInput()->label('Населенный пункт') ?>
+                    <?= $form->field($model->delivery, 'address')->textarea(['rows' => 3])->label('Адрес') ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <?= Html::submitButton('Оплатить', ['class' => 'btn btn-primary btn-lg btn-block']) ?>
+            </div>
         </div>
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">Описание</div>
-        <div class="panel-body">
-            <?= $form->field($model, 'note')->textarea(['rows' => 3]) ?>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <?= Html::submitButton('Checkout', ['class' => 'btn btn-primary btn-lg btn-block']) ?>
     </div>
 
     <?php ActiveForm::end() ?>
 
 </div>
-    
+

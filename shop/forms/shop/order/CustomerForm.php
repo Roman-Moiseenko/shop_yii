@@ -15,7 +15,7 @@ class CustomerForm extends Model
     {
         if ($userId) {
             $user = User::findOne($userId);
-            $this->name = $user->username;
+            $this->name = $user->fullname->getFullname();
             $this->phone = $user->phone;
         }
         parent::__construct($config);
