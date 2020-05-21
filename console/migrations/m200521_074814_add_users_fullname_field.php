@@ -13,6 +13,11 @@ class m200521_074814_add_users_fullname_field extends Migration
     public function safeUp()
     {
         $this->addColumn('{{%users}}', 'fullname_json', $this->string()->notNull());
+        $this->update('{{%users}}',
+            [
+                'fullname_json' => '{"surname":"Петров","firstname":"Петр","secondname":"Петрович"}',
+                ]
+        );
     }
 
     /**
