@@ -7,12 +7,12 @@ namespace shop\entities\shop\order;
 class DeliveryData
 {
 
-    public $index;
+    public $town;
     public $address;
 
-    public function __construct($index, $address)
+    public function __construct($town, $address)
     {
-        $this->index = $index;
+        $this->town = $town;
         $this->address = $address;
     }
 }

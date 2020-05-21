@@ -190,7 +190,7 @@ class Order extends ActiveRecord
         );
 
         $this->deliveryData = new DeliveryData(
-            $this->getAttribute('delivery_index'),
+            $this->getAttribute('delivery_town'),
             $this->getAttribute('delivery_address')
         );
         parent::afterFind();
@@ -208,7 +208,7 @@ class Order extends ActiveRecord
         $this->setAttribute('customer_phone', $this->customerData->phone);
         $this->setAttribute('customer_name', $this->customerData->name);
 
-        $this->setAttribute('delivery_index', $this->deliveryData->index);
+        $this->setAttribute('delivery_town', $this->deliveryData->town);
         $this->setAttribute('delivery_address', $this->deliveryData->address);
 
         return parent::beforeSave($insert);

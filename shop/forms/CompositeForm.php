@@ -25,10 +25,7 @@ abstract class  CompositeForm extends Model
                 $success2 = $form->load($data, $formName !== '' ? null : $name);
                 $success =  $success2 && $success;
             }
-          //  echo $name;
-           // var_dump($success2);
         }
-       // if (!$success) die();
         return $success;
     }
 
@@ -46,10 +43,7 @@ abstract class  CompositeForm extends Model
                 $success2 = $form->validate($innerNames ?: null, $clearErrors);
                 $success = $success2 && $success;
             }
-           //   echo $name;
-            // var_dump($success2);
         }
-        // if (!$success) die();
         return $success;
     }
     public function __get($name)
