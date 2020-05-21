@@ -750,3 +750,9 @@ h2.price {
     background-image: none;
     background-color: #df5c39;
 }
+
+.userinfo {
+	font-size: 16px;
+	padding: 10px 10px 0px 0px;
+	color: black;
+}

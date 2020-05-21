@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="panel panel-default">
                 <div class="panel-heading">Комментарий к заказу</div>
                 <div class="panel-body">
-                    <?= $form->field($model, 'note')->textarea(['rows' => 3])->label('Пояснение') ?>
+                    <?= $form->field($model, 'note')->textarea(['rows' => 3])->label(false) ?>
                 </div>
             </div>
         </div>
