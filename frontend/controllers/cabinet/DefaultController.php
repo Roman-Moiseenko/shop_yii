@@ -45,30 +45,9 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         $user = $this->user->get(\Yii::$app->user->id);
-        $form = new UserEditForm($user);
         return $this->render('index', [
             'user' => $user,
-            'model' => $form,
         ]);
     }
 
-    public function actionProfile()
-    {
-
-    }
-
-    public function actionPhone()
-    {
-
-    }
-
-    public function actionFullname()
-    {
-
-    }
-
-    public function actionDelivery()
-    {
-
-    }
 }
