@@ -20,6 +20,7 @@
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
                 'items' => [
                     ['label' => 'Меню', 'options' => ['class' => 'header']],
+                    ['label' => 'Заказы', 'icon' => 'cart-plus', 'url' => ['/shop/order'], 'active' => Yii::$app->controller->id == 'shop/order'],
                     ['label' => 'Скидки', 'icon' => 'money', 'url' => ['/shop/discount'], 'active' => Yii::$app->controller->id == 'shop/discount'],
                     ['label' => 'Каталог', 'icon' => 'folder-open', 'url' => ['/shop/category'], 'active' => $this->context->id == 'shop/category'],
                     ['label' => 'Товары', 'icon' => 'dropbox', 'url' => ['/shop/product'], 'active' => Yii::$app->controller->id == 'shop/product'],

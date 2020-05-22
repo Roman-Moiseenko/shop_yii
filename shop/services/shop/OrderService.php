@@ -106,6 +106,7 @@ class OrderService
                 \Yii::$app->errorHandler->logException($e);
                 \Yii::$app->session->setFlash('error', $e);
             }
+            $this->sendNotice($order);
             $this->cart->clear();
 
         });
@@ -149,6 +150,15 @@ class OrderService
         }
         fclose($handle);
         return true;
+    }
+
+    private function sendNotice(Order $order)
+    {
+        //TODO  Отправка уведомления на почту, SMS и/или WathApp, данные:
+        // $order->id;
+        // $order->cost;
+        // ($order->getUser())->phone;
+        // ($order->getUser())->fullname->getFullname();
     }
 
 }

@@ -121,6 +121,7 @@ class UserController extends Controller
 
         return $this->render('update', [
             'model' => $form,
+            'user' => $user,
         ]);
     }
 

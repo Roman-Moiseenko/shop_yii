@@ -8,9 +8,9 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model shop\entities\user\User */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Пользователь: ' . $model->username;
+$this->params['breadcrumbs'][] = ['label' => 'Пользователи', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $model->username;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="user-view">
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Вы уверены что хотите удалить пользователя?',
                 'method' => 'post',
             ],
         ]) ?>

@@ -19,7 +19,7 @@ use yii\helpers\Url; ?>
             <a href="<?= Html::encode(Url::to(['/auth/reset/request'])) ?>" class="list-group-item">Восстановить пароль</a>
             <a href="<?= Html::encode(Url::to(['/cabinet/default/index'])) ?>" class="list-group-item">Кабинет</a>
             <a href="<?= Html::encode(Url::to(['/cabinet/wishlist/index'])) ?>" class="list-group-item">Избранное</a>
-            <a href="/account/order" class="list-group-item">Заказы</a>
+            <a href="<?= Html::encode(Url::to(['/cabinet/order/index'])) ?>" class="list-group-item">Заказы</a>
             <a href="/account/newsletter" class="list-group-item">Newsletter</a>
         </div>
     </aside>

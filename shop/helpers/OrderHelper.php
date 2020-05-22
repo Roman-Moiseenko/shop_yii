@@ -12,12 +12,12 @@ class OrderHelper
     public static function statusList(): array
     {
         return [
-            Status::NEW => 'New',
-            Status::PAID => 'Paid',
-            Status::SENT => 'Sent',
-            Status::COMPLETED => 'Completed',
-            Status::CANCELLED => 'Cancelled',
-            Status::CANCELLED_BY_CUSTOMER => 'Cancelled by customer',
+            Status::NEW => 'Новый',
+            Status::PAID => 'Оплачен',
+            Status::SENT => 'Собран',
+            Status::COMPLETED => 'Выполнен',
+            Status::CANCELLED => 'Отменен',
+            Status::CANCELLED_BY_CUSTOMER => 'Отменен Клиентом',
         ];
     }
 
@@ -25,6 +25,8 @@ class OrderHelper
     {
         return ArrayHelper::getValue(self::statusList(), $status);
     }
+
+    //TODO переделать статусы под Order
 
     public static function statusLabel($status): string
     {

@@ -26,14 +26,20 @@ $this->params['breadcrumbs'][] = $this->title;
                             return Html::a(Html::encode($model->id), ['view', 'id' => $model->id]);
                         },
                         'format' => 'raw',
+                        'label' => '№ заказа',
                     ],
-                    'created_at:datetime',
+                    [
+                        'attribute' =>   'created_at',
+                        'format' => 'datetime',
+                        'label' => 'Дата заказа',
+                        ],
                     [
                         'attribute' => 'status',
                         'value' => function (Order $model) {
                             return OrderHelper::statusLabel($model->current_status);
                         },
                         'format' => 'raw',
+                        'label' => 'Текущий статус',
                     ],
                     ['class' => ActionColumn::class],
                 ],

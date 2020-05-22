@@ -1,14 +1,16 @@
 <?php
 
+use shop\forms\manage\user\UserEditForm;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
-/* @var $model shop\entities\user\User */
+/* @var $user shop\entities\user\User */
+/* @var $model UserEditForm */
 
-$this->title = 'Update User: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Редактирование пользователя: ' . $user->username;
+$this->params['breadcrumbs'][] = ['label' => 'Пользователи', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $user->username, 'url' => ['view', 'id' => $user->id]];
+$this->params['breadcrumbs'][] = 'Изменить';
 ?>
 <div class="user-update">
 <div class="">
@@ -18,11 +20,11 @@ $this->params['breadcrumbs'][] = 'Update';
 
                 <?php $form = ActiveForm::begin(); ?>
 
-                <?= $form->field($model, 'username')->textInput() ?>
-                <?= $form->field($model, 'email')->textInput() ?>
+                <?= $form->field($model, 'username')->textInput()->label('Логин') ?>
+                <?= $form->field($model, 'email')->textInput()->label('Эл.почта') ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                    <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
                 </div>
 
                 <?php ActiveForm::end(); ?>
