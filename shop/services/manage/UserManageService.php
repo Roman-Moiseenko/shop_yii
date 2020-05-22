@@ -8,9 +8,9 @@ use shop\entities\shop\order\DeliveryData;
 use shop\entities\user\FullName;
 use shop\entities\user\User;
 use shop\forms\manage\user\ContactDataForm;
+use shop\forms\manage\user\DeliveryProfileForm;
 use shop\forms\manage\user\UserCreateForm;
 use shop\forms\manage\user\UserEditForm;
-use shop\forms\shop\order\DeliveryForm;
 use shop\repositories\UserRepository;
 
 class UserManageService
@@ -43,8 +43,6 @@ class UserManageService
         return $user;
     }
 
-
-
     public function setContact($id, ContactDataForm $form)
     {
         $user = $this->users->get($id);
@@ -60,7 +58,7 @@ class UserManageService
         return $user;
     }
 
-    public function setDelivery($id, DeliveryForm $form)
+    public function setDelivery($id, DeliveryProfileForm $form)
     {
         $user = $this->users->get($id);
         $user->editDelivery(new DeliveryData($form->town, $form->address));

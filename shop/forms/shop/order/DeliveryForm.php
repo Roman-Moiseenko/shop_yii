@@ -33,7 +33,7 @@ class DeliveryForm extends Model
         return [
             [['method'], 'integer'],
             [['town', 'address'], 'string'],
-            [['address'], 'required'],
+            [['address', 'method'], 'required'],
         ];
     }
 

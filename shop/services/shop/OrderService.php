@@ -115,6 +115,8 @@ class OrderService
 
     private function unloadTo1C(User $user, Order $order)
     {
+        //Todo Сделать проверку на каталоги => создать, если нет
+
         $path = dirname(__DIR__, 3) . '/static/exchange/out/';
         $filename = $order->id . '.order';
 

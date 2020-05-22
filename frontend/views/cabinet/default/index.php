@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="panel panel-default">
         <div class="panel-heading"><h2><?= Html::encode($this->title) ?></h2></div>
         <div class="panel-body">
-            <legend><b>Основные сведения</b></legend>
+            <legend>Основные сведения&#160;<?= Html::a('Изменить', ['cabinet/profile/edit?id='.$user->id], ['class' => 'btn btn-default btn-xs']) ?></legend>
             <table width="100%">
                 <tr>
                     <td align="right" width="15%" class="userinfo">Логин:</td>
@@ -26,14 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td align="right" class="userinfo">Эл.почта:</td>
                     <td class="userinfo">&#160;<?= $user->email ?></td>
                 </tr>
-                <tr>
-                    <td class="userinfo">
-                        <?= Html::a('Изменить', ['cabinet/profile/edit?id='.$user->id], ['class' => 'btn btn-default small']) ?>
-                    </td>
-                </tr>
             </table>
             <p></p><br>
-            <legend><b>Контактные данные</b></legend>
+            <legend>Контактные данные&#160;<?= Html::a('Изменить', ['cabinet/profile/contact?id='.$user->id], ['class' => 'btn btn-default btn-xs']) ?></legend>
             <table width="100%">
                 <tr>
                     <td align="right" width="15%" class="userinfo">Фамилия:</td>
@@ -51,14 +46,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td align="right" class="userinfo">Телефон:</td>
                     <td class="userinfo">&#160;<?= $user->phone ?></td>
                 </tr>
-                <tr>
-                    <td class="userinfo">
-                        <?= Html::a('Изменить', ['cabinet/profile/contact?id='.$user->id], ['class' => 'btn btn-default small']) ?>
-                    </td>
-                </tr>
             </table>
             <p></p><br>
-            <legend><b>Адрес (для доставки)</b></legend>
+            <legend>Адрес (для доставки)&#160;<?= Html::a('Изменить', ['cabinet/profile/delivery?id='.$user->id], ['class' => 'btn btn-default btn-xs']) ?></legend>
             <table width="100%">
                 <tr>
                     <td align="right" width="15%" class="userinfo">Нас.пункт:</td>
@@ -67,11 +57,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                     <td align="right" class="userinfo">Адрес:</td>
                     <td class="userinfo">&#160;<?= $user->deliveryData->address ?></td>
-                </tr>
-                <tr>
-                    <td class="userinfo">
-                        <?= Html::a('Изменить', ['cabinet/profile/delivery?id='.$user->id], ['class' => 'btn btn-default small']) ?>
-                    </td>
                 </tr>
             </table>
         </div>

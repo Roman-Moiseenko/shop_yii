@@ -6,9 +6,8 @@ namespace frontend\controllers\cabinet;
 
 use shop\entities\user\User;
 use shop\forms\manage\user\ContactDataForm;
+use shop\forms\manage\user\DeliveryProfileForm;
 use shop\forms\manage\user\UserEditForm;
-use shop\forms\shop\order\DeliveryForm;
-use shop\repositories\UserRepository;
 use shop\services\manage\UserManageService;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -100,7 +99,7 @@ class ProfileController extends Controller
     public function actionDelivery($id)
     {
         $user = $this->findModel($id);
-        $form = new DeliveryForm($user);
+        $form = new DeliveryProfileForm($user);
 
         if ($form->load(\Yii::$app->request->post()) && $form->validate()) {
             try {
