@@ -21,4 +21,11 @@ class FullName
     {
         return  $this->surname . ' ' . $this->firstname . (!empty($this->secondname) ? ' ' . $this->secondname : '') ;
     }
+
+    public function getShortname(): string
+    {
+        //
+        return  $this->surname . ' ' . mb_substr($this->firstname, 0, 1) . '.' . (!empty($this->secondname) ? '' . mb_substr($this->secondname, 0, 1) . '.' : '') ;
+    }
+
 }

@@ -1,5 +1,9 @@
 <?php
 
+use shop\entities\shop\order\Order;
+use shop\helpers\DeliveryHelper;
+use shop\helpers\OrderHelper;
+use shop\helpers\PriceHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -21,19 +25,60 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'created_at',
-            'user_id',
-            'delivery_method_id',
-            'delivery_method_name',
+            [
+                'attribute' => 'id',
+                'label' => '№',
+
+            ],
+            [
+                'attribute' => 'created_at',
+                'label' => 'Дата',
+                'format' => 'datetime'],
+            [
+                'attribute' => 'user_id',
+                'label' => 'Покупатель',
+                'value' => function (Order $model) {
+                    return ($model->user)->fullname->getShortname();
+                },
+            ],
+
+            [
+                'attribute' => 'delivery_method_id',
+                'label' => 'Доставка',
+                'value' => function (Order $model) {
+                    return $model->delivery_method_name;
+                },
+               // 'filter' => DeliveryHelper::list(),
+            ],
+           // 'delivery_method_id',
+           // 'delivery_method_name',
             //'delivery_cost',
             //'payment_method',
-            //'cost',
+
+            [
+                'attribute' => 'cost',
+                'value' => function (Order $model) {
+                    return PriceHelper::format($model->cost);
+                },
+                'format' => 'raw',
+                'label' => 'Сумма',
+            ],
             //'note:ntext',
-            //'current_status',
+            [
+                'attribute' => 'current_status',
+                'value' => function (Order $model) {
+                    return OrderHelper::statusLabel($model->current_status);
+                },
+                'filter' => OrderHelper::statusList(),
+                'format' => 'raw',
+                'label' => 'Статус',
+            ],
             //'cancel_reason:ntext',
             //'statuses_json',
-            //'customer_phone',
+            [
+                'attribute' => 'customer_phone',
+                'label' => 'Телефон',
+            ],
             //'customer_name',
             //'delivery_town',
             //'delivery_address:ntext',

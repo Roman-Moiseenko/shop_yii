@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="cabinet-index">
     <div class="panel panel-default">
-        <div class="panel-heading"><h2><?= Html::encode($this->title) ?></h2></div>
+        <div class="panel-heading"><h3><?= Html::encode($this->title) ?></h3></div>
         <div class="panel-body">
             <legend>Основные сведения&#160;<?= Html::a('Изменить', ['cabinet/profile/edit?id='.$user->id], ['class' => 'btn btn-default btn-xs']) ?></legend>
             <table width="100%">

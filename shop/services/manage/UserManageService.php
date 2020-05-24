@@ -24,6 +24,7 @@ class UserManageService
     {
         $this->users = $users;
     }
+
     public function create(UserCreateForm $form): User
     {
         $user = User::create(
@@ -47,11 +48,13 @@ class UserManageService
     {
         $user = $this->users->get($id);
         $user->editPhone($form->phone);
+
+
         $user->editFullName(
             new FullName(
-                $form->surname,
-                $form->firstname,
-                $form->secondname
+                $this->ExcangeName($form->surname),
+                $this->ExcangeName($form->firstname),
+                $this->ExcangeName($form->secondname)
             )
         );
         $this->users->save($user);
@@ -65,4 +68,11 @@ class UserManageService
         $this->users->save($user);
         return $user;
     }
+
+    private function ExcangeName($name): string
+    {
+        $name = mb_strtolower($name);
+        return mb_strtoupper(mb_substr($name, 0, 1)) . mb_substr($name, 1, mb_strlen($name) - 1);
+    }
+
 }
