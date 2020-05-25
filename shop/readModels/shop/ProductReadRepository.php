@@ -222,4 +222,5 @@ class ProductReadRepository
             'sort' => false,
         ]);
     }
+
 }

@@ -29,7 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'contentOptions' => ['style' => 'width: 100px'],
             ],
-            'id',
+            [
+                'attribute' => 'id',
+                'value' => function (Product $model) {
+                    return $model->remains > 0 ? 'На складе' : 'Нет в наличии';
+                },
+                'label' => false],
             [
                 'attribute' => 'name',
                 'value' => function (Product $model) {

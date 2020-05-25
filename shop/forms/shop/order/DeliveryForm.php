@@ -39,9 +39,9 @@ class DeliveryForm extends Model
 
     public function deliveryMethodsList(): array
     {
-        $methods = DeliveryMethod::find()->availableForAmount($this->_amount)->orderBy('name')->all();
+        $methods = DeliveryMethod::find()->availableForAmount($this->_amount)->orderBy(['cost' => SORT_ASC])->all();
         return ArrayHelper::map($methods, 'id', function (DeliveryMethod $method) {
-            return $method->name . '(' . PriceHelper::format($method->cost) . ')';
+            return $method->name . ' (' . PriceHelper::format($method->cost) . ')';
         });
     }
 

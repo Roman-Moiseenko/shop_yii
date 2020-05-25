@@ -2,6 +2,8 @@
 
 namespace shop\entities\Shop\Product;
 
+use shop\entities\user\User;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -21,7 +23,7 @@ class Review extends ActiveRecord
         $review->vote = $vote;
         $review->text = $text;
         $review->created_at = time();
-        $review->active = false;
+        $review->active = true;
         return $review;
     }
 
@@ -43,10 +45,10 @@ class Review extends ActiveRecord
 
     public function isActive(): bool
     {
-        return $this->active === true;
+        return $this->active == true;
     }
 
-    public function getRating(): bool
+    public function getRating(): int
     {
         return $this->vote;
     }
@@ -59,5 +61,10 @@ class Review extends ActiveRecord
     public static function tableName(): string
     {
         return '{{%shop_reviews}}';
+    }
+
+    public function getUser(): ActiveQuery
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 }

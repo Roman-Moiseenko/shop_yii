@@ -282,4 +282,11 @@ class ProductManageService
         $product->setRemains($remains);
         $this->products->save($product);
     }
+
+    public function addReview($id, $userId, $vote, $text)
+    {
+        $product = $this->products->get($id);
+        $product->addReview($userId, $vote, $text);
+        $this->products->save($product);
+    }
 }

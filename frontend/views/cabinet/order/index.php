@@ -2,6 +2,7 @@
 
 use shop\entities\Shop\Order\Order;
 use shop\helpers\OrderHelper;
+use shop\helpers\PriceHelper;
 use yii\grid\ActionColumn;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -23,16 +24,24 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'id',
                         'value' => function (Order $model) {
-                            return Html::a(Html::encode($model->id), ['view', 'id' => $model->id]);
+                            return Html::a(
+                                'Заказ № ' .
+                                Html::encode($model->id) .
+                                ' от ' .
+                                \Yii::$app->formatter->asDate($model->created_at),
+                                ['view', 'id' => $model->id]);
                         },
                         'format' => 'raw',
-                        'label' => '№ заказа',
+                        'label' => 'Заказ',
                     ],
                     [
-                        'attribute' =>   'created_at',
-                        'format' => 'datetime',
-                        'label' => 'Дата заказа',
-                        ],
+                        'attribute' => 'cost',
+                        'value' => function (Order $model) {
+                            return PriceHelper::format($model->cost);
+                        },
+                        'format' => 'raw',
+                        'label' => 'Сумма заказа',
+                    ],
                     [
                         'attribute' => 'status',
                         'value' => function (Order $model) {

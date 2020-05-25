@@ -5,10 +5,12 @@
 /* @var $reviewForm ReviewForm */
 
 use frontend\assets\MagnificPopupAsset;
+use frontend\widgets\RatingWidget;
 use shop\forms\shop\AddToCartForm;
 use shop\forms\shop\ReviewForm;
 use shop\helpers\PriceHelper;
 use shop\helpers\ProductHelper;
+use shop\helpers\RatingHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -54,7 +56,7 @@ MagnificPopupAsset::register($this);
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab-description" data-toggle="tab">Описание</a></li>
             <li><a href="#tab-specification" data-toggle="tab">Характеристики</a></li>
-            <li><a href="#tab-review" data-toggle="tab">Отзывы (0)</a></li>
+            <li><a href="#tab-review" data-toggle="tab">Отзывы (<?= $countReveiws = count($product->reviews) ?>)</a></li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab-description"><p>
@@ -75,7 +77,6 @@ MagnificPopupAsset::register($this);
                 </table>
             </div>
             <div class="tab-pane" id="tab-review">
-
                     <div id="review"></div>
                     <h2>Оставить отзыв</h2>
                     <?php if (Yii::$app->user->isGuest): ?>
@@ -95,6 +96,13 @@ MagnificPopupAsset::register($this);
                         </div>
                     <?php ActiveForm::end()?>
                     <?php endif;?>
+                <?php if ($countReveiws > 0): ?>
+                <h2>Отзывы</h2>
+                <?php foreach ($product->reviews as $review): ?>
+                <?= $review->user->fullname->getFullname(); ?>
+                    <?= $review->text; ?>
+                <?php endforeach;?>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -103,9 +111,9 @@ MagnificPopupAsset::register($this);
             <button type="button" data-toggle="tooltip" class="btn btn-default"  title="В избранное" href="<?= Url::to(['/cabinet/wishlist/add', 'id' => $product->id]) ?>" data-method="post">
                 <i class="fa fa-heart"></i>
             </button>
-            <button type="button" data-toggle="tooltip" class="btn btn-default" title="Сравнить" onclick="compare.add('47');">
+            <!-- button type="button" data-toggle="tooltip" class="btn btn-default" title="Сравнить" onclick="compare.add('47');">
                 <i class="fa fa-exchange"></i>
-            </button>
+            </button -->
         </div>
         <h1><?=Html::encode($product->name)?></h1> <!-- Заголовок товара-->
         <ul class="list-unstyled">
@@ -141,13 +149,9 @@ MagnificPopupAsset::register($this);
         </div>
         <div class="rating">
             <p>
-                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
-                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
-                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
-                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
-                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>&nbsp;
-                <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">0 reviews</a>
-                &nbsp;/&nbsp;<a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">Write a review</a>
+                <?= RatingWidget::widget(['rating' => $product->rating]); ?>
+                <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;"><?= $countReveiws?> отзывов</a>
+                &nbsp;/&nbsp;<a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">Написать отзыв</a>
             </p>
             <hr>
 

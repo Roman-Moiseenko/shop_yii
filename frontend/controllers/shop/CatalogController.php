@@ -143,9 +143,12 @@ class CatalogController extends Controller
         /*    if ($addToCartForm->load(Yii::$app->request->post()) && $addToCartForm->validate()) {
             }*/
         if ($reviewForm->load(Yii::$app->request->post()) && $reviewForm->validate()) {
-            //TODO Переделать под сервисы
-            $product->addReview(Yii::$app->user->id, $reviewForm->vote, $reviewForm->text);
-            $product->save();
+            try {
+                $this->service->addReview($id, \Yii::$app->user->id, $reviewForm->vote, $reviewForm->text);
+                $this->redirect(['shop/catalog/product', 'id' => $id]);
+            } catch (\DomainException $e) {
+                \Yii::$app->session->setFlash('error', $e->getMessage());
+            }
         }
         return $this->render('product', [
             'product' => $product,

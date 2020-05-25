@@ -19,7 +19,9 @@ use yii\helpers\Json;
  * @property string $delivery_method_name
  * @property int $delivery_cost
  * @property string $payment_method
- * @property int $cost
+ * @property float $cost
+ * @property float $cost_original
+ * @property int $discount
  * @property int $note
  * @property int $current_status
  * @property string $cancel_reason
@@ -36,13 +38,17 @@ class Order extends ActiveRecord
     public $deliveryData;
     public $statuses = [];
 
-    public static function create($userId, CustomerData $customerData, array $items, $cost, $note): self
+    public static function create($userId, CustomerData $customerData,
+                                  array $items, $cost, $note,
+                                  $cost_original, $discount): self
     {
         $order = new static();
         $order->user_id = $userId;
         $order->customerData = $customerData;
         $order->items = $items;
         $order->cost = $cost;
+        $order->cost_original = $cost_original;
+        $order->discount = $discount;
         $order->note = $note;
         $order->created_at = time();
         $order->addStatus(Status::NEW);

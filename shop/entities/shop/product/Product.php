@@ -200,7 +200,10 @@ class Product extends ActiveRecord
     public function addReview($userId, $vote, $text): void
     {
         $reviews = $this->reviews;
+
+
         $reviews[] = Review::create($userId, $vote, $text);
+
         $this->updateReviews($reviews);
     }
 
@@ -255,14 +258,13 @@ class Product extends ActiveRecord
     {
         $amount = 0;
         $total = 0;
-
+        /* @var Review $review */
         foreach ($reviews as $review) {
             if ($review->isActive()) {
                 $amount++;
                 $total += $review->getRating();
             }
         }
-
         $this->reviews = $reviews;
         $this->rating = $amount ? $total / $amount : null;
     }
@@ -576,4 +578,6 @@ class Product extends ActiveRecord
     {
         return $this->hasMany(WishlistItem::class, ['product_id' => 'id']);
     }
+
+
 }

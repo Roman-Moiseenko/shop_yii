@@ -594,6 +594,12 @@ footer h5 {
 .rating .fa-star + .fa-star-o {
 	color: #E69500;
 }
+
+.rating .fa-star-half-o {
+	color: #FC0;
+	font-size: 15px;
+}
+
 h2.price {
 	margin: 0;
 }
@@ -627,7 +633,7 @@ h2.price {
 	}
 }
 .product-thumb .button-group button {
-	width: 60%;
+	width: 80%;
 	border: none;
 	display: inline-block;
 	float: left;
@@ -653,12 +659,12 @@ h2.price {
 }
 @media (max-width: 1200px) {
 	.product-thumb .button-group button, .product-thumb .button-group button + button {
-		width: 33.33%;
+		width: 50%;
 	}
 }
 @media (max-width: 767px) {
 	.product-thumb .button-group button, .product-thumb .button-group button + button {
-		width: 33.33%;
+		width: 50%;
 	}
 }
 .thumbnails {

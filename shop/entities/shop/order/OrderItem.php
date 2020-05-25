@@ -39,4 +39,9 @@ class OrderItem extends ActiveRecord
     {
         return '{{%shop_order_items}}';
     }
+
+    public function getProduct(): Product
+    {
+        return Product::findOne($this->product_id);
+    }
 }

@@ -43,11 +43,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'deliveryData.address',
                 'label' => 'Адрес',
             ],
+           // ($order->discount != 0) ?
+            [
+                'attribute' => 'cost_original',
+                'value' => PriceHelper::format($order->cost_original),
+                'format' => 'raw',
+                'label' => 'Сумма',
+            ],
+            [
+                'attribute' => 'discount',
+                'value' => PriceHelper::format($order->discount * $order->cost_original / 100),
+                'format' => 'raw',
+                'label' => 'Скидка',
+            ],
+
             [
                 'attribute' => 'cost',
                 'value' => PriceHelper::format($order->cost),
                 'format' => 'raw',
-                'label' => 'Сумма',
+                'label' => 'К оплате',
             ],
             [
                 'attribute' => 'note',

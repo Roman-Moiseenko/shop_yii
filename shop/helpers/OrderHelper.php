@@ -26,8 +26,6 @@ class OrderHelper
         return ArrayHelper::getValue(self::statusList(), $status);
     }
 
-    //TODO переделать статусы под Order
-
     public static function statusLabel($status): string
     {
         switch ($status) {

@@ -89,7 +89,9 @@ class OrderService
             ),
             $items,
             $this->cart->getCost()->getTotal(),
-            $form->note
+            $form->note,
+            $this->cart->getCost()->getOrigin(),
+            $this->cart->getCost()->getPercent()
         );
         $order->setDeliveryInfo(
             $this->deliveryMethods->get($form->delivery->method),
@@ -101,18 +103,18 @@ class OrderService
                 $this->products->save($product);
             }
             try {
-                $this->unloadTo1C($user, $order);
+                Change1CService::unloadTo1C($user, $order);
             } catch (\Exception $e) {
                 \Yii::$app->errorHandler->logException($e);
                 \Yii::$app->session->setFlash('error', $e);
             }
-            $this->sendNotice($order);
+            Change1CService::sendNotice($order);
             $this->cart->clear();
 
         });
         return $order;
     }
-
+/**
     private function unloadTo1C(User $user, Order $order)
     {
         //Todo Сделать проверку на каталоги => создать, если нет
@@ -125,12 +127,6 @@ class OrderService
         $file =$path . $filename;
         $handle = fopen($file, 'w');
 
-        /*
-        if ($user->firm <> '') {
-            $firm = json_decode($user->firm, true);
-            $str = implode(';', $firm);
-        } else {*/
-
         $info_user = $user->id . ';'
                 . $order->customerData->name .';'
                 . $order->customerData->phone . ';'
@@ -141,13 +137,13 @@ class OrderService
             . $order->deliveryData->town . ',' . $order->deliveryData->address . ';'
             . $order->note . ';'
             . date('YmdHis', $order->created_at) . ';'
-            . $this->cart->getCost()->getPercent();
+            . $order->discount;
         fwrite($handle, $info_user . PHP_EOL);
         fwrite($handle, $info_order . PHP_EOL);
         foreach ($this->cart->getItems() as $cartItem)
         {
             $product = $cartItem->getProduct();
-            /* @var Product $product*/
+
             fwrite($handle, $product->code1C . ';' . $cartItem->getQuantity() . ';' . $cartItem->getPrice() . PHP_EOL);
         }
         fclose($handle);
@@ -162,5 +158,5 @@ class OrderService
         // ($order->getUser())->phone;
         // ($order->getUser())->fullname->getFullname();
     }
-
+*/
 }
