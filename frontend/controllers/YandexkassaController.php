@@ -41,7 +41,7 @@ class YandexkassaController extends Controller
                 'amount' => array('value' => $orderItem->price, 'currency' => 'RUB'),
                 'vat_code' => 1);
         }
-
+/*
         $yandexkassa = \Yii::$app->get('yandexkassa');
         $client = new Client();
         $client->setAuth($yandexkassa['login'], $yandexkassa['password']);
@@ -62,6 +62,7 @@ class YandexkassaController extends Controller
             ],
             uniqid('', true)
         );
+        */
     }
 
     public function actionSuccess($id)
