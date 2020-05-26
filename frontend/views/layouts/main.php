@@ -5,6 +5,7 @@
 
 
 use frontend\widgets\CartWidget;
+use frontend\widgets\TopmenuWidget;
 use shop\helpers\WishlistHelper;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -29,30 +30,12 @@ AppAsset::register($this);
     </head>
     <body>
     <?php $this->beginBody() ?>
-
-
     <nav id="top">
         <div class="container">
             <div class="pull-left">
             </div>
             <div id="top-links" class="nav pull-right">
-                <ul class="list-inline">
-                    <li><a href="/contact"><i class="fa fa-phone"></i></a> <span class="hidden-xs hidden-sm hidden-md">8-902-463-2757</span></li>
-                    <li class="dropdown"><a href="/index.php?route=account/account" title="Мой кабинет" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <span class="hidden-xs hidden-sm hidden-md">Мой кабинет</span> <span class="caret"></span></a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <?php if (Yii::$app->user->isGuest): ?>
-                                <li><a href="<?= Html::encode(Url::to(['/auth/auth/login'])) ?>">Войти</a></li>
-                                <li><a href="<?= Html::encode(Url::to(['/auth/signup/request'])) ?>">Регистрация</a></li>
-                            <?php else: ?>
-                                <li><a href="<?= Html::encode(Url::to(['/cabinet/default/index'])) ?>">Кабинет</a></li>
-                                <li><a href="<?= Html::encode(Url::to(['/auth/auth/logout'])) ?>" data-method="post">Выйти</a></li>
-                            <?php endif; ?>
-                        </ul>
-                    </li>
-                    <li><a href="<?= Url::to(['/cabinet/wishlist/index']) ?>" id="wishlist-total" title="Избранное (0)"><i class="fa fa-heart"></i> <span class="hidden-xs hidden-sm hidden-md">Избранное (<?= WishlistHelper::count()?>)</span></a></li>
-                    <li><a href="<?= Url::to(['/shop/cart/index']) ?>" title="Корзина"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">Корзина</span></a></li>
-                    <li><a href="<?= Url::to('/shop/checkout/index') ?>" title="Checkout"><i class="fa fa-share"></i> <span class="hidden-xs hidden-sm hidden-md">Оплатить</span></a></li>
-                </ul>
+                <?= TopmenuWidget::widget()?>
             </div>
         </div>
     </nav>

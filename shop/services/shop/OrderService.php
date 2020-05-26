@@ -127,6 +127,7 @@ class OrderService
     public function remove($id)
     {
         $order = $this->orders->get($id);
+        //TODO проверить
         // Отмена заказа
         // Перед удалением, вернуть кол-во товара из itemOrder
         $this->transaction->wrap(function () use ($order)  {

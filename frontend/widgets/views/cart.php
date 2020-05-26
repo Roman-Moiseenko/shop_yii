@@ -60,7 +60,9 @@ use yii\helpers\Url;
                 <p class="text-right">
                     <a href="<?= Url::to(['/shop/cart/index']) ?>"><strong><i class="fa fa-shopping-cart"></i> В корзину</strong></a>
                     &nbsp;&nbsp;&nbsp;
+                    <?php if ($cart->getItems()): ?>
                     <a href="<?= Url::to('/shop/checkout/index') ?>"><strong><i class="fa fa-share"></i> Оплатить</strong></a></p>
+                    <?php endif; ?>
             </div>
         </li>
     </ul>

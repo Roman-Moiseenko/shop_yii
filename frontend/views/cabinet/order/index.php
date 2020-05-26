@@ -14,6 +14,7 @@ $this->title = 'Заказы';
 $this->params['breadcrumbs'][] = ['label' => 'Личный кабинет', 'url' => ['cabinet/default/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<span class="attention">Внимание! Не оплаченные заказы, автоматически удаляются в течение 3 дней!</span>
 <div class="user-index">
 
     <div class="box">

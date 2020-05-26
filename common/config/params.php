@@ -11,5 +11,16 @@ return [
     'mailChimpKey' => '',
     'mailChimpListId' => '',
     'smsRuKey' => '',
+    'yandexkassa' => [
+        'login' => '570422',
+        'password' => 'live_QkybQa8B1pkRaqFfhHrMEGIJbv5nqRi6bU0AO5MCEQU',
+        'confirmation' => [
+            'type' => 'redirect',
+            'return_url' => 'https://kupi41.ru/yandexkassa/success?id=',
+        ],
+        'payment_method_data' => [
+            'type' => 'bank_card',
+        ],
+    ],
 
 ];

@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php if ($order->canBePaid()): ?>
         <p>
-            <?= Html::a('Pay via Robokassa', ['/payment/robokassa/invoice', 'id' => $order->id], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Оплатить', ['/yandexkassa/payorder', 'id' => $order->id], ['class' => 'btn btn-success']) ?>
         </p>
     <?php endif; ?>
 
