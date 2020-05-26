@@ -48,7 +48,6 @@ class CheckoutController extends Controller
     public function actionIndex()
     {
         $form = new OrderForm($this->cart->getCost()->getTotal());
-
         if ($form->load(\Yii::$app->request->post()) && $form->validate()) {
             try {
                 $order = $this->service->checkout(\Yii::$app->user->id, $form);
@@ -62,6 +61,5 @@ class CheckoutController extends Controller
             'cart' => $this->cart,
             'model' => $form,
         ]);
-
     }
 }

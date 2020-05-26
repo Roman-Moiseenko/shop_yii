@@ -7,6 +7,7 @@ namespace shop\services\shop;
 use shop\entities\shop\order\Order;
 use shop\entities\shop\product\Product;
 use shop\entities\user\User;
+use shop\services\auth\ContactService;
 
 class Change1CService
 {
@@ -43,8 +44,9 @@ class Change1CService
         return true;
     }
 
-    public static function sendNotice(Order $order)
+    public static function sendNotice(Order $order, ContactService $contact)
     {
+
         //TODO  Отправка уведомления на почту, SMS и/или WathApp, данные:
         // $order->id;
         // $order->cost;

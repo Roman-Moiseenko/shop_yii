@@ -11,6 +11,8 @@ class TransactionManager
         try {
             \Yii::$app->db->transaction($function);
         } catch (\Throwable $e) {
+            \Yii::$app->errorHandler->logException($e);
+            \Yii::$app->session->setFlash('error', $e->getMessage());
         }
     }
 
