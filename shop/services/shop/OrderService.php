@@ -119,7 +119,6 @@ class OrderService
             }
             $this->contacts->sendNoticeOrder($order);
             $this->cart->clear();
-
         });
         return $order;
     }
@@ -127,54 +126,47 @@ class OrderService
     public function remove($id)
     {
         $order = $this->orders->get($id);
-        //TODO проверить
-        // Отмена заказа
-        // Перед удалением, вернуть кол-во товара из itemOrder
-        $this->transaction->wrap(function () use ($order)  {
-        foreach ($order->items as $orderItem) {
-            $product = $orderItem->getProduct();
-            $product->remains += $orderItem->quantity;
-            $this->products->save($product);
-        }
-        $this->contacts->ChangeStatus($order);
-        $this->orders->remove($order);
-    });
+        $this->transaction->wrap(function () use ($order) {
+            foreach ($order->items as $orderItem) {
+                $product = $orderItem->getProduct();
+                $product->remains += $orderItem->quantity;
+                $this->products->save($product);
+            }
+            $this->contacts->sendNoticeOrder($order);
+            $this->orders->remove($order);
+        });
     }
-/**
-    private function unloadTo1C(User $user, Order $order)
+
+    public function pay($id, string $payment_method)
     {
-
-
-        $path = dirname(__DIR__, 3) . '/static/exchange/out/';
-        $filename = $order->id . '.order';
-
-#######################
-
-        $file =$path . $filename;
-        $handle = fopen($file, 'w');
-
-        $info_user = $user->id . ';'
-                . $order->customerData->name .';'
-                . $order->customerData->phone . ';'
-                . $order->deliveryData->town . ',' . $order->deliveryData->address . ';'
-                . $user->email;
-        $info_order = $order->id.';'
-            . $order->current_status . ';'
-            . $order->deliveryData->town . ',' . $order->deliveryData->address . ';'
-            . $order->note . ';'
-            . date('YmdHis', $order->created_at) . ';'
-            . $order->discount;
-        fwrite($handle, $info_user . PHP_EOL);
-        fwrite($handle, $info_order . PHP_EOL);
-        foreach ($this->cart->getItems() as $cartItem)
-        {
-            $product = $cartItem->getProduct();
-
-            fwrite($handle, $product->code1C . ';' . $cartItem->getQuantity() . ';' . $cartItem->getPrice() . PHP_EOL);
-        }
-        fclose($handle);
-        return true;
+        $order = $this->orders->get($id);
+        $order->pay($payment_method);
+        $this->orders->save($order);
+        $this->contacts->sendNoticeOrder($order);
     }
 
-*/
+    public function wait($id)
+    {
+        $order = $this->orders->get($id);
+        $order->wait();
+        $this->orders->save($order);
+        $this->contacts->sendNoticeOrder($order);
+    }
+
+    public function cancel($id, string $reason)
+    {
+        $order = $this->orders->get($id);
+        $order->cancel($reason);
+        $this->orders->save($order);
+        $this->contacts->sendNoticeOrder($order);
+    }
+
+    public function complete($id)
+    {
+        $order = $this->orders->get($id);
+        $order->complete();
+        $this->orders->save($order);
+        $this->contacts->sendNoticeOrder($order);
+    }
+
 }

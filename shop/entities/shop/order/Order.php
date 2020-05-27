@@ -87,6 +87,14 @@ class Order extends ActiveRecord
         $this->addStatus(Status::SENT);
     }
 
+    public function wait(): void
+    {
+        if ($this->isWait()) {
+            throw new \DomainException('Заказ уже отправлен.');
+        }
+        $this->addStatus(Status::WAIT);
+    }
+
     public function complete(): void
     {
         if ($this->isCompleted()) {
@@ -136,6 +144,10 @@ class Order extends ActiveRecord
     public function isCancelled(): bool
     {
         return $this->current_status == Status::CANCELLED;
+    }
+    private function isWait()
+    {
+        return $this->current_status == Status::WAIT;
     }
 
     public function addStatus($value)
@@ -219,5 +231,7 @@ class Order extends ActiveRecord
 
         return parent::beforeSave($insert);
     }
+
+
 
 }

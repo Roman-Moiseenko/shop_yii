@@ -10,7 +10,6 @@ use shop\services\shop\OrderService;
 use YandexCheckout\Client;
 use YandexCheckout\Common\Exceptions\ApiException;
 use YandexCheckout\Common\Exceptions\BadApiRequestException;
-use YandexCheckout\Common\Exceptions\ExtensionNotFoundException;
 use YandexCheckout\Common\Exceptions\ForbiddenException;
 use YandexCheckout\Common\Exceptions\InternalServerError;
 use YandexCheckout\Common\Exceptions\NotFoundException;
@@ -18,12 +17,12 @@ use YandexCheckout\Common\Exceptions\ResponseProcessingException;
 use YandexCheckout\Common\Exceptions\TooManyRequestsException;
 use YandexCheckout\Common\Exceptions\UnauthorizedException;
 use YandexCheckout\Model\PaymentInterface;
-use YandexCheckout\Request\Payments\PaymentResponse;
 use yii\web\Controller;
 
 class YandexkassaController extends Controller
 {
 
+    public $enableCsrfValidation = false;
     //const TEST_PAY = true;
     /**
      * @var OrderReadRepository
@@ -70,7 +69,7 @@ class YandexkassaController extends Controller
         $this->yandexkassa['confirmation']['return_url'] .= $order->id;
         /** -> */
         // TODO Заглушка для dev-режима
-        if (!YII_ENV_TEST) return $this->redirect(['/yandexkassa/responce', 'id' => $order->id]);
+        if (YII_DEBUG) return $this->redirect(['/yandexkassa/responce', 'id' => $order->id]);
         /** <- */
         try {
             $payment = $this->client->createPayment(
@@ -108,7 +107,7 @@ class YandexkassaController extends Controller
     public function actionResponce($id)
     {
         /** -> */
-        if (!YII_ENV_TEST) {  // TODO Заглушка для dev-режима
+        if (YII_DEBUG) {  // TODO Заглушка для dev-режима
             $this->succeeded($id, null);
             return;
         };
@@ -133,7 +132,7 @@ class YandexkassaController extends Controller
                    'Отмена ' .  $payment->getCancellationDetails()->getParty() . '. ' .
                    'По причине ' .  $payment->getCancellationDetails()->getReason() . '.'
         );
-        if (!YII_ENV_TEST) return $this->redirect(['/cabinet/order/view', 'id' => $id]);
+        if (YII_DEBUG) return $this->redirect(['/cabinet/order/view', 'id' => $id]);
     }
 
     private function waiting_for_capture($id, PaymentInterface $payment = null)
@@ -143,7 +142,7 @@ class YandexkassaController extends Controller
             'Платеж ждет подтверждения!' .
             'Как только магазин подтвердит наличие товара, платеж будет списан.' .
             'Дождись завершения операции, не оплачивайте повторно!');
-        if (!YII_ENV_TEST) return $this->redirect(['/cabinet/order/view', 'id' => $id]);
+        if (YII_DEBUG) return $this->redirect(['/cabinet/order/view', 'id' => $id]);
     }
 
     private function pending($id, PaymentInterface $payment = null)
@@ -158,27 +157,27 @@ class YandexkassaController extends Controller
     private function succeeded($id, PaymentInterface $payment = null)
     {
         $user = User::findOne(\Yii::$app->user->id);
-        $order = $this->orders->findOwn($user->id, $id);
+        //$order = $this->orders->findOwn($user->id, $id);
 
-        if (YII_ENV_TEST) { /** <-- */
+        if (!YII_DEBUG) { /** <-- */
             $payment_method = $payment->payment_method->getType();
             $payment_amount = $payment->amount->getValue();
             /**   -> */
         } else {
             $payment_method = 'bank-card';          // TODO Заглушка для dev-режима
-            $payment_amount = $order->cost . ' руб.';
+            $payment_amount = '000-000' . ' руб.';
         }
         /** <- */
 
         try {
-            $order->pay($payment_method);
-            $order->save(); // ????
+
+            $this->service->pay($id, $payment_method);
             \Yii::$app->session->setFlash('success',
                 'Платеж успешно оплачен. Сумма платежа составила ' . $payment_amount);
         } catch (\DomainException $e) {
             \Yii::$app->errorHandler->logException($e);
             \Yii::$app->session->setFlash('error', $e->getMessage());
         }
-        if (!YII_ENV_TEST) return $this->redirect(['/cabinet/order/view', 'id' => $id]);
+        if (YII_DEBUG) return $this->redirect(['/cabinet/order/view', 'id' => $id]);
     }
 }

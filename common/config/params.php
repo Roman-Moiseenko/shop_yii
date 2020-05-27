@@ -12,8 +12,11 @@ return [
     'mailChimpListId' => '',
     'smsRuKey' => '',
     'yandexkassa' => [
-        'login' => '570422',
-        'password' => 'live_QkybQa8B1pkRaqFfhHrMEGIJbv5nqRi6bU0AO5MCEQU',
+        'login' => '586361',
+        'test_login' => '570422',
+
+        'password' => 'test_G9hFBE1vNvC2cuHEBtjr_nlwHufM2_QYQWk7uSH34gg',
+        'test_password' => 'live_QkybQa8B1pkRaqFfhHrMEGIJbv5nqRi6bU0AO5MCEQU',
         'confirmation' => [
             'type' => 'redirect',
             'return_url' => 'https://kupi41.ru/yandexkassa/responce?id=',

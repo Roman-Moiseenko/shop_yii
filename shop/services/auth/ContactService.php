@@ -47,10 +47,11 @@ class ContactService
         // В базе прописать адреса и номера для отправки данных, и в админке их менять
         // и прописать куда отправлять или нет
         $body = 'Заказ № ' . $order->id . '.  На сумму ' . $order->cost . '<br>' .
+            'Текущий статус ' . OrderHelper::statusName($order->current_status) . '<br>' .
             ' Покупатель ' . ($order->user)->fullname->getFullname() . '<br>' .
             ' Телефон ' . ($order->user)->phone;
         $message = [
-            'subject' => 'Новый заказ', 'body' => $body];
+            'subject' => 'Заказ ' . OrderHelper::statusName($order->current_status), 'body' => $body];
         //
         $sendNotice = ['email' => true, 'sms' => true, 'whatsapp' => true];
         if ($sendNotice['email']) $this->sendEMAILNoticeOrder($message);
@@ -82,19 +83,5 @@ class ContactService
 //TODO Сделать отправку WathApp или Telegram
     }
 
-    public function ChangeStatus(Order $order)
-    {
-        $body = 'Новый статус - ' . OrderHelper::statusName($order->current_status) . '<br>' .
-            'Заказ № ' . $order->id . '.  На сумму ' . $order->cost . '<br>' .
-            ' Покупатель ' . ($order->user)->fullname->getFullname() . '<br>' .
-            ' Телефон ' . ($order->user)->phone;
-        $message = [
-            'subject' => 'Изменение статуса заказа', 'body' => $body];
-        //
-        $sendNotice = ['email' => true, 'sms' => true, 'whatsapp' => true];
-        if ($sendNotice['email']) $this->sendEMAILNoticeOrder($message);
-        if ($sendNotice['sms']) $this->sendSMSNoticeOrder($message);
-        if ($sendNotice['whatsapp']) $this->sendWHATSAPPNoticeOrder($message);
-    }
 
 }
