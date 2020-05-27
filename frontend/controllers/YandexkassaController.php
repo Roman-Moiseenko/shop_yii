@@ -23,6 +23,8 @@ use yii\web\Controller;
 
 class YandexkassaController extends Controller
 {
+
+    //const TEST_PAY = true;
     /**
      * @var OrderReadRepository
      */
@@ -65,6 +67,7 @@ class YandexkassaController extends Controller
                 'amount' => array('value' => $orderItem->price, 'currency' => 'RUB'),
                 'vat_code' => 1);
         }
+
         $this->yandexkassa['confirmation']['return_url'] .= $order->id;
         // TODO Заглушка для dev-режима
         if (!YII_ENV_TEST) return $this->redirect(['/yandexkassa/responce', 'id' => $order->id]);
@@ -121,13 +124,14 @@ class YandexkassaController extends Controller
         {
             $this->fail($id, $payment);
         }
+        return $this->redirect(['/cabinet/order/view', 'id' => $id]);
     }
 
-    private function fail($id, PaymentInterface $payment)
+    private function fail($id, PaymentInterface $payment = null)
     {
         //TODO добавить ошибку из $payment
         \Yii::$app->session->setFlash('error', 'Платеж не прошел! Попробуйте позже.');
-        return $this->redirect(['/cabinet/order/view', 'id' => $id]);
+        if (!YII_ENV_TEST) return $this->redirect(['/cabinet/order/view', 'id' => $id]);
     }
 
     private function success($id, PaymentInterface $payment = null)
@@ -149,10 +153,6 @@ class YandexkassaController extends Controller
             \Yii::$app->errorHandler->logException($e);
             \Yii::$app->session->setFlash('error', $e->getMessage());
         }
-        // Меняем статус
-        // Сообщаем об оплате
-
-
-        return $this->redirect(['/cabinet/order/view', 'id' => $id]);
+        if (!YII_ENV_TEST) return $this->redirect(['/cabinet/order/view', 'id' => $id]);
     }
 }
