@@ -8,6 +8,17 @@ use shop\entities\user\User;
 use shop\readModels\shop\OrderReadRepository;
 use shop\services\shop\OrderService;
 use YandexCheckout\Client;
+use YandexCheckout\Common\Exceptions\ApiException;
+use YandexCheckout\Common\Exceptions\BadApiRequestException;
+use YandexCheckout\Common\Exceptions\ExtensionNotFoundException;
+use YandexCheckout\Common\Exceptions\ForbiddenException;
+use YandexCheckout\Common\Exceptions\InternalServerError;
+use YandexCheckout\Common\Exceptions\NotFoundException;
+use YandexCheckout\Common\Exceptions\ResponseProcessingException;
+use YandexCheckout\Common\Exceptions\TooManyRequestsException;
+use YandexCheckout\Common\Exceptions\UnauthorizedException;
+use YandexCheckout\Model\PaymentInterface;
+use YandexCheckout\Request\Payments\PaymentResponse;
 use yii\web\Controller;
 
 class YandexkassaController extends Controller
@@ -54,11 +65,10 @@ class YandexkassaController extends Controller
                 'amount' => array('value' => $orderItem->price, 'currency' => 'RUB'),
                 'vat_code' => 1);
         }
-
+        $this->yandexkassa['confirmation']['return_url'] .= $order->id;
         //При дебаге заглушка
-        if (!YII_ENV_TEST) return $this->redirect(['/yandexkassa/success', 'id' => $order->id]);
+        if (!YII_ENV_TEST) return $this->redirect(['/yandexkassa/responce', 'id' => $order->id]);
 
-            $this->yandexkassa['confirmation']['return_url'] .= $order->id;
         try {
             $payment = $this->client->createPayment(
                 [
@@ -84,35 +94,61 @@ class YandexkassaController extends Controller
         }
     }
 
-    public function actionSuccess($id)
+    public function actionResponce($id)
     {
-        $succeeded = false;
-        $payment_method = 'bank-card';
-        if (YII_ENV_TEST) {
+        try {
             $payment = $this->client->getPaymentInfo($_SESSION['paymentid']);
-            if ($payment->status === 'succeeded') {
-                $succeeded = true;
-                $payment_method = $payment->payment_method->getType();
-            }
+        } catch (BadApiRequestException $e) {
+        } catch (ForbiddenException $e) {
+        } catch (InternalServerError $e) {
+        } catch (NotFoundException $e) {
+        } catch (ResponseProcessingException $e) {
+        } catch (TooManyRequestsException $e) {
+        } catch (UnauthorizedException $e) {
+        } catch (ApiException $e) {
+        } catch (ExtensionNotFoundException $e) {
+            \Yii::$app->errorHandler->logException($e);
+            \Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+
+        if ($payment->status === 'succeeded') {
+            $this->success($id, $payment);
+        } else //TODO добавить по разным ответом от яндекс кассы
+        {
+            $this->fail($id, $payment);
+        }
+    }
+
+    private function fail($id, PaymentInterface $payment)
+    {
+        //TODO добавить ошибку из $payment
+        \Yii::$app->session->setFlash('error', 'Платеж не прошел! Попробуйте позже.');
+        return $this->redirect(['/cabinet/order/view', 'id' => $id]);
+    }
+
+    private function success($id, PaymentInterface $payment)
+    {
+        if (YII_ENV_TEST) {
+            $payment_method = $payment->payment_method->getType();
         } else {
-            $succeeded = true;
+            $payment_method = 'bank-card';          // TODO Заглушка для dev-режима
         }
 
-        if (!$succeeded) {
-            \Yii::$app->session->setFlash('error', 'Платеж не прошел! Попробуйте позже.');
-            return $this->redirect(['/cabinet/order/view', 'id' => $id]);
-        }
-
-        //TODO
         $user = User::findOne(\Yii::$app->user->id);
         $order = $this->orders->findOwn($user->id, $id);
-        $order->pay($payment_method);
-        $order->save(); // ????
+        try {
+            $order->pay($payment_method);
+            $order->save(); // ????
 
+            \Yii::$app->session->setFlash('success', 'Платеж успешно оплачен. ');
+        } catch (\DomainException $e) {
+            \Yii::$app->errorHandler->logException($e);
+            \Yii::$app->session->setFlash('error', $e->getMessage());
+        }
         // Меняем статус
         // Сообщаем об оплате
 
-        \Yii::$app->session->setFlash('success', 'Платеж успешно оплачен. ');
+
         return $this->redirect(['/cabinet/order/view', 'id' => $id]);
     }
 }
