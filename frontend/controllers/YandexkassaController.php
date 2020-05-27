@@ -66,7 +66,7 @@ class YandexkassaController extends Controller
                 'vat_code' => 1);
         }
         $this->yandexkassa['confirmation']['return_url'] .= $order->id;
-        //При дебаге заглушка
+        // TODO Заглушка для dev-режима
         if (!YII_ENV_TEST) return $this->redirect(['/yandexkassa/responce', 'id' => $order->id]);
 
         try {
@@ -96,6 +96,10 @@ class YandexkassaController extends Controller
 
     public function actionResponce($id)
     {
+        if (!YII_ENV_TEST) {  // TODO Заглушка для dev-режима
+            $this->success($id, null);
+            return;
+        };
         try {
             $payment = $this->client->getPaymentInfo($_SESSION['paymentid']);
         } catch (BadApiRequestException $e) {
@@ -126,7 +130,7 @@ class YandexkassaController extends Controller
         return $this->redirect(['/cabinet/order/view', 'id' => $id]);
     }
 
-    private function success($id, PaymentInterface $payment)
+    private function success($id, PaymentInterface $payment = null)
     {
         if (YII_ENV_TEST) {
             $payment_method = $payment->payment_method->getType();
