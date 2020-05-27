@@ -5,7 +5,7 @@ use shop\forms\auth\LoginForm;
 use shop\services\AuthService;
 use shop\forms\auth\ResendVerificationEmailForm;
 use shop\forms\auth\VerifyEmailForm;
-use shop\services\auth\ContactService;
+use shop\services\ContactService;
 use shop\services\auth\PasswordResetService;
 use shop\services\auth\SignupService;
 //use frontend\services\auth\VerificationService;

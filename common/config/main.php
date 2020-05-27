@@ -15,6 +15,10 @@ return [
             'class' => 'yii\caching\FileCache',
             'cachePath' => '@common/runtime/cache',
         ],
+        'telegram' => [
+            'class' => 'aki\telegram\Telegram',
+            'botToken' => '1108058298:AAFXEmclOx6MduA_pCXPOYVwNUPFVRT8Knc',
+            ],
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
             'clients' => [

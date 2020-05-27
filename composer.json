@@ -36,7 +36,9 @@
         "bower-asset/magnific-popup": "*",
       "ext-gd": "*",
       "ext-json": "*",
-        "yandex-money/yandex-checkout-sdk-php": "^1.6"
+        "yandex-money/yandex-checkout-sdk-php": "^1.6",
+        "aki/yii2-bot-telegram": "^2.0",
+      "ext-curl": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "*",

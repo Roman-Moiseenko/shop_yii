@@ -1,7 +1,7 @@
 <?php
 
 
-namespace shop\services\auth;
+namespace shop\services;
 
 
 use shop\entities\shop\order\Order;
@@ -56,7 +56,7 @@ class ContactService
         $sendNotice = ['email' => true, 'sms' => true, 'whatsapp' => true];
         if ($sendNotice['email']) $this->sendEMAILNoticeOrder($message);
         if ($sendNotice['sms']) $this->sendSMSNoticeOrder($message);
-        if ($sendNotice['whatsapp']) $this->sendWHATSAPPNoticeOrder($message);
+        if ($sendNotice['whatsapp']) $this->sendTELEGRAMNoticeOrder($message);
     }
 
     private function sendEMAILNoticeOrder(array $message)
@@ -75,12 +75,31 @@ class ContactService
 
     private function sendSMSNoticeOrder(array $message)
     {
-//TODO Сделать отправку СМС
+//TODO Сделать отправку СМС через sms.ru
     }
 
-    private function sendWHATSAPPNoticeOrder(array $message)
+    private function sendTELEGRAMNoticeOrder(array $message)
     {
-//TODO Сделать отправку WathApp или Telegram
+//TODO Сделать отправку  Telegram
+   \Yii::$app->telegram->sendMessage([
+            'chat_id' => 371289480,
+            'text' => $message['body'],
+        ]);
+       /* $ch = curl_init();
+        curl_setopt_array(
+            $ch,
+            array(
+                CURLOPT_URL => 'https://api.telegram.org/bot1108058298:AAFXEmclOx6MduA_pCXPOYVwNUPFVRT8Knc/sendMessage',
+                CURLOPT_POST => TRUE,
+                CURLOPT_RETURNTRANSFER => TRUE,
+                CURLOPT_TIMEOUT => 10,
+                CURLOPT_POSTFIELDS => array(
+                    'chat_id' => 371289480,
+                    'text' => $message['body'],
+                ),
+            )
+        );
+        curl_exec($ch);*/
     }
 
 

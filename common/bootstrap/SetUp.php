@@ -9,10 +9,11 @@ use shop\cart\Cart;
 use shop\cart\cost\calculator\DynamicCost;
 use shop\cart\cost\calculator\SimpleCost;
 use shop\cart\storage\CookieStorage;
+use shop\cart\storage\HybridStorage;
 use shop\cart\storage\SessionStorage;
 use shop\readModels\shop\CategoryReadRepository;
 use shop\repositories\UserRepository;
-use shop\services\auth\ContactService;
+use shop\services\ContactService;
 use shop\services\auth\PasswordResetService;
 use shop\services\auth\SignupService;
 use yii\base\Application;
@@ -59,7 +60,8 @@ class SetUp implements BootstrapInterface
 
         $container->setSingleton(Cart::class, function () use ($app) {
             return new Cart(
-                new CookieStorage('cart', 3600*24*30),
+                new HybridStorage($app->get('user'), 'cart', 3600 * 24, $app->db),
+               // new CookieStorage('cart', 3600*24*30),
                 new DynamicCost(new SimpleCost())
             );
         });

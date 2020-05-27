@@ -4,8 +4,48 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ce55e0ae9b15558a90d86dc7adafa23",
+    "content-hash": "97b67ecb6e8ff707c9412478b2a8c6c0",
     "packages": [
+        {
+            "name": "aki/yii2-bot-telegram",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/akbarjoudi/yii2-bot-telegram.git",
+                "reference": "f4ee9be593877b900115b3227a3499945f5f955f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/akbarjoudi/yii2-bot-telegram/zipball/f4ee9be593877b900115b3227a3499945f5f955f",
+                "reference": "f4ee9be593877b900115b3227a3499945f5f955f",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "aki\\telegram\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "akbarjoudi",
+                    "email": "akbar.joody@gmail.ocm"
+                }
+            ],
+            "description": "bot telegram",
+            "keywords": [
+                "extension",
+                "yii2"
+            ],
+            "time": "2020-04-06T20:27:48+00:00"
+        },
         {
             "name": "almasaeed2010/adminlte",
             "version": "v2.4.18",
@@ -90,7 +130,7 @@
             "version": "5.13.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "url": "git@github.com:FortAwesome/Font-Awesome.git",
                 "reference": "4e6402443679e0a9d12c7401ac8783ef4646657f"
             },
             "dist": {
@@ -126,7 +166,7 @@
             "version": "3.4.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:jquery/jquery-dist.git",
+                "url": "https://github.com/jquery/jquery-dist.git",
                 "reference": "15bc73803f76bc53b654b9fdbbbc096f56d7c03d"
             },
             "dist": {

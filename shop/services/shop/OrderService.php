@@ -16,7 +16,7 @@ use shop\repositories\shop\DeliveryMethodRepository;
 use shop\repositories\shop\OrderRepository;
 use shop\repositories\shop\ProductRepository;
 use shop\repositories\UserRepository;
-use shop\services\auth\ContactService;
+use shop\services\ContactService;
 use shop\services\manage\shop\ProductManageService;
 use shop\services\TransactionManager;
 

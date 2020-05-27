@@ -7,7 +7,7 @@ namespace shop\services\shop;
 use shop\entities\shop\order\Order;
 use shop\entities\shop\product\Product;
 use shop\entities\user\User;
-use shop\services\auth\ContactService;
+use shop\services\ContactService;
 
 class Change1CService
 {
