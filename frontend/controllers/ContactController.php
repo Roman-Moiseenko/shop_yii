@@ -33,7 +33,7 @@ class ContactController extends Controller
         $form = new ContactForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
-                $this->contactService->contact($form);
+                $this->contact->contact($form);
                 Yii::$app->session->setFlash('success', 'Спасибо за Ваш запрос, мы обязательно решим Вашу проблему и сообщим Вам.');
             } catch (\RuntimeException $e) {
                 Yii::$app->session->setFlash('error', $e->getMessage());
