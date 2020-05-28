@@ -34,8 +34,7 @@ class m170519_083418_create_shop_categories_table extends Migration
             'lft' => 1,
             'rgt' => 2,
             'depth' => 0,
-            'code1C' => '',
-            'id_old' => 0
+            'code1C' => ''
         ]);
     }
 
