@@ -12,7 +12,7 @@ use frontend\widgets\CategoriesWidget;?>
                 'active' => $this->params['active_category'] ?? null,
            // 'showcount' => true,
         ]); ?>
-        <div class="swiper-viewport">
+        <!--div class="swiper-viewport">
             <div id="banner0" class="swiper-container">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
@@ -20,7 +20,7 @@ use frontend\widgets\CategoriesWidget;?>
                     </div>
                 </div>
             </div>
-        </div>
+        </div-->
 
     </aside>
     <div id="content" class="col-sm-9">

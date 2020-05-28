@@ -8,36 +8,27 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
-$this->title = 'Contact';
+$this->title = 'Обратная связь';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-contact">
     <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.
+        Если у Вас возникли вопросы, напишите нам. Мы обязательно Вам ответим.
     </p>
-
     <div class="row">
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
-
-                <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
-
-                <?= $form->field($model, 'email') ?>
-
-                <?= $form->field($model, 'subject') ?>
-
-                <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
-
-                <?= $form->field($model, 'verifyCodeMy')->widget(Captcha::className(), [
+                <?= $form->field($model, 'name')->textInput(['autofocus' => true])->label('Ваше имя') ?>
+                <?= $form->field($model, 'email')->label('Электронная почта') ?>
+                <?= $form->field($model, 'subject')->label('Тема') ?>
+                <?= $form->field($model, 'body')->textarea(['rows' => 6])->label('Сообщение') ?>
+                <?= $form->field($model, 'verifyCodeMy')->widget(Captcha::class, [
                     'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                ]) ?>
-
+                ])->label('Введите код с картинки') ?>
                 <div class="form-group">
-                    <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
+                    <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
                 </div>
-
             <?php ActiveForm::end(); ?>
         </div>
     </div>

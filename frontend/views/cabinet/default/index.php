@@ -16,7 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="panel panel-default">
         <div class="panel-heading"><h3><?= Html::encode($this->title) ?></h3></div>
         <div class="panel-body">
-            <legend>Основные сведения&#160;<?= Html::a('Изменить', ['cabinet/profile/edit?id='.$user->id], ['class' => 'btn btn-default btn-xs']) ?></legend>
+            <legend>Основные сведения&#160;
+                <?= Html::a('<i class="fa fa-edit"></i>', ['cabinet/profile/edit?id='.$user->id], ['title'=> 'Изменить', 'data-toggle' => 'tooltip']) ?>
+            </legend>
             <table width="100%">
                 <tr>
                     <td align="right" width="15%" class="userinfo">Логин:</td>
@@ -28,7 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 </tr>
             </table>
             <p></p><br>
-            <legend>Контактные данные&#160;<?= Html::a('Изменить', ['cabinet/profile/contact?id='.$user->id], ['class' => 'btn btn-default btn-xs']) ?></legend>
+            <legend>Контактные данные&#160;
+                <?= Html::a('<i class="fa fa-edit"></i>', ['cabinet/profile/contact?id='.$user->id], ['title'=> 'Изменить', 'data-toggle' => 'tooltip']) ?>
+            </legend>
             <table width="100%">
                 <tr>
                     <td align="right" width="15%" class="userinfo">Фамилия:</td>
@@ -48,7 +52,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 </tr>
             </table>
             <p></p><br>
-            <legend>Адрес (для доставки)&#160;<?= Html::a('Изменить', ['cabinet/profile/delivery?id='.$user->id], ['class' => 'btn btn-default btn-xs']) ?></legend>
+            <legend>Адрес (для доставки)&#160;
+                <?= Html::a('<i class="fa fa-edit"></i>', ['cabinet/profile/delivery?id='.$user->id], ['title'=> 'Изменить', 'data-toggle' => 'tooltip']) ?>
+            </legend>
             <table width="100%">
                 <tr>
                     <td align="right" width="15%" class="userinfo">Нас.пункт:</td>

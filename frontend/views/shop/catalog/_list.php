@@ -5,16 +5,13 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager; ?>
 
 <div class="row">
-    <div class="col-md-2 col-sm-6 hidden-xs">
+    <div class="col-md-3 col-sm-6 hidden-xs">
         <div class="btn-group btn-group-sm">
-            <button type="button" id="list-view" class="btn btn-default" data-toggle="tooltip" title="List"><i class="fa fa-th-list"></i></button>
-            <button type="button" id="grid-view" class="btn btn-default" data-toggle="tooltip" title="Grid"><i class="fa fa-th"></i></button>
+            <button type="button" id="list-view" class="btn btn-default" data-toggle="tooltip" title="Списком"><i class="fa fa-th-list"></i></button>
+            <button type="button" id="grid-view" class="btn btn-default" data-toggle="tooltip" title="Сеткой"><i class="fa fa-th"></i></button>
         </div>
     </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="form-group"><a href="https://demo.opencart.com/index.php?route=product/compare" id="compare-total" class="btn btn-link">Product Compare (0)</a></div>
-    </div>
-    <div class="col-md-5 col-xs-6">
+    <div class="col-md-6 col-xs-7">
         <div class="form-group input-group input-group-sm">
             <label class="input-group-addon" for="input-sort">Сортировать:</label>
             <select id="input-sort" class="form-control" onchange="location = this.value;">
@@ -37,7 +34,7 @@ use yii\widgets\LinkPager; ?>
             </select>
         </div>
     </div>
-    <div class="col-md-2 col-xs-6">
+    <div class="col-md-3 col-xs-5">
         <div class="form-group input-group input-group-sm">
             <label class="input-group-addon" for="input-limit">Показать:</label>
             <select id="input-limit" class="form-control" onchange="location = this.value;">

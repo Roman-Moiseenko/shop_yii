@@ -5,7 +5,7 @@
 <?php for ($i = 1; $i <= 5; $i++): ?>
     <span class="fa fa-stack">
     <?php $star = '-o'; ?>
-    <?php if ($i < $rating) {
+    <?php if ($i <= $rating) {
         $star = '';
     } elseif ((0.20 < $i - $rating) && ($i - $rating < 0.80)) {
         $star = '-half-o';
