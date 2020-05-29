@@ -14,7 +14,7 @@ use yii\helpers\Url;
         <ul class="dropdown-menu dropdown-menu-right">
             <?php if (Yii::$app->user->isGuest): ?>
                 <li><a href="<?= Html::encode(Url::to(['/auth/auth/login'])) ?>">Войти</a></li>
-                <li><a href="<?= Html::encode(Url::to(['/auth/signup/request'])) ?>">Регистрация</a></li>
+                <li><a href="<?= Html::encode(Url::to(['/auth/signup'])) ?>">Регистрация</a></li>
             <?php else: ?>
                 <li><a href="<?= Html::encode(Url::to(['/cabinet/default/index'])) ?>">Кабинет</a></li>
                 <li><a href="<?= Html::encode(Url::to(['/auth/auth/logout'])) ?>" data-method="post">Выйти</a></li>

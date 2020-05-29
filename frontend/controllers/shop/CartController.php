@@ -1,12 +1,8 @@
 <?php
 
-
 namespace frontend\controllers\shop;
 
-
-use shop\forms\shop\AddToCartForm;
 use shop\readModels\shop\ProductReadRepository;
-use shop\repositories\NotFoundException;
 use shop\services\shop\CartService;
 use yii\filters\VerbFilter;
 use yii\web\Controller;

@@ -1,6 +1,6 @@
 <?php
 
-use shop\entities\Shop\Brand;
+use shop\entities\shop\Brand;
 use yii\grid\ActionColumn;
 use yii\helpers\Html;
 use yii\grid\GridView;

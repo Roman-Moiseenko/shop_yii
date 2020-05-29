@@ -1,8 +1,6 @@
 <?php
 
-
 namespace frontend\controllers\shop;
-
 
 use shop\cart\Cart;
 use shop\forms\shop\order\OrderForm;

@@ -4,7 +4,7 @@ namespace backend\forms\Shop;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use shop\entities\Shop\Brand;
+use shop\entities\shop\Brand;
 
 class BrandSearch extends Model
 {

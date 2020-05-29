@@ -4,11 +4,6 @@
 namespace frontend\controllers\shop;
 
 
-use shop\entities\shop\Category;
-use shop\entities\shop\Characteristic;
-use shop\entities\shop\product\Product;
-use shop\entities\Shop\Product\Value;
-use shop\forms\shop\AddToCartForm;
 use shop\forms\shop\ReviewForm;
 use shop\forms\shop\search\SearchForm;
 use shop\readModels\shop\BrandReadRepository;
@@ -17,7 +12,6 @@ use shop\readModels\shop\ProductReadRepository;
 use shop\readModels\shop\TagReadRepository;
 use shop\services\manage\shop\ProductManageService;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
