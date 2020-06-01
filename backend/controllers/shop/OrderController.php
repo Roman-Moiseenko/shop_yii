@@ -2,6 +2,7 @@
 
 namespace backend\controllers\shop;
 
+use shop\forms\shop\order\SetStatusOrderForm;
 use shop\services\manage\OrderManageService;
 use Yii;
 use shop\entities\shop\order\Order;
@@ -82,14 +83,23 @@ class OrderController extends Controller
     {
 
         //TODO Редактирование заказов
-        $model = $this->findModel($id);
+        $order = $this->findModel($id);
+        $form = new SetStatusOrderForm($order);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $this->service->setStatusForm($id, $form);
+                return $this->redirect(['view', 'id' => $order->id]);
+            } catch (\DomainException $e) {
+                \Yii::$app->errorHandler->logException($e);
+                \Yii::$app->session->setFlash('error', $e);
+            }
+
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'model' => $form,
+            'order' => $order,
         ]);
     }
 

@@ -41,18 +41,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     return ($model->user)->fullname->getShortname();
                 },
             ],
-
             [
                 'attribute' => 'delivery_method_id',
                 'label' => 'Доставка',
                 'value' => function (Order $model) {
                     return $model->delivery_method_name;
                 },
-               // 'filter' => DeliveryHelper::list(),
+                'filter' => DeliveryHelper::list(),
             ],
-           // 'delivery_method_id',
-           // 'delivery_method_name',
-            //'delivery_cost',
             //'payment_method',
 
             [
@@ -63,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'label' => 'Сумма',
             ],
-            //'note:ntext',
+
             [
                 'attribute' => 'current_status',
                 'value' => function (Order $model) {
@@ -73,16 +69,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'label' => 'Статус',
             ],
-            //'cancel_reason:ntext',
-            //'statuses_json',
             [
                 'attribute' => 'customer_phone',
                 'label' => 'Телефон',
             ],
-            //'customer_name',
-            //'delivery_town',
-            //'delivery_address:ntext',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

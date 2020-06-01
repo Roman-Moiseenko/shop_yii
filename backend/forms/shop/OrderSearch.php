@@ -17,8 +17,8 @@ class OrderSearch extends Order
     public function rules()
     {
         return [
-            [['id', 'created_at', 'user_id', 'delivery_method_id', 'delivery_cost', 'cost', 'current_status'], 'integer'],
-            [['delivery_method_name', 'payment_method', 'note', 'cancel_reason', 'statuses_json', 'customer_phone', 'customer_name', 'delivery_town', 'delivery_address'], 'safe'],
+            [['id', 'created_at', 'user_id', 'delivery_method_id', 'delivery_cost', 'current_status'], 'integer'],
+            [['delivery_method_name', 'payment_method', 'cancel_reason', 'customer_phone', 'customer_name', 'delivery_town', 'delivery_address'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class OrderSearch extends Order
      */
     public function search($params)
     {
-        $query = Order::find();
+        $query = Order::find();//->joinWith(['']);
 
         // add conditions that should always apply here
 
@@ -52,7 +52,7 @@ class OrderSearch extends Order
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+             $query->where('0=1');
             return $dataProvider;
         }
 
@@ -60,10 +60,8 @@ class OrderSearch extends Order
         $query->andFilterWhere([
             'id' => $this->id,
             'created_at' => $this->created_at,
-            'user_id' => $this->user_id,
             'delivery_method_id' => $this->delivery_method_id,
             'delivery_cost' => $this->delivery_cost,
-            'cost' => $this->cost,
             'current_status' => $this->current_status,
         ]);
 
@@ -74,8 +72,7 @@ class OrderSearch extends Order
             ->andFilterWhere(['like', 'statuses_json', $this->statuses_json])
             ->andFilterWhere(['like', 'customer_phone', $this->customer_phone])
             ->andFilterWhere(['like', 'customer_name', $this->customer_name])
-            ->andFilterWhere(['like', 'delivery_town', $this->delivery_town])
-            ->andFilterWhere(['like', 'delivery_address', $this->delivery_address]);
+            ->andFilterWhere(['like', 'delivery_town', $this->delivery_town]);
 
         return $dataProvider;
     }

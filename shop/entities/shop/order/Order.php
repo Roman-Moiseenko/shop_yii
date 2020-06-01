@@ -231,7 +231,4 @@ class Order extends ActiveRecord
 
         return parent::beforeSave($insert);
     }
-
-
-
 }
