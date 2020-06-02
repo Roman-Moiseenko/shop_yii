@@ -14,11 +14,15 @@ class OrderSearch extends Order
     /**
      * {@inheritdoc}
      */
+    public $firstname;
+    public $date_from;
+    public $date_to;
     public function rules()
     {
         return [
-            [['id', 'created_at', 'user_id', 'delivery_method_id', 'delivery_cost', 'current_status'], 'integer'],
-            [['delivery_method_name', 'payment_method', 'cancel_reason', 'customer_phone', 'customer_name', 'delivery_town', 'delivery_address'], 'safe'],
+            [['id', 'user_id', 'delivery_method_id', 'current_status'], 'integer'],
+            [['payment_method', 'customer_phone', 'customer_name', 'firstname'], 'safe'],
+            [['date_from', 'date_to'], 'date', 'format' => 'php:Y-m-d'],
         ];
     }
 
@@ -40,14 +44,13 @@ class OrderSearch extends Order
      */
     public function search($params)
     {
-        $query = Order::find();//->joinWith(['']);
+        $query = Order::find()->alias('o')->joinWith(['user u']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
         $this->load($params);
 
         if (!$this->validate()) {
@@ -55,24 +58,19 @@ class OrderSearch extends Order
              $query->where('0=1');
             return $dataProvider;
         }
-
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'created_at' => $this->created_at,
-            'delivery_method_id' => $this->delivery_method_id,
-            'delivery_cost' => $this->delivery_cost,
-            'current_status' => $this->current_status,
+            'o.id' => $this->id,
+            'o.delivery_method_id' => $this->delivery_method_id,
+            'o.current_status' => $this->current_status,
         ]);
 
-        $query->andFilterWhere(['like', 'delivery_method_name', $this->delivery_method_name])
-            ->andFilterWhere(['like', 'payment_method', $this->payment_method])
-            ->andFilterWhere(['like', 'note', $this->note])
-            ->andFilterWhere(['like', 'cancel_reason', $this->cancel_reason])
-            ->andFilterWhere(['like', 'statuses_json', $this->statuses_json])
-            ->andFilterWhere(['like', 'customer_phone', $this->customer_phone])
-            ->andFilterWhere(['like', 'customer_name', $this->customer_name])
-            ->andFilterWhere(['like', 'delivery_town', $this->delivery_town]);
+        $query
+            ->andFilterWhere(['like', 'o.payment_method', $this->payment_method])
+            ->andFilterWhere(['like', 'o.customer_phone', $this->customer_phone])
+            ->andFilterWhere(['>=', 'o.created_at', $this->date_from ? strtotime($this->date_from . '00:00:00') : null])
+            ->andFilterWhere(['<=', 'o.created_at', $this->date_to ? strtotime($this->date_to . '23:59:59') : null])
+            ->andFilterWhere(['like', 'u.fullname_json', $this->firstname]);
 
         return $dataProvider;
     }

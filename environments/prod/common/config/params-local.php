@@ -5,6 +5,7 @@ return [
     'frontendHostInfo' => 'http://shop.loc',
     'backendHostInfo' => 'http://dev.shop.loc',
     'staticHostInfo' => 'http://static.shop.loc',
+    'baseUrl' => '/backend',
     'mailChimpKey' => '',
     'mailChimpListId' => '',
     'smsRuKey' => '',

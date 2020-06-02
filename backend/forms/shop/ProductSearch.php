@@ -28,11 +28,6 @@ class ProductSearch extends Product
     }
 
     /**
-     * {@inheritdoc}
-     */
-
-
-    /**
      * Creates data provider instance with search query applied
      *
      * @param array $params

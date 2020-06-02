@@ -1,17 +1,14 @@
 <?php
 
-
 namespace shop\readModels\shop;
-
 
 use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
 use shop\entities\shop\product\Product;
-use shop\entities\shop\product\queries\ProductQuery;
-use shop\entities\Shop\Product\Value;
+use shop\entities\shop\product\Value;
 use shop\entities\shop\Tag;
 use shop\forms\shop\search\SearchForm;
-use shop\forms\shop\search\ValueForm;
+//use shop\forms\shop\search\ValueForm;
 use yii\data\ActiveDataProvider;
 use yii\data\DataProviderInterface;
 use yii\data\Pagination;

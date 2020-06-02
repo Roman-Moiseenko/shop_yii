@@ -7,6 +7,7 @@ return [
     'frontendHostInfo' => 'http://shop.loc',
     'backendHostInfo' => 'http://dev.shop.loc',
     'staticHostInfo' => 'http://static.shop.loc',
+    'baseUrl' => '', ///backend
     'staticPath' => dirname(__DIR__, 2) . '/static',
     'mailChimpKey' => '',
     'mailChimpListId' => '',

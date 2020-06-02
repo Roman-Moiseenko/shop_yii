@@ -6,6 +6,7 @@ return [
     'backendHostInfo' => 'http://dev.shop.loc',
     'staticHostInfo' => 'http://static.shop.loc',
     'mailChimpKey' => '',
+    'baseUrl' => '',
     'mailChimpListId' => '',
     'smsRuKey' => '',
     'adminEmail' => 'admin@kupi41.ru',

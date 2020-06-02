@@ -1,5 +1,6 @@
 <?php
 
+use kartik\widgets\DatePicker;
 use shop\entities\shop\order\Order;
 use shop\helpers\DeliveryHelper;
 use shop\helpers\OrderHelper;
@@ -28,14 +29,28 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'id',
                 'label' => '№',
-
+                'options' => ['width' => '50px'],
             ],
             [
                 'attribute' => 'created_at',
                 'label' => 'Дата',
-                'format' => 'datetime'],
+                'options' => ['width' => '20%'],
+                'filter' => DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'date_from',
+                    'attribute2' => 'date_to',
+                    'type' => DatePicker::TYPE_RANGE,
+                    'separator' => '-',
+                    'pluginOptions' => [
+                        'todayHighLight' => true,
+                        'autoclose' => true,
+                        'format' => 'yyyy-mm-dd',
+                    ],
+                ]),
+                'format' => 'datetime',
+                ],
             [
-                'attribute' => 'user_id',
+                'attribute' => 'firstname',
                 'label' => 'Покупатель',
                 'value' => function (Order $model) {
                     return ($model->user)->fullname->getShortname();
@@ -58,6 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw',
                 'label' => 'Сумма',
+                'options' => ['width' => '10%'],
             ],
 
             [

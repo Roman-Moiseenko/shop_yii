@@ -81,8 +81,6 @@ class OrderController extends Controller
      */
     public function actionUpdate($id)
     {
-
-        //TODO Редактирование заказов
         $order = $this->findModel($id);
         $form = new SetStatusOrderForm($order);
 
@@ -94,7 +92,6 @@ class OrderController extends Controller
                 \Yii::$app->errorHandler->logException($e);
                 \Yii::$app->session->setFlash('error', $e);
             }
-
         }
 
         return $this->render('update', [
