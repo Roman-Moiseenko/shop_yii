@@ -22,8 +22,11 @@ class HiddenRepository
             throw new \RuntimeException('Удаленый код 1С не сохранен');
         }
     }
-    public function remove(Hidden $hidden): void
+    public function remove($code1C): void
     {
+        if (!$hidden = Hidden::findOne(['code1C' => $code1C])) {
+            throw new NotFoundException('Код 1С не найден');
+        }
         if (!$hidden->delete()) {
             throw new \RuntimeException('Ошибка удаления Удаленый код 1С');
         }

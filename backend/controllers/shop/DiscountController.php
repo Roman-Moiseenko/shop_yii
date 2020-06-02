@@ -6,7 +6,7 @@ use shop\forms\shop\DiscountForm;
 use shop\services\shop\DiscountService;
 use Yii;
 use shop\entities\shop\discount\Discount;
-use backend\forms\Shop\DiscountSearch;
+use backend\forms\shop\DiscountSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

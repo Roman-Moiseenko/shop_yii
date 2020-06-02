@@ -4,11 +4,8 @@
 namespace backend\controllers\data;
 
 
-use shop\entities\shop\Hidden;
 use shop\forms\data\BrandLoadForm;
 use shop\forms\data\FilesForm;
-
-use shop\repositories\HiddenRepository;
 use shop\services\manage\LoaderManageService;
 use Yii;
 use yii\web\Controller;

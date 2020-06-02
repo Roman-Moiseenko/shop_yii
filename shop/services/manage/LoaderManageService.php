@@ -8,10 +8,9 @@ use shop\entities\Meta;
 use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
 use shop\entities\shop\Hidden;
-use shop\entities\Shop\Product\Photo;
+use shop\entities\shop\product\Photo;
 use shop\entities\shop\product\Product;
 use shop\entities\shop\RegAttribute;
-use shop\forms\manage\shop\CategoryForm;
 use shop\repositories\HiddenRepository;
 use shop\repositories\shop\BrandRepository;
 use shop\repositories\shop\CategoryRepository;
@@ -19,7 +18,6 @@ use shop\repositories\shop\ProductRepository;
 use shop\repositories\shop\TagRepository;
 use shop\services\TransactionManager;
 use yii\db\Exception;
-use yii\web\UploadedFile;
 
 class LoaderManageService
 {

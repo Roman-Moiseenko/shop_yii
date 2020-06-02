@@ -3,7 +3,7 @@
 
 namespace shop\services\manage;
 
-use shop\entities\shop\DeliveryMethod;
+
 use shop\forms\shop\order\SetStatusOrderForm;
 use shop\repositories\shop\DeliveryMethodRepository;
 use shop\repositories\shop\OrderRepository;

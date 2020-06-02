@@ -7,7 +7,6 @@ use shop\forms\manage\shop\product\ModificationForm;
 use shop\services\manage\shop\ProductManageService;
 use Yii;
 use shop\entities\shop\product\Modification;
-use backend\forms\shop\ModificationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
