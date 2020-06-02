@@ -8,7 +8,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\forms\RegAttributeSearch */
+/* @var $searchModel \backend\forms\data\RegAttributeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Регулярка';

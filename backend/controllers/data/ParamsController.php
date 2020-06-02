@@ -2,27 +2,27 @@
 
 namespace backend\controllers\data;
 
-use shop\forms\data\RegAttributeForm;
-use shop\services\manage\RegAttributeManageService;
+use shop\forms\data\ParamsForm;
+use shop\services\manage\ParamsManageService;
 use Yii;
-use shop\entities\shop\RegAttribute;
-use backend\forms\data\RegAttributeSearch;
+use shop\entities\Params;
+use backend\forms\data\ParamsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * RegAttributeController implements the CRUD actions for RegAttribute model.
+ * ParamsController implements the CRUD actions for Params model.
  */
-class RegAttributeController extends Controller
+class ParamsController extends Controller
 {
 
     /**
-     * @var RegAttributeManageService
+     * @var ParamsManageService
      */
     private $service;
 
-    public function __construct($id, $module, RegAttributeManageService $service, $config = [])
+    public function __construct($id, $module, ParamsManageService $service, $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->service = $service;
@@ -44,12 +44,12 @@ class RegAttributeController extends Controller
     }
 
     /**
-     * Lists all RegAttribute models.
+     * Lists all Params models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new RegAttributeSearch();
+        $searchModel = new ParamsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -59,38 +59,35 @@ class RegAttributeController extends Controller
     }
 
     /**
-     * Displays a single RegAttribute model.
-     * @param integer $id
+     * Displays a single Params model.
+     * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $reg = $this->findModel($id);
         return $this->render('view', [
-            'model' => $this->findModel($id),
-            'reg' => $reg,
+            'params' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new RegAttribute model.
+     * Creates a new Params model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $form = new RegAttributeForm();
+        $form = new ParamsForm();
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
-                $reg = $this->service->create($form);
-                return $this->redirect(['view', 'id' => $reg->id]);
+                $params = $this->service->create($form);
+                return $this->redirect(['view', 'id' => $form->key]);
             } catch (\DomainException $e) {
-                Yii::$app->errorHandler->logException($e);
-                Yii::$app->session->setFlash('error', $e->getMessage());
+                \Yii::$app->errorHandler->logException($e);
+                \Yii::$app->session->setFlash('error', $e);
             }
-
         }
         return $this->render('create', [
             'model' => $form,
@@ -98,55 +95,57 @@ class RegAttributeController extends Controller
     }
 
     /**
-     * Updates an existing RegAttribute model.
+     * Updates an existing Params model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
-        $reg = $this->findModel($id);
-        $form = new RegAttributeForm($reg);
+
+        $params = $this->findModel($id);
+        $form = new ParamsForm($params);
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
-                $this->service->edit($id, $form);
-                return $this->redirect(['view', 'id' => $reg->id]);
+                $this->service->edit($form);
+                return $this->redirect(['view', 'id' => $params->key]);
             } catch (\DomainException $e) {
-                Yii::$app->errorHandler->logException($e);
-                Yii::$app->session->setFlash('error', $e->getMessage());
+                \Yii::$app->errorHandler->logException($e);
+                \Yii::$app->session->setFlash('error', $e);
             }
         }
 
         return $this->render('update', [
             'model' => $form,
-            'reg' => $reg,
+            'params' => $params,
         ]);
     }
 
     /**
-     * Deletes an existing RegAttribute model.
+     * Deletes an existing Params model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
+        //$params = $this->findModel($id);
         $this->service->remove($id);
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the RegAttribute model based on its primary key value.
+     * Finds the Params model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return RegAttribute the loaded model
+     * @param string $id
+     * @return Params the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = RegAttribute::findOne($id)) !== null) {
+        if (($model = Params::findOne($id)) !== null) {
             return $model;
         }
 

@@ -3,7 +3,6 @@
 
 namespace shop\services\manage;
 
-
 use shop\entities\shop\DeliveryMethod;
 use shop\forms\shop\order\SetStatusOrderForm;
 use shop\repositories\shop\DeliveryMethodRepository;
@@ -12,7 +11,6 @@ use shop\repositories\shop\OrderRepository;
 class OrderManageService
 {
 
-    //Todo Доделать класс
     private $orders;
     private $deliveryMethods;
 
@@ -22,22 +20,11 @@ class OrderManageService
         $this->deliveryMethods = $deliveryMethods;
     }
 
-    public function setStatus($status): void
-    {
-
-    }
-
     public function remove($id): void
     {
         $order = $this->orders->get($id);
         $this->orders->remove($order);
     }
-
-    public function delItem($id, $itemId): void
-    {
-
-    }
-
 
     public function setStatusForm($id, SetStatusOrderForm $form)
     {

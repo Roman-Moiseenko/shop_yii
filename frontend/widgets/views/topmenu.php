@@ -1,6 +1,7 @@
 <?php
 
 use shop\cart\Cart;
+use shop\helpers\ParamsHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -8,8 +9,8 @@ use yii\helpers\Url;
 /* @var $wishlist integer */
 ?>
 
-<ul class="list-inline"> <?php //TODO Телефон или из базы (в админке вносить данные) или из конфига?>
-    <li><a href="/contact"><i class="fa fa-phone"></i></a> <span class="hidden-xs hidden-sm hidden-md">8-902-463-2757</span></li>
+<ul class="list-inline">
+    <li><a href="/contact"><i class="fa fa-phone"></i></a> <span class="hidden-xs hidden-sm hidden-md"><?= ParamsHelper::get('phoneMain')?></span></li>
     <li class="dropdown"><a href="/index.php?route=account/account" title="Мой кабинет" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <span class="hidden-xs hidden-sm hidden-md">Мой кабинет</span> <span class="caret"></span></a>
         <ul class="dropdown-menu dropdown-menu-right">
             <?php if (Yii::$app->user->isGuest): ?>

@@ -4,14 +4,38 @@
 namespace shop\entities;
 
 
-class Params
-{
-    public $key;
-    public $value;
+use yii\db\ActiveRecord;
 
-    public function __construct($key, $value)
+/**
+ * Class Params
+ * @package shop\entities
+ * @property string $key
+ * @property string $value
+ * @property string $description
+ */
+
+class Params extends ActiveRecord
+{
+
+    //public $value;
+
+    public static function create($key, $value, $description): self
     {
-        $this->key = $key;
+        $params = new static();
+        $params->key = $key;
+        $params->value = $value;
+        $params->description = $description;
+        return $params;
+    }
+
+    public function edit($value, $description)
+    {
         $this->value = $value;
+        $this->description = $description;
+    }
+
+    public static function tableName()
+    {
+        return '{{%shop_params}}';
     }
 }

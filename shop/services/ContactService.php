@@ -7,6 +7,7 @@ namespace shop\services;
 use shop\entities\shop\order\Order;
 use shop\forms\ContactForm;
 use shop\helpers\OrderHelper;
+use shop\helpers\ParamsHelper;
 use Yii;
 use yii\mail\MailerInterface;
 
@@ -61,8 +62,12 @@ class ContactService
 
     private function sendEMAILNoticeOrder(array $message)
     {
+        if (!$email = ParamsHelper::get('emailOrder')) {
+            $email  = $this->adminEmail;
+        }
+
         $send = $this->mailer->compose()
-            ->setTo($this->adminEmail)
+            ->setTo($email)
             ->setFrom($this->supportEmail)
             //->setReplyTo()
             ->setSubject($message['subject'])
