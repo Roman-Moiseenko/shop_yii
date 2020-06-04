@@ -26,6 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Создать Регулярку', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Скопировать', ['copy', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -37,7 +39,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => ArrayHelper::getValue($reg, 'category.name'),
                 'label' => 'Категория',
                 ],
-            'reg_match',
+            [
+                    'attribute' => 'reg_match',
+                'label' => 'Рег.выражение',
+                ],
             [
                 'attribute' => 'characteristic_id',
                 'value' => ArrayHelper::getValue($reg, 'characteristic.name'),

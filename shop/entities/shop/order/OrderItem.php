@@ -1,9 +1,6 @@
 <?php
 
-
 namespace shop\entities\shop\order;
-
-
 
 use shop\entities\shop\product\Product;
 use yii\db\ActiveRecord;

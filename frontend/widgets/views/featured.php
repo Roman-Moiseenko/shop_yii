@@ -36,6 +36,8 @@ use yii\helpers\Url;
                 </p>
             </div>
             <div class="button-group">
+                <!--a class="" data-toggle="tooltip" title="В корзину" href="<?= Url::to(['/shop/cart/add', 'id' => $product->id]) ?>" data-method="post"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">В корзину</span></a>
+                <a data-toggle="tooltip" title="В избранное" href="<?= Url::to(['/cabinet/wishlist/add', 'id' => $product->id]) ?>" data-method="post"><i class="fa fa-heart"></i></a-->
                 <button type="button" href="<?= Url::to(['/shop/cart/add', 'id' => $product->id]) ?>" data-method="post"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">В корзину</span></button>
                 <button type="button" data-toggle="tooltip" title="В избранное" href="<?= Url::to(['/cabinet/wishlist/add', 'id' => $product->id]) ?>" data-method="post"><i class="fa fa-heart"></i></button>
                 <!--button type="button" data-toggle="tooltip" title="Сравнить" onclick="compare.add('<?= $product->id ?>');"><i class="fa fa-exchange"></i></button-->

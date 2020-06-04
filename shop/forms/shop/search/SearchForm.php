@@ -8,7 +8,7 @@ use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
 use shop\entities\shop\Characteristic;
 use shop\entities\shop\product\Product;
-use shop\entities\Shop\Product\Value;
+use shop\entities\shop\product\Value;
 use shop\forms\CompositeForm;
 use yii\helpers\ArrayHelper;
 

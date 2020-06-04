@@ -3,9 +3,7 @@
 
 namespace shop\entities\shop\discount;
 
-
 use shop\cart\cost\Cost;
-use shop\entities\shop\discount\Discount;
 use shop\helpers\MonthHelper;
 
 class PeriodYearEnableDiscount extends EnabledDiscountInterface

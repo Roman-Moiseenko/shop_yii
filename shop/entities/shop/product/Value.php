@@ -2,7 +2,7 @@
 
 namespace shop\entities\Shop\Product;
 
-use shop\entities\Shop\Characteristic;
+use shop\entities\shop\Characteristic;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 

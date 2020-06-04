@@ -96,7 +96,25 @@ class RegAttributeController extends Controller
             'model' => $form,
         ]);
     }
+    public function actionCopy($id)
+    {
+        $reg = $this->findModel($id);
+        $form = new RegAttributeForm($reg);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            try {
+                $reg = $this->service->create($form);
+                return $this->redirect(['view', 'id' => $reg->id]);
+            } catch (\DomainException $e) {
+                Yii::$app->errorHandler->logException($e);
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
+        }
 
+        return $this->render('create', [
+            'model' => $form,
+          //  'reg' => $reg,
+        ]);
+    }
     /**
      * Updates an existing RegAttribute model.
      * If update is successful, the browser will be redirected to the 'view' page.

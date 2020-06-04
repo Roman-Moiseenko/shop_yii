@@ -37,10 +37,12 @@ $url = Url::to(['product', 'id' => $product->id])
             </div>
             <div class="button-group">
                 <?php if ($product->isAvailable()): ?>
+                    <!--a class="" data-toggle="tooltip" title="В корзину" href="<?= Url::to(['/shop/cart/add', 'id' => $product->id]) ?>" data-method="post"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">В корзину</span></a-->
                     <button type="button" data-toggle="tooltip" title="В корзину" href="<?= Url::to(['/shop/cart/add', 'id' => $product->id]) ?>" data-method="post"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md">В корзину</span></button>
                 <?php else: ?>
                     <button disabled><i class="fa fa-times-circle"></i> Нет на складе</button>
                 <?php endif;?>
+                <!--a data-toggle="tooltip" title="В избранное" href="<?= Url::to(['/cabinet/wishlist/add', 'id' => $product->id]) ?>" data-method="post"><i class="fa fa-heart"></i></a-->
                 <button type="button" data-toggle="tooltip" title="В избранное" href="<?= Url::to(['/cabinet/wishlist/add', 'id' => $product->id]) ?>" data-method="post"><i class="fa fa-heart"></i></button>
                 <!--button type="button" data-toggle="tooltip" title="Сравнить" onclick="compare.add('<?= $product->id ?>');"><i class="fa fa-exchange"></i></button-->
             </div>

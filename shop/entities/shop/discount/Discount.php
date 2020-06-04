@@ -3,12 +3,7 @@
 
 namespace shop\entities\shop\discount;
 
-
 use shop\cart\cost\Cost;
-use shop\entities\shop\discount\CostEnableDiscount;
-use shop\entities\shop\discount\PeriodWeekEnableDiscount;
-
-use shop\entities\shop\discount\EnabledDiscountInterface;
 use shop\entities\shop\queries\DiscountQuery;
 use yii\db\ActiveRecord;
 

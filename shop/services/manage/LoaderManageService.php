@@ -7,6 +7,7 @@ namespace shop\services\manage;
 use shop\entities\Meta;
 use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
+use shop\entities\shop\Characteristic;
 use shop\entities\shop\Hidden;
 use shop\entities\shop\product\Photo;
 use shop\entities\shop\product\Product;
@@ -480,7 +481,12 @@ class LoaderManageService
             } else {
                 $val = $value[1][0];
             }
-            $product->setValue($reg->characteristic_id, $val);
+            $characteristic = Characteristic::findOne($reg->characteristic_id);
+            if ($characteristic->isSelect()) { //Если тип содержит варианты
+                $product->setValue($reg->characteristic_id, $characteristic->getVariant($val));
+            } else {
+                $product->setValue($reg->characteristic_id, $val);
+            }
             $this->products->save($product);
         } else {
             $this->LogErrorPregMatch($product, $reg);

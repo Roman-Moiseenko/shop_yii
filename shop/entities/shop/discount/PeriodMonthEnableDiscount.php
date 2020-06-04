@@ -5,7 +5,6 @@ namespace shop\entities\shop\discount;
 
 
 use shop\cart\cost\Cost;
-use shop\entities\shop\discount\Discount;
 
 class PeriodMonthEnableDiscount extends EnabledDiscountInterface
 {

@@ -52,6 +52,8 @@ class CartController extends Controller
 
     public function actionAdd($id)
     {
+        //$id = (int)\Yii::$app->request->queryParams['id'];
+        //var_dump($id); exit();
         if (!$product = $this->products->find($id)) {
             throw new NotFoundHttpException('Товар не найден');
         }

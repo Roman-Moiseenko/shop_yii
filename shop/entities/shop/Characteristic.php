@@ -85,4 +85,18 @@ class Characteristic extends ActiveRecord
     {
         return $this->type === self::TYPE_FLOAT;
     }
+
+    public function getVariant($var):? string
+    {
+        foreach ($this->variants as $variant)
+        {
+            if ($var == $variant) return $variant;
+
+            $var = str_replace(',', '.', $var);
+            $variant_point = str_replace(',', '.', $variant);
+            if (is_numeric($var) && is_numeric($variant_point) && ((float)$var == (float)$variant_point)) return $variant;
+
+        }
+        return null;
+    }
 }
