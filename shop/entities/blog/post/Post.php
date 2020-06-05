@@ -53,7 +53,7 @@ class Post extends ActiveRecord
         $post->meta = $meta;
         $post->status = self::STATUS_DRAFT;
         $post->created_at = time();
-        $post->comments_count = 0;
+        //$post->comments_count = 0;
         return $post;
     }
 

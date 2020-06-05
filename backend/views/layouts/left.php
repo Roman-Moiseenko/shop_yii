@@ -37,6 +37,7 @@
                     ],
                     ['label' => 'Блог', 'icon' => 'file-text',
                         'items' => [
+                            ['label' => 'Посты', 'icon' => 'book', 'url' => ['/blog/post'], 'active' => $this->context->id == 'blog/post'],
                             ['label' => 'Каталог', 'icon' => 'folder-open', 'url' => ['/blog/category'], 'active' => $this->context->id == 'blog/category'],
                             ['label' => 'Метки', 'icon' => 'tags', 'url' => ['/blog/tag'], 'active' => $this->context->id == 'blog/tag'],
 
