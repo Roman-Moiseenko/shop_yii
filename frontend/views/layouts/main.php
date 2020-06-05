@@ -85,6 +85,7 @@ AppAsset::register($this);
                     <li><a href="<?=Html::encode(Url::to(['/blog/post/index']))?>">Блог</a></li>
                     <li><a href="<?=Html::encode(Url::to(['/contact/index']))?>">Контакты</a></li>
                     <li><a href="<?=Html::encode(Url::to(['/shop/catalog/search']))?>">Поиск</a></li>
+                    <li><a href="<?=Html::encode(Url::to(['/shop/catalog/about']))?>">О магазине</a></li>
                 </ul>
             </div>
         </nav>

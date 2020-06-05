@@ -171,6 +171,12 @@ class CatalogController extends Controller
         ]);
     }
 
+    public function actionAbout()
+    {
+        $this->layout = 'blank';
+        return $this->render('about');
+    }
+
     public function actionGetsearch()
     {
         $this->layout = '_blank';

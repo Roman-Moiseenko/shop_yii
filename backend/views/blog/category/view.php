@@ -50,11 +50,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'ntext',
                 'label' => 'Описание'
             ],
-            [
-                'attribute' => 'code1C',
-                'format' => 'text',
-                'label' => 'Код в 1С'
-            ],
         ],
     ]) ?>
         </div>

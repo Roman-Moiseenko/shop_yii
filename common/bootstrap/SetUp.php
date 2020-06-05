@@ -8,9 +8,7 @@ use frontend\urls\CategoryUrlRule;
 use shop\cart\Cart;
 use shop\cart\cost\calculator\DynamicCost;
 use shop\cart\cost\calculator\SimpleCost;
-use shop\cart\storage\CookieStorage;
 use shop\cart\storage\HybridStorage;
-use shop\cart\storage\SessionStorage;
 use shop\readModels\shop\CategoryReadRepository;
 use shop\repositories\UserRepository;
 use shop\services\ContactService;
@@ -18,9 +16,7 @@ use shop\services\auth\PasswordResetService;
 use shop\services\auth\SignupService;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
-use yii\caching\Cache;
 use yii\di\Instance;
-use yii\web\Session;
 
 class SetUp implements BootstrapInterface
 {

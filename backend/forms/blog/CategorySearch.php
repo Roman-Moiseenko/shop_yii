@@ -1,15 +1,15 @@
 <?php
 
-namespace backend\forms\shop;
+namespace backend\forms\blog;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use shop\entities\shop\Tag;
+use shop\entities\blog\Category;
 
 /**
- * TagSearch represents the model behind the search form of `shop\entities\shop\Tag`.
+ * CategorySearch represents the model behind the search form of `shop\entities\shop\Category`.
  */
-class TagSearch extends Tag
+class CategorySearch extends Category
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class TagSearch extends Tag
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['name', 'slug'], 'safe'],
+            [['id', 'sort'], 'integer'],
+            [['name', 'slug', 'title'], 'safe'],
         ];
     }
 
@@ -40,18 +40,24 @@ class TagSearch extends Tag
      */
     public function search($params)
     {
-        $query = Tag::find();
+        $query = Category::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['sort' => SORT_ASC]
+            ],
+            'pagination' => [
+                'defaultPageSize' => 600,
+                'pageSizeLimit' => [100, 600],
+            ],
         ]);
 
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
              $query->where('0=1');
             return $dataProvider;
         }
@@ -59,10 +65,12 @@ class TagSearch extends Tag
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'sort' => $this->sort,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'slug', $this->slug]);
+            ->andFilterWhere(['like', 'slug', $this->slug])
+            ->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }
