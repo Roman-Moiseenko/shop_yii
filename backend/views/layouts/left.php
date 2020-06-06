@@ -12,7 +12,6 @@
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
-
         <?= dmstr\widgets\Menu::widget(
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
@@ -46,7 +45,7 @@
                             ['label' => 'Загрузка каталогов', 'icon' => 'upload', 'url' => ['/data/load/catalog']],
                             ['label' => 'Загрузка товаров', 'icon' => 'upload', 'url' => ['/data/load/products']],
                             ['label' => 'Обновить бренды', 'icon' => 'save', 'url' => ['/data/load/brands']],
-                            ['label' => 'Обновить Аттрибуты', 'icon' => 'save', 'url' => ['/data/load/attributes']],
+                            ['label' => 'Обновить атрибуты', 'icon' => 'save', 'url' => ['/data/load/attributes']],
                         ],
                     ],
                     [

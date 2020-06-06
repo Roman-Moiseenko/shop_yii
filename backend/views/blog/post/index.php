@@ -15,26 +15,23 @@ $this->title = 'Посты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="post-index">
-
     <p>
         <?= Html::a('Создать Пост', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
-                    'attribute' => 'category_id',
+                'attribute' => 'category_id',
                 'label' => 'Категории',
                 'filter' => $searchModel->categoriesList(),
                 'value' => 'category.name',
-                ],
+            ],
             [
-                    'attribute' => 'created_at',
+                'attribute' => 'created_at',
                 'label' => 'Дата создания',
                 'format' => 'datetime',
                 'filter' => DatePicker::widget([
@@ -47,29 +44,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'yyyy-mm-dd',
                     ],
                 ]),
-                ]
-            ,
+            ],
             [
-                    'attribute' => 'title',
+                'attribute' => 'title',
                 'label' => 'Заголовок',
                 'value' => function (Post $post) {
                     return Html::a(Html::encode($post->title), ['view', 'id' => $post->id]);
                 },
                 'format' => 'raw',
-                ],
+            ],
             [
-                    'attribute' => 'status',
+                'attribute' => 'status',
                 'label' => 'Статус',
                 'filter' => PostHelper::statusList(),
                 'value' => function (Post $model) {
                     return PostHelper::statusLabel($model->status);
                 },
                 'format' => 'raw'
-                ],
-
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-
-
 </div>

@@ -52,7 +52,7 @@ class Category extends ActiveRecord
     {
         return '{{%blog_categories}}';
     }
-    public function getSeoTile(): string
+    public function getSeoTitle(): string
     {
         return $this->meta->title ?: $this->getHeadingTile();
     }

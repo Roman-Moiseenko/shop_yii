@@ -35,7 +35,6 @@ use yiidreamteam\upload\ImageUploadBehavior;
  *
  * @mixin ImageUploadBehavior
  */
-
 class Post extends ActiveRecord
 {
     const STATUS_DRAFT = 0;
@@ -53,7 +52,7 @@ class Post extends ActiveRecord
         $post->meta = $meta;
         $post->status = self::STATUS_DRAFT;
         $post->created_at = time();
-        //$post->comments_count = 0;
+        $post->comments_count = 0;
         return $post;
     }
 
@@ -92,7 +91,6 @@ class Post extends ActiveRecord
     {
         return $this->status == self::STATUS_ACTIVE;
     }
-
 
     public function isDraft(): bool
     {
@@ -137,12 +135,12 @@ class Post extends ActiveRecord
     }
 
     // Comments
-/*
-   public function addComment($userId, $parentId, $text): Comment
+
+    public function addComment($userId, $parentId, $text): Comment
     {
         $parent = $parentId ? $this->getComment($parentId) : null;
         if ($parent && !$parent->isActive()) {
-            throw new \DomainException('Cannot add comment to inactive parent.');
+            throw new \DomainException('Нельзя добавить комментарий в отключенный комментарий.');
         }
         $comments = $this->comments;
         $comments[] = $comment = Comment::create($userId, $parent ? $parent->id : null, $text);
@@ -161,7 +159,7 @@ class Post extends ActiveRecord
                 return;
             }
         }
-        throw new \DomainException('Comment is not found.');
+        throw new \DomainException('Комментарий не найден.');
     }
 
     public function activateComment($id): void
@@ -174,7 +172,7 @@ class Post extends ActiveRecord
                 return;
             }
         }
-        throw new \DomainException('Comment is not found.');
+        throw new \DomainException('Комментарий не найден.');
     }
 
     public function removeComment($id): void
@@ -191,7 +189,7 @@ class Post extends ActiveRecord
                 return;
             }
         }
-        throw new \DomainException('Comment is not found.');
+        throw new \DomainException('Комментарий не найден.');
     }
 
     public function getComment($id): Comment
@@ -201,7 +199,7 @@ class Post extends ActiveRecord
                 return $comment;
             }
         }
-        throw new \DomainException('Comment is not found.');
+        throw new \DomainException('Комментарий не найден.');
     }
 
     private function hasChildren($id): bool
@@ -222,7 +220,6 @@ class Post extends ActiveRecord
         }));
     }
 
-    */
     ##########################
 
     public function getCategory(): ActiveQuery
@@ -239,11 +236,11 @@ class Post extends ActiveRecord
     {
         return $this->hasMany(Tag::class, ['id' => 'tag_id'])->via('tagAssignments');
     }
-/*
+
     public function getComments(): ActiveQuery
     {
         return $this->hasMany(Comment::class, ['post_id' => 'id']);
-    }*/
+    }
 
     public function behaviors(): array
     {
@@ -283,7 +280,6 @@ class Post extends ActiveRecord
     {
         return '{{%blog_posts}}';
     }
-
 
     public static function find(): PostQuery
     {
