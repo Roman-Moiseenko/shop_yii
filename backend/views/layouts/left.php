@@ -9,11 +9,9 @@
             </div>
             <div class="pull-left info">
                 <p><?= Yii::$app->user->identity->username ?></p>
-
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
-
 
         <?= dmstr\widgets\Menu::widget(
             [
@@ -38,9 +36,8 @@
                     ['label' => 'Блог', 'icon' => 'file-text',
                         'items' => [
                             ['label' => 'Посты', 'icon' => 'book', 'url' => ['/blog/post'], 'active' => $this->context->id == 'blog/post'],
-                            ['label' => 'Каталог', 'icon' => 'folder-open', 'url' => ['/blog/category'], 'active' => $this->context->id == 'blog/category'],
+                            ['label' => 'Категории', 'icon' => 'folder-open', 'url' => ['/blog/category'], 'active' => $this->context->id == 'blog/category'],
                             ['label' => 'Метки', 'icon' => 'tags', 'url' => ['/blog/tag'], 'active' => $this->context->id == 'blog/tag'],
-
                         ],
                     ],
                     ['label' => 'Login', 'url' => ['auth/login'], 'visible' => Yii::$app->user->isGuest],
@@ -52,7 +49,6 @@
                             ['label' => 'Обновить Аттрибуты', 'icon' => 'save', 'url' => ['/data/load/attributes']],
                         ],
                     ],
-
                     [
                         'label' => 'Разработчику',
                         'icon' => 'share',

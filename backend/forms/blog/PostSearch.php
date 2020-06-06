@@ -2,23 +2,27 @@
 
 namespace backend\forms\blog;
 
+use shop\entities\blog\Category;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use shop\entities\blog\post\Post;
+use yii\helpers\ArrayHelper;
 
 /**
  * PostSearch represents the model behind the search form of `shop\entities\blog\post\Post`.
  */
 class PostSearch extends Post
 {
+    public $date_filter;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'category_id', 'created_at', 'status'], 'integer'],
-            [['title', 'description', 'content', 'photo', 'meta_json'], 'safe'],
+            [['category_id', 'created_at', 'status'], 'integer'],
+            [['title'], 'safe'],
+            [['date_filter'], 'date', 'format' => 'php:Y-m-d'],
         ];
     }
 
@@ -52,24 +56,27 @@ class PostSearch extends Post
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
             'category_id' => $this->category_id,
-            'created_at' => $this->created_at,
             'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'content', $this->content])
-            ->andFilterWhere(['like', 'photo', $this->photo])
-            ->andFilterWhere(['like', 'meta_json', $this->meta_json]);
+        ->andFilterWhere(['>=', 'created_at', $this->date_filter ? strtotime($this->date_filter . '00:00:00') : null])
+        ->andFilterWhere(['<=', 'created_at', $this->date_filter ? strtotime($this->date_filter . '23:59:59') : null]);
 
         return $dataProvider;
     }
+
+    public function categoriesList(): array
+    {
+        return ArrayHelper::map(Category::find()->orderBy(['sort' => SORT_ASC])->asArray()->all(),
+            'id', 'name');
+    }
+
 }
