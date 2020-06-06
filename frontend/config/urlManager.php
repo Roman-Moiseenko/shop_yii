@@ -14,6 +14,10 @@ return [
         'site/login' => 'auth/auth/login',
         '<_a:about>' => 'site/<_a>',
 
+        'blog' => 'blog/post/index',
+        'blog/tag/<slug:[\w\-]+>' => 'blog/post/tag',
+        'blog/<id:\d+>' => 'blog/post/post',
+        'blog/<slug:[\w\-]+>' => 'blog/post/category',
         'cabinet' => 'cabinet/default/index',
         'cabinet/<_c:[\w\-]+>' => 'cabinet/<_c>/index',
         'cabinet/<_c:[\w\-]+>/<id:\d+>' => 'cabinet/<_c>/view',

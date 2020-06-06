@@ -10,4 +10,8 @@ class TagReadRepository
     {
         return Tag::findOne($id);
     }
+    public function findBySlug($slug): ?Tag
+    {
+        return Tag::findOne(['slug' => $slug]);
+    }
 }

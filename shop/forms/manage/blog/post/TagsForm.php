@@ -1,6 +1,6 @@
 <?php
 
-namespace shop\forms\manage\blog\Post;
+namespace shop\forms\manage\blog\post;
 
 use shop\entities\blog\post\Post;
 use shop\entities\blog\Tag;

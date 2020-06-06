@@ -7,6 +7,7 @@ use yii\base\Widget;
 
 class BrandWidget extends Widget
 {
+    public $limit;
     /**
      * @var BrandReadRepository
      */
@@ -20,7 +21,7 @@ class BrandWidget extends Widget
 
     public function run()
     {
-        return $this->render('brand', ['brands' => $this->repository->getAll()]);
+        return $this->render('brand', ['brands' => $this->repository->getLimit($this->limit)]);
     }
 
 }

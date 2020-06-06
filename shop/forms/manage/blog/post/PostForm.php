@@ -1,12 +1,11 @@
 <?php
 
-namespace shop\forms\manage\blog\Post;
+namespace shop\forms\manage\blog\post;
 
 use shop\entities\blog\Category;
-use shop\entities\blog\Post\Post;
+use shop\entities\blog\post\Post;
 use shop\forms\CompositeForm;
 use shop\forms\manage\MetaForm;
-use shop\validators\SlugValidator;
 use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
 

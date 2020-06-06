@@ -18,13 +18,20 @@ use yii\helpers\Html;
     <?php endforeach; ?>
 </div>
 
+<?php if (\Yii::$app->user->isGuest) :?>
+    <div class="card">
+        <div class="card-body">
+            Пожалуйста, <?= Html::a('авторизуйтесь', ['/auth/auth/login'])?> для написания комментария
+        </div>
+    </div>
+<?php else: ?>
 <div id="reply-block" class="leave-reply">
     <?php $form = ActiveForm::begin([
         'action' => ['comment', 'id' => $post->id],
     ]); ?>
 
     <?= Html::activeHiddenInput($commentForm, 'parentId') ?>
-    <?= $form->field($commentForm, 'text')->textarea(['rows' => 5]) ?>
+    <?= $form->field($commentForm, 'text')->textarea(['rows' => 5])->label('Текст') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) ?>
@@ -32,6 +39,7 @@ use yii\helpers\Html;
 
     <?php ActiveForm::end(); ?>
 </div>
+<?php endif; ?>
 
 <?php $this->registerJs("
     jQuery(document).on('click', '#comments .comment-reply', function () {

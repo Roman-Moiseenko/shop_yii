@@ -82,9 +82,9 @@ class PostController extends Controller
      * @return mixed
      * @throws NotFoundHttpException
      */
-    public function actionTag($id)
+    public function actionTag($slug)
     {
-        if (!$tag = $this->tags->find($id)) {
+        if (!$tag = $this->tags->findBySlug($slug)) {
             throw new NotFoundHttpException('Запрашиваемая страница не существует.');
         }
 

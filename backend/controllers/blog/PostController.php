@@ -2,7 +2,7 @@
 
 namespace backend\controllers\blog;
 
-use shop\forms\manage\blog\Post\PostForm;
+use shop\forms\manage\blog\post\PostForm;
 use shop\services\manage\blog\PostManageService;
 use Yii;
 use shop\entities\blog\post\Post;
