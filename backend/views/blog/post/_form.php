@@ -20,16 +20,16 @@ use yii\helpers\Html;
             <div class="box box-default">
                 <div class="box-header with-border">Общие</div>
                 <div class="box-body">
-                    <?= $form->field($model, 'categoryId')->dropDownList($model->categoriesList(), ['prompt' => '']) ?>
+                    <?= $form->field($model, 'categoryId')->dropDownList($model->categoriesList(), ['prompt' => ''])->label('Категория') ?>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="box box-default">
-                <div class="box-header with-border">Теги</div>
+                <div class="box-header with-border">Метки</div>
                 <div class="box-body">
-                    <?= $form->field($model->tags, 'existing')->checkboxList($model->tags->tagsList()) ?>
-                    <?= $form->field($model->tags, 'textNew')->textInput() ?>
+                    <?= $form->field($model->tags, 'existing')->checkboxList($model->tags->tagsList())->label('Выбрать') ?>
+                    <?= $form->field($model->tags, 'textNew')->textInput()->label('Добавить новые') ?>
                 </div>
             </div>
         </div>
@@ -37,9 +37,9 @@ use yii\helpers\Html;
 
     <div class="box box-default">
         <div class="box-body">
-            <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-            <?= $form->field($model, 'description')->textarea(['rows' => 5]) ?>
-            <?= $form->field($model, 'content')->textarea(['rows' => 30])/*widget(CKEditor::className())*/ ?>
+            <?= $form->field($model, 'title')->textInput(['maxlength' => true])->label('Заголовок') ?>
+            <?= $form->field($model, 'description')->textarea(['rows' => 5])->label('Описание') ?>
+            <?= $form->field($model, 'content')->textarea(['rows' => 30])->label('Содержимое')/*widget(CKEditor::className())*/ ?>
         </div>
     </div>
 
@@ -57,9 +57,9 @@ use yii\helpers\Html;
     <div class="box box-default">
         <div class="box-header with-border">Для SEO</div>
         <div class="box-body">
-            <?= $form->field($model->meta, 'title')->textInput() ?>
-            <?= $form->field($model->meta, 'description')->textarea(['rows' => 2]) ?>
-            <?= $form->field($model->meta, 'keywords')->textInput() ?>
+            <?= $form->field($model->meta, 'title')->textInput()->label('Заголовок') ?>
+            <?= $form->field($model->meta, 'description')->textarea(['rows' => 2])->label('Описание') ?>
+            <?= $form->field($model->meta, 'keywords')->textInput()->label('Ключевые слова') ?>
         </div>
     </div>
 

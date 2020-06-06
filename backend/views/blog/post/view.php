@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?php if ($post->isActive()): ?>
-            <?= Html::a('Снять', ['draft', 'id' => $post->id], ['class' => 'btn btn-primary', 'data-method' => 'post']) ?>
+            <?= Html::a('Снять с публикации', ['draft', 'id' => $post->id], ['class' => 'btn btn-primary', 'data-method' => 'post']) ?>
         <?php else: ?>
             <?= Html::a('Опубликовать', ['activate', 'id' => $post->id], ['class' => 'btn btn-success', 'data-method' => 'post']) ?>
         <?php endif; ?>
@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'Категория',
                     ],
                     [
-                        'label' => 'Теги',
+                        'label' => 'Метки',
                         'value' => implode(', ', ArrayHelper::getColumn($post->tags, 'name')),
                     ],
                 ],
@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="box">
-        <div class="box-header with-border">SEO</div>
+        <div class="box-header with-border">Для SEO</div>
         <div class="box-body">
             <?= DetailView::widget([
                 'model' => $post,
@@ -103,14 +103,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'meta.title',
                         'value' => $post->meta->title,
+                        'label' => 'Заголовок',
                     ],
                     [
                         'attribute' => 'meta.description',
                         'value' => $post->meta->description,
+                        'label' => 'Описание',
                     ],
                     [
                         'attribute' => 'meta.keywords',
                         'value' => $post->meta->keywords,
+                        'label' => 'Ключевые слова',
                     ],
                 ],
             ]) ?>

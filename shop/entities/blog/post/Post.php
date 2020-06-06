@@ -61,7 +61,6 @@ class Post extends ActiveRecord
         $this->photo = $photo;
     }
 
-
     public function edit($categoryId, $title, $description, $content, Meta $meta): void
     {
         $this->category_id = $categoryId;
