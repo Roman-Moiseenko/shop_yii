@@ -20,7 +20,9 @@ use frontend\widgets\FeaturedProductsWidget; ?>
         <h3>Последние статьи</h3>
         <?= LastPostsWidget::widget(['limit' => 4]); ?>
         <!-- БРЕНДЫ -->
+        <div class="hidden-xs">
         <?= BrandWidget::widget(['limit' => 10]); ?>
+        </div>
 
     </div>
 </div>

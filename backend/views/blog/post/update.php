@@ -8,8 +8,8 @@ use yii\helpers\Html;
 /* @var $model PostForm */
 
 
-$this->title = 'Редактировать Пост: ' . $post->title;
-$this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
+$this->title = 'Редактировать Статью: ' . $post->title;
+$this->params['breadcrumbs'][] = ['label' => 'Статьи', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $post->title, 'url' => ['view', 'id' => $post->id]];
 $this->params['breadcrumbs'][] = 'Изменить';
 ?>

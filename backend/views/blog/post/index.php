@@ -11,12 +11,12 @@ use yii\grid\GridView;
 /* @var $searchModel backend\forms\blog\PostSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Посты';
+$this->title = 'Статьи';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="post-index">
     <p>
-        <?= Html::a('Создать Пост', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить Статью', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <?= GridView::widget([

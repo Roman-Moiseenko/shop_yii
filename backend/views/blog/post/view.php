@@ -9,7 +9,7 @@ use yii\widgets\DetailView;
 /* @var $post shop\entities\blog\post\Post */
 
 $this->title = $post->title;
-$this->params['breadcrumbs'][] = ['label' => 'Посты', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Статьи', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Удалить', ['delete', 'id' => $post->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Удалить статью?',
                 'method' => 'post',
             ],
         ]) ?>

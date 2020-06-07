@@ -34,9 +34,10 @@
                     ],
                     ['label' => 'Блог', 'icon' => 'file-text',
                         'items' => [
-                            ['label' => 'Посты', 'icon' => 'book', 'url' => ['/blog/post'], 'active' => $this->context->id == 'blog/post'],
+                            ['label' => 'Статьи', 'icon' => 'book', 'url' => ['/blog/post'], 'active' => $this->context->id == 'blog/post'],
                             ['label' => 'Категории', 'icon' => 'folder-open', 'url' => ['/blog/category'], 'active' => $this->context->id == 'blog/category'],
                             ['label' => 'Метки', 'icon' => 'tags', 'url' => ['/blog/tag'], 'active' => $this->context->id == 'blog/tag'],
+                            ['label' => 'Комментарии', 'icon' => 'book', 'url' => ['/blog/comment'], 'active' => $this->context->id == 'blog/comment'],
                         ],
                     ],
                     ['label' => 'Login', 'url' => ['auth/login'], 'visible' => Yii::$app->user->isGuest],
