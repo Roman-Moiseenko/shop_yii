@@ -5,7 +5,7 @@ namespace shop\services\manage;
 
 
 use shop\entities\Meta;
-use shop\entities\shop\Page;
+use shop\entities\Page;
 use shop\forms\manage\PageForm;
 use shop\repositories\PageRepository;
 
@@ -42,8 +42,8 @@ class PageManageService
 
     public function edit($id, PageForm $form): void
     {
-        $parent = $this->pages->get($form->parentId);
         $page = $this->pages->get($id);
+        $this->assertIsNotRoot($page);
         $page->edit(
             $form->title,
             $form->slug,
@@ -54,7 +54,43 @@ class PageManageService
                 $form->meta->keywords
             )
         );
-        $page->appendTo($parent);
+        if ($form->parentId !== $page->parent->id) {
+            $parent = $this->pages->get($form->parentId);
+            $page->appendTo($parent);
+        }
         $this->pages->save($page);
+    }
+    public function moveUp($id): void
+    {
+        $page = $this->pages->get($id);
+        $this->assertIsNotRoot($page);
+        if ($prev = $page->prev) {
+            $page->insertBefore($prev);
+        }
+        $this->pages->save($page);
+    }
+
+    public function moveDown($id): void
+    {
+        $page = $this->pages->get($id);
+        $this->assertIsNotRoot($page);
+        if ($next = $page->next) {
+            $page->insertAfter($next);
+        }
+        $this->pages->save($page);
+    }
+
+    public function remove($id): void
+    {
+        $page = $this->pages->get($id);
+        $this->assertIsNotRoot($page);
+        $this->pages->remove($page);
+    }
+
+    private function assertIsNotRoot(Page $page): void
+    {
+        if ($page->isRoot()) {
+            throw new \DomainException('Unable to manage the root page.');
+        }
     }
 }

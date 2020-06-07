@@ -1,28 +1,28 @@
 <?php
 
-namespace backend\controllers\shop;
+namespace backend\controllers;
 
-use shop\forms\manage\shop\CategoryForm;
-use shop\services\manage\shop\CategoryManageService;
+use shop\forms\manage\PageForm;
+use shop\services\manage\PageManageService;
 use Yii;
-use shop\entities\shop\Category;
-use backend\forms\shop\CategorySearch;
+use shop\entities\Page;
+use backend\forms\PageSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CategoryController implements the CRUD actions for Category model.
+ * PageController implements the CRUD actions for Page model.
  */
-class CategoryController extends Controller
+class PageController extends Controller
 {
-    public  $layout = 'main';
+
     /**
-     * @var CategoryManageService
+     * @var PageManageService
      */
     private $service;
 
-    public function __construct($id, $module, CategoryManageService $service, $config = [])
+    public function __construct($id, $module, PageManageService $service, $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->service = $service;
@@ -38,12 +38,39 @@ class CategoryController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
-                    'move-up' => ['POST'],
-                    'move-down' => ['POST'],
                 ],
             ],
         ];
     }
+
+    /**
+     * Lists all Page models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $searchModel = new PageSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Displays a single Page model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'page' => $this->findModel($id),
+        ]);
+    }
+
     public function actionMoveDown($id)
     {
         $this->service->moveDown($id);
@@ -54,60 +81,32 @@ class CategoryController extends Controller
         $this->service->moveUp($id);
         return $this->redirect(['index']);
     }
-
     /**
-     * Lists all Category models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new CategorySearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single Category model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'category' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new Category model.
+     * Creates a new Page model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $form = new CategoryForm();
+        $form = new PageForm();
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
-                $category = $this->service->create($form);
-                return $this->redirect(['view', 'id' => $category->id]);
+                $page = $this->service->create($form);
+                return $this->redirect(['view', 'id' => $page->id]);
             } catch (\DomainException $e) {
-                Yii::$app->errorHandler->logException($e);
-                Yii::$app->session->setFlash('error', $e->getMessage());
+                \Yii::$app->errorHandler->logException($e);
+                \Yii::$app->session->setFlash('error', $e->getMessage());
             }
         }
+
         return $this->render('create', [
             'model' => $form,
         ]);
     }
 
     /**
-     * Updates an existing Category model.
+     * Updates an existing Page model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -115,25 +114,26 @@ class CategoryController extends Controller
      */
     public function actionUpdate($id)
     {
-        $category = $this->findModel($id);
-        $form = new CategoryForm($category);
+        $page = $this->findModel($id);
+        $form = new PageForm($page);
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $this->service->edit($id, $form);
-                return $this->redirect(['view', 'id' => $category->id]);
+                return $this->redirect(['view', 'id' => $page->id]);
             } catch (\DomainException $e) {
-                Yii::$app->errorHandler->logException($e);
-                Yii::$app->session->setFlash('error', $e->getMessage());
+                \Yii::$app->errorHandler->logException($e);
+                \Yii::$app->session->setFlash('error', $e->getMessage());
             }
         }
+
         return $this->render('update', [
             'model' => $form,
-            'category' => $category,
+            'page' => $page,
         ]);
     }
 
     /**
-     * Deletes an existing Category model.
+     * Deletes an existing Page model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -141,25 +141,21 @@ class CategoryController extends Controller
      */
     public function actionDelete($id)
     {
-        try {
-            $this->service->remove($id);
-        } catch (\DomainException $e) {
-            Yii::$app->errorHandler->logException($e);
-            Yii::$app->session->setFlash('error', $e->getMessage());
-        }
+        $this->findModel($id)->delete();
+
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Category model based on its primary key value.
+     * Finds the Page model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Category the loaded model
+     * @return Page the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Category::findOne($id)) !== null) {
+        if (($model = Page::findOne($id)) !== null) {
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');

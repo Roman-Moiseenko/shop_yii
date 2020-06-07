@@ -40,6 +40,12 @@
                             ['label' => 'Комментарии', 'icon' => 'book', 'url' => ['/blog/comment'], 'active' => $this->context->id == 'blog/comment'],
                         ],
                     ],
+                    ['label' => 'Страницы', 'icon' => 'paste',
+                        'items' => [
+                            ['label' => 'Страницы', 'icon' => 'paste', 'url' => ['/page'], 'active' => $this->context->id == 'page'],
+                            ['label' => 'Файлы', 'icon' => 'file-o', 'url' => ['/file/index'], 'active' => $this->context->id == 'file/index'],
+                        ],
+                    ],
                     ['label' => 'Login', 'url' => ['auth/login'], 'visible' => Yii::$app->user->isGuest],
                     ['label' => 'Загрузка данных', 'icon' => 'cloud-upload',
                         'items' => [

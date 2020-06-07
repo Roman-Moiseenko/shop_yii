@@ -5,10 +5,14 @@ namespace common\bootstrap;
 
 
 use frontend\urls\CategoryUrlRule;
+use frontend\urls\PageUrlRule;
+use mihaildev\ckeditor\CKEditor;
+use mihaildev\elfinder\ElFinder;
 use shop\cart\Cart;
 use shop\cart\cost\calculator\DynamicCost;
 use shop\cart\cost\calculator\SimpleCost;
 use shop\cart\storage\HybridStorage;
+use shop\readModels\PageReadRepository;
 use shop\readModels\shop\CategoryReadRepository;
 use shop\repositories\UserRepository;
 use shop\services\ContactService;
@@ -53,7 +57,10 @@ class SetUp implements BootstrapInterface
             Instance::of(CategoryReadRepository::class),
             Instance::of('cache'),
         ]);
-
+        $container->set(PageUrlRule::class, [], [
+            Instance::of(PageReadRepository::class),
+            Instance::of('cache'),
+        ]);
         $container->setSingleton(Cart::class, function () use ($app) {
             return new Cart(
                 new HybridStorage($app->get('user'), 'cart', 3600 * 24, $app->db),
@@ -61,6 +68,10 @@ class SetUp implements BootstrapInterface
                 new DynamicCost(new SimpleCost())
             );
         });
+        $container->set(CKEditor::class, [
+            'editorOptions' => ElFinder::ckeditorOptions('elfinder'),
+        ]);
+
 
     }
 }

@@ -4,7 +4,7 @@
 namespace shop\repositories;
 
 
-use shop\entities\shop\Page;
+use shop\entities\Page;
 
 class PageRepository
 {

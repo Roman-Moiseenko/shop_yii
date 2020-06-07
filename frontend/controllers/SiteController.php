@@ -85,20 +85,4 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return mixed
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
-
-
-
-
-
-
-
 }

@@ -1,13 +1,14 @@
 <?php
 
 
-namespace shop\entities\shop;
+namespace shop\entities;
 
 
 use paulzi\nestedsets\NestedSetsBehavior;
 use shop\entities\behaviors\MetaBehavior;
 use shop\entities\Meta;
 use shop\entities\shop\queries\CategoryQuery;
+use shop\forms\manage\MetaForm;
 use shop\helpers\SlugHelper;
 use yii\db\ActiveRecord;
 /**
