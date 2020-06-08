@@ -10,8 +10,10 @@ class ParamsHelper
 {
     public static function get($key): string
     {
-        $params = Params::findOne($key);
-        return $params->value;
+        if (!$params = Params::findOne($key)) {
+            return $params->value;
+        }
+        return null;
     }
 
 }

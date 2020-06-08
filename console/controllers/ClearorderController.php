@@ -6,6 +6,7 @@ namespace console\controllers;
 
 use shop\entities\shop\order\Order;
 use shop\entities\shop\order\Status;
+use shop\helpers\ParamsHelper;
 use shop\readModels\shop\OrderReadRepository;
 use shop\repositories\shop\OrderRepository;
 use shop\services\shop\OrderService;
@@ -30,7 +31,7 @@ class ClearorderController extends Controller
         echo 'Начало очистки заказов' . "\n";
         $orders = Order::find()
             ->andWhere(['current_status' => Status::NEW])
-            ->andWhere(['<', 'created_at', time() + 3 * 3600 * 24])
+            ->andWhere(['<', 'created_at', time() + (int)ParamsHelper::get('timeClearOrder') * 3600 * 24])
             ->all();
         echo 'Кол-во просроченных заказов' . count($orders) . "\n";
         foreach ($orders as $order) {

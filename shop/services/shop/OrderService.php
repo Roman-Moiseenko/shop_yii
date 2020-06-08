@@ -19,6 +19,7 @@ use shop\repositories\shop\ProductRepository;
 use shop\repositories\UserRepository;
 use shop\services\ContactService;
 use shop\services\manage\shop\ProductManageService;
+use shop\services\manage\UnloaderManageService;
 use shop\services\TransactionManager;
 
 class OrderService
@@ -113,7 +114,7 @@ class OrderService
                 $this->products->save($product);
             }
             try {
-                Change1CService::unloadTo1C($user, $order);
+                UnloaderManageService::unloadTo1C($user, $order);
             } catch (\Exception $e) {
                 \Yii::$app->errorHandler->logException($e);
                 \Yii::$app->session->setFlash('error', $e);
@@ -134,7 +135,7 @@ class OrderService
                 $this->products->save($product);
             }
             $this->contacts->sendNoticeOrder($order);
-            Change1CService::unloadStatus($order->id, Status::CANCELLED_BY_CUSTOMER);
+            UnloaderManageService::unloadStatus($order->id, Status::CANCELLED_BY_CUSTOMER);
             $this->orders->remove($order);
         });
     }
@@ -145,7 +146,7 @@ class OrderService
         $order->pay($payment_method);
         $this->orders->save($order);
         $this->contacts->sendNoticeOrder($order);
-        Change1CService::unloadStatus($order->id, Status::PAID);
+        UnloaderManageService::unloadStatus($order->id, Status::PAID);
     }
 
     public function wait($id)
@@ -162,7 +163,7 @@ class OrderService
         $order->cancel($reason);
         $this->orders->save($order);
         $this->contacts->sendNoticeOrder($order);
-        Change1CService::unloadStatus($order->id, Status::CANCELLED);
+        UnloaderManageService::unloadStatus($order->id, Status::CANCELLED);
     }
 
     public function complete($id)
@@ -172,5 +173,4 @@ class OrderService
         $this->orders->save($order);
         $this->contacts->sendNoticeOrder($order);
     }
-
 }

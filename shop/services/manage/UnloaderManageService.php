@@ -1,7 +1,7 @@
 <?php
 
 
-namespace shop\services\shop;
+namespace shop\services\manage;
 
 
 use shop\entities\shop\order\Order;
@@ -9,7 +9,7 @@ use shop\entities\shop\product\Product;
 use shop\entities\user\User;
 use shop\services\ContactService;
 
-class Change1CService
+class UnloaderManageService
 {
     public static function unloadTo1C(User $user, Order $order)
     {
@@ -60,13 +60,4 @@ class Change1CService
         return true;
     }
 
-    public static function sendNotice(Order $order, ContactService $contact)
-    {
-
-        //TODO  Отправка уведомления на почту, SMS и/или WathApp, данные:
-        // $order->id;
-        // $order->cost;
-        // ($order->getUser())->phone;
-        // ($order->getUser())->fullname->getFullname();
-    }
 }

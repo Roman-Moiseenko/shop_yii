@@ -553,7 +553,7 @@ class LoaderManageService
             $data = (array)json_decode($row);
             try {
                 $order = $this->orders->get($data['id']);
-                //TODO проверка текущего статуса
+                //проверка текущего статуса
                 if ($order->current_status == Status::NEW || $order->current_status == Status::PAID) {
                     $order->addStatus($data['status']);
                     $this->orders->save($order);

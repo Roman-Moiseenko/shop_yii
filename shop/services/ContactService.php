@@ -5,6 +5,7 @@ namespace shop\services;
 
 
 use shop\entities\shop\order\Order;
+use shop\entities\shop\order\Status;
 use shop\forms\ContactForm;
 use shop\helpers\OrderHelper;
 use shop\helpers\ParamsHelper;
@@ -44,22 +45,18 @@ class ContactService
 
     public function sendNoticeOrder(Order $order)
     {
-        //TODO
-        // В базе прописать адреса и номера для отправки данных, и в админке их менять
-        // и прописать куда отправлять или нет
         $body = 'Заказ № ' . $order->id . '.  На сумму ' . $order->cost . '<br>' .
             'Текущий статус ' . OrderHelper::statusName($order->current_status) . '<br>' .
             ' Покупатель ' . ($order->user)->fullname->getFullname() . '<br>' .
             ' Телефон ' . ($order->user)->phone;
         $message = [
             'subject' => 'Заказ ' . OrderHelper::statusName($order->current_status), 'body' => $body];
-        //
-        $sendNotice = ['email' => true, 'sms' => true, 'whatsapp' => true];
-        if ($sendNotice['email']) $this->sendEMAILNoticeOrder($message);
-        if ($sendNotice['sms']) $this->sendSMSNoticeOrder($message);
-        if ($sendNotice['whatsapp']) $this->sendTELEGRAMNoticeOrder($message);
+        if (ParamsHelper::get('sendEmail') == 1) $this->sendEMAILNoticeOrder($message);
+        if (ParamsHelper::get('sendPhone') == 1) $this->sendSMSNoticeOrder($message);
+        if (ParamsHelper::get('sendTelegram') == 1) $this->sendTELEGRAMNoticeOrder($message);
 
-        //TODO отправка сообщения клиенту о статусе его заказа (email и SMS)
+        $this->sendNoticeUser($order);
+
     }
 
     private function sendEMAILNoticeOrder(array $message)
@@ -78,10 +75,12 @@ class ContactService
         if (!$send) {
             throw new \RuntimeException('Ошибка отправки');
         }
+
     }
 
     private function sendSMSNoticeOrder(array $message)
     {
+        $phone = ParamsHelper::get('phoneOrder');
 //TODO Сделать отправку СМС через sms.ru
     }
 
@@ -107,6 +106,16 @@ class ContactService
             )
         );
         curl_exec($ch);*/
+    }
+
+    private function sendNoticeUser(Order $order)
+    {
+        $message = '';
+        if ($order->current_status == Status::COMPLETED) {
+            $message = 'Ваш заказ № ' . $order->id . ' Был завершен';
+        }
+
+        //TODO отправка сообщения клиенту о статусе его заказа (email и SMS)   ДОДЕЛАТЬ!!!!!!!!!!!
     }
 
 

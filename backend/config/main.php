@@ -18,7 +18,11 @@ return [
         '@static' => $params['staticHostInfo'],
     ],
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log',
+        'common\bootstrap\SetUp',
+        'backend\bootstrap\SetUp',
+    ],
     'modules' => [],
     'controllerMap' => [
         'elfinder' => [
