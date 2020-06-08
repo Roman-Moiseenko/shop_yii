@@ -6,7 +6,7 @@
 
 use frontend\widgets\CartWidget;
 use frontend\widgets\TopmenuWidget;
-use shop\helpers\WishlistHelper;
+//use shop\helpers\WishlistHelper;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
@@ -85,7 +85,7 @@ AppAsset::register($this);
                     <li><a href="<?=Html::encode(Url::to(['/blog/post/index']))?>">Блог</a></li>
                     <li><a href="<?=Html::encode(Url::to(['/contact/index']))?>">Контакты</a></li>
                     <li><a href="<?=Html::encode(Url::to(['/shop/catalog/search']))?>">Поиск</a></li>
-                    <li><a href="<?=Html::encode(Url::to(['/shop/catalog/about']))?>">О магазине</a></li>
+                    <li><a href="<?=Html::encode(Url::to(['/about']))?>">О магазине</a></li>
                 </ul>
             </div>
         </nav>

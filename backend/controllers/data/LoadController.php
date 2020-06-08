@@ -34,7 +34,8 @@ class LoadController extends Controller
             try {
                 $form->file_catalog = UploadedFile::getInstance($form, 'file_catalog');
                 $file = $form->upload();
-                $this->service->loadCategory($file);
+                $path = dirname(__DIR__, 3) . '/static/data/';
+                $this->service->loadCategory($path, $file);
             } catch (\DomainException $e) {
                 \Yii::$app->errorHandler->logException($e);
                 \Yii::$app->session->setFlash('error', $e->getMessage());
@@ -53,7 +54,8 @@ class LoadController extends Controller
             try {
                 $form->file_catalog = UploadedFile::getInstance($form, 'file_catalog');
                 $file = $form->upload();
-                $this->service->loadProducts($file);
+                $path = dirname(__DIR__, 3) . '/static/data/';
+                $this->service->loadProducts($path, $file);
             } catch (\DomainException $e) {
                 \Yii::$app->errorHandler->logException($e);
                 \Yii::$app->session->setFlash('error', $e->getMessage());

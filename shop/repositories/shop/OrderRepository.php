@@ -1,8 +1,6 @@
 <?php
 
-
 namespace shop\repositories\shop;
-
 
 use shop\entities\shop\order\Order;
 use shop\repositories\NotFoundException;

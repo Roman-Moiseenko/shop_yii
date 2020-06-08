@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'Yii-магазин (разработка)';
+$this->title = 'Интернет-магазин Электроматериалов и стройматериалов';
 ?>
 <div class="site-index">
 

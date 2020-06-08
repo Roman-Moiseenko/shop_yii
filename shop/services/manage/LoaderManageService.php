@@ -9,12 +9,15 @@ use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
 use shop\entities\shop\Characteristic;
 use shop\entities\shop\Hidden;
+use shop\entities\shop\order\Status;
 use shop\entities\shop\product\Photo;
 use shop\entities\shop\product\Product;
 use shop\entities\shop\RegAttribute;
 use shop\repositories\HiddenRepository;
+use shop\repositories\NotFoundException;
 use shop\repositories\shop\BrandRepository;
 use shop\repositories\shop\CategoryRepository;
+use shop\repositories\shop\OrderRepository;
 use shop\repositories\shop\ProductRepository;
 use shop\repositories\shop\TagRepository;
 use shop\services\TransactionManager;
@@ -47,6 +50,10 @@ class LoaderManageService
      * @var TransactionManager
      */
     private $transaction;
+    /**
+     * @var OrderRepository
+     */
+    private $orders;
 
     public function __construct(
         ProductRepository $products,
@@ -54,7 +61,8 @@ class LoaderManageService
         CategoryRepository $categories,
         TagRepository $tags,
         HiddenRepository $hidden,
-        TransactionManager $transaction
+        TransactionManager $transaction,
+        OrderRepository $orders
     )
     {
         $this->products = $products;
@@ -63,13 +71,13 @@ class LoaderManageService
         $this->tags = $tags;
         $this->hidden = $hidden;
         $this->transaction = $transaction;
+        $this->orders = $orders;
     }
 
 
     /** Точка входа для загрузки Каталога */
-    public function loadCategory($file)
+    public function loadCategory($path, $file)
     {
-        $path = dirname(__DIR__, 3) . '/static/data/';
         $result = $this->processLoadCategory($path . $file);
         $countErrors = count($result);
         while ($countErrors > 0) {
@@ -127,8 +135,11 @@ class LoaderManageService
                 if ($this->hidden->isFind($data['code1C_parent'])) { //Родительская в скрытых
                     $this->toHidden($category);
                     continue;
+                } else { //Родительской в базе нет - принужденное скрытие категории
+                    $this->toHidden($category);
+                    continue;
                 }
-                $errors[] = $data;
+                //$errors[] = $data;
             }
 
             if ($this->hidden->isFind($data['code1C'])) { //Категория в скрытых сейчас
@@ -278,12 +289,16 @@ class LoaderManageService
         return $category->slug;
     }
 
-    /** Точка входа для загрузки Товаров */
-    public function loadProducts(string $file)
+    /** Точка входа для загрузки Товаров
+     * @param $path
+     * @param $file
+     * @return bool
+     */
+    public function loadProducts($path, $file)
     {
         set_time_limit(0);
         ini_set('memory_limit', '2000M');
-        $path = dirname(__DIR__, 3) . '/static/data/';
+        //$path = dirname(__DIR__, 3) . '/static/data/';
         $result = $this->processLoadProducts($path . $file);
         $countErrors = count($result);
         if ($countErrors != 0) {
@@ -352,7 +367,7 @@ class LoaderManageService
         $product->updatePrice($data['price'], 0);
         $idImage = $data['id'];
         $path = dirname(__DIR__, 3) . '/static/products/';
-        if (!file_exists($filePhoto = $path . $idImage .'.jpg')) {
+        if (!file_exists($filePhoto = $path . $idImage . '.jpg')) {
             $filePhoto = $path . 'no-image.jpg';
         }
         $this->products->save($product);
@@ -373,7 +388,7 @@ class LoaderManageService
         $product->addPhotoClass($photo);// mainPhoto = $photo->id;
         $this->products->save($product);
         $this->regProduct($product);
-        
+
         unset($photo);
         unset($product);
     }
@@ -400,11 +415,11 @@ class LoaderManageService
 
         //TODO Переделать под ООП, см.ответ с форума
         /** Низкоуровневый запрос */
-       $sql =   'SELECT r.* FROM ' . RegAttribute::tableName() . ' AS r ' .
-                'LEFT JOIN ' . Category::tableName() .' c ON c.id=r.category_id WHERE ' .
-                'c.lft <= (SELECT lft FROM ' . Category::tableName() .' WHERE id=(SELECT category_id FROM ' . Product::tableName() . ' WHERE id = ' . $product->id .')) ' .
-                ' AND '.
-                'c.rgt >= (SELECT rgt FROM ' . Category::tableName() .' WHERE id=(SELECT category_id FROM ' . Product::tableName() . ' WHERE id = ' . $product->id .'))';
+        $sql = 'SELECT r.* FROM ' . RegAttribute::tableName() . ' AS r ' .
+            'LEFT JOIN ' . Category::tableName() . ' c ON c.id=r.category_id WHERE ' .
+            'c.lft <= (SELECT lft FROM ' . Category::tableName() . ' WHERE id=(SELECT category_id FROM ' . Product::tableName() . ' WHERE id = ' . $product->id . ')) ' .
+            ' AND ' .
+            'c.rgt >= (SELECT rgt FROM ' . Category::tableName() . ' WHERE id=(SELECT category_id FROM ' . Product::tableName() . ' WHERE id = ' . $product->id . '))';
 
         try {
             $results = \Yii::$app->db->createCommand($sql)->queryAll();
@@ -418,7 +433,7 @@ class LoaderManageService
         }
     }
 
-    private function getBrandFromName($name):? int
+    private function getBrandFromName($name): ?int
     {
         /** @var Brand[] $brands */
         $brands = Brand::find()->all();
@@ -464,7 +479,7 @@ class LoaderManageService
                 ->andWhere(['category_id' => array_merge([$reg->category_id], $categories)])
                 ->all();
             foreach ($products as $product) {
-               $this->pregMatchAttribute($product, $reg);
+                $this->pregMatchAttribute($product, $reg);
             }
         }
     }
@@ -472,7 +487,7 @@ class LoaderManageService
     private function pregMatchAttribute(Product $product, RegAttribute $reg)
     {
         preg_match_all($reg->reg_match, $product->name, $value);
-        if ($count = count($value[1]) > 0    ) {
+        if ($count = count($value[1]) > 0) {
             if ((count($value[1]) > 1) && ($value[1][0] == 3)) {
                 $val = 0;
                 foreach ($value[1] as $item) {
@@ -515,5 +530,40 @@ class LoaderManageService
             'UPDATE shop_products SET brand_id = ' . $brand_id . ' WHERE category_id IN (' . $list . ')'
         )->execute();
 
+    }
+
+
+    /**  Загрузка заказов не будет производиться!!! */
+    public function loadOrder(string $path, string $file)
+    {
+        $result = $this->processLoadOrder($path . $file);
+        $countErrors = count($result);
+        if ($countErrors != 0) {
+            $fileError = $this->saveToFile($path, $result, 'order_');
+            throw new \DomainException('Ошибка данных');
+        }
+        unlink($path . $file);
+        return true;
+    }
+
+    private function processLoadOrder(string $file)
+    {
+        $errors = [];
+        foreach ($this->readLineFromFile($file) as $row) {
+            $data = (array)json_decode($row);
+            try {
+                $order = $this->orders->get($data['id']);
+                //TODO проверка текущего статуса
+                if ($order->current_status == Status::NEW || $order->current_status == Status::PAID) {
+                    $order->addStatus($data['status']);
+                    $this->orders->save($order);
+                } else {
+                    $errors[] = $data;
+                }
+            } catch (NotFoundException $e) {
+                $errors[] = $data;
+            }
+        }
+        return $errors;
     }
 }

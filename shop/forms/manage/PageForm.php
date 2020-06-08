@@ -16,7 +16,6 @@ class PageForm extends CompositeForm
     public $slug;
     public $parentId;
 
-    public $meta;
     public $_page;
 
     public function __construct(Page $page = null, $config = [])

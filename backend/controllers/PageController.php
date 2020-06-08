@@ -118,6 +118,7 @@ class PageController extends Controller
         $form = new PageForm($page);
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
+                //var_dump($form->meta); exit();
                 $this->service->edit($id, $form);
                 return $this->redirect(['view', 'id' => $page->id]);
             } catch (\DomainException $e) {

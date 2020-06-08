@@ -44,6 +44,22 @@ class Change1CService
         return true;
     }
 
+    public static function unloadStatus($order_id, $status)
+    {
+        $path = dirname(__DIR__, 3) . '/static/exchange/out/';
+        if(!is_dir($path)) {
+            mkdir($path, 0777, true);
+        }
+        $filename = $order_id . '.status';
+        $file = $path . $filename;
+        $handle = fopen($file, 'w');
+        $info_order = $order_id.';'
+            . $status;
+        fwrite($handle, $info_order . PHP_EOL);
+        fclose($handle);
+        return true;
+    }
+
     public static function sendNotice(Order $order, ContactService $contact)
     {
 

@@ -9,6 +9,7 @@ use shop\entities\shop\order\CustomerData;
 use shop\entities\shop\order\DeliveryData;
 use shop\entities\shop\order\Order;
 use shop\entities\shop\order\OrderItem;
+use shop\entities\shop\order\Status;
 use shop\entities\shop\product\Product;
 use shop\entities\user\User;
 use shop\forms\shop\order\OrderForm;
@@ -133,6 +134,7 @@ class OrderService
                 $this->products->save($product);
             }
             $this->contacts->sendNoticeOrder($order);
+            Change1CService::unloadStatus($order->id, Status::CANCELLED_BY_CUSTOMER);
             $this->orders->remove($order);
         });
     }
@@ -143,6 +145,7 @@ class OrderService
         $order->pay($payment_method);
         $this->orders->save($order);
         $this->contacts->sendNoticeOrder($order);
+        Change1CService::unloadStatus($order->id, Status::PAID);
     }
 
     public function wait($id)
@@ -159,6 +162,7 @@ class OrderService
         $order->cancel($reason);
         $this->orders->save($order);
         $this->contacts->sendNoticeOrder($order);
+        Change1CService::unloadStatus($order->id, Status::CANCELLED);
     }
 
     public function complete($id)

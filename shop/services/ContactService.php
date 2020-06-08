@@ -58,6 +58,8 @@ class ContactService
         if ($sendNotice['email']) $this->sendEMAILNoticeOrder($message);
         if ($sendNotice['sms']) $this->sendSMSNoticeOrder($message);
         if ($sendNotice['whatsapp']) $this->sendTELEGRAMNoticeOrder($message);
+
+        //TODO отправка сообщения клиенту о статусе его заказа (email и SMS)
     }
 
     private function sendEMAILNoticeOrder(array $message)
