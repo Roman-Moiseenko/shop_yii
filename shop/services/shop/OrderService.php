@@ -134,6 +134,7 @@ class OrderService
                 $product->remains += $orderItem->quantity;
                 $this->products->save($product);
             }
+            $order->current_status = Status::CANCELLED_BY_CUSTOMER;
             $this->contacts->sendNoticeOrder($order);
             UnloaderManageService::unloadStatus($order->id, Status::CANCELLED_BY_CUSTOMER);
             $this->orders->remove($order);

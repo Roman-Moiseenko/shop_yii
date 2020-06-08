@@ -6,6 +6,7 @@ namespace shop\services;
 
 use shop\entities\shop\order\Order;
 use shop\entities\shop\order\Status;
+use shop\entities\user\User;
 use shop\forms\ContactForm;
 use shop\helpers\OrderHelper;
 use shop\helpers\ParamsHelper;
@@ -19,21 +20,25 @@ class ContactService
      * @var MailerInterface
      */
     private $mailer;
-    private $supportEmail;
-    private $adminEmail;
+  //  private $supportEmail;
+ //   private $adminEmail;
 
-    public function __construct($supportEmail, $adminEmail, MailerInterface $mailer)
+    public function __construct(/*$supportEmail, $adminEmail, */MailerInterface $mailer)
     {
         $this->mailer = $mailer;
-        $this->supportEmail = $supportEmail;
-        $this->adminEmail = $adminEmail;
+       // $this->supportEmail = $supportEmail;
+       // $this->adminEmail = $adminEmail;
     }
 
     public function contact(ContactForm $form): void
     {
+        if (!$email = ParamsHelper::get('emailContact')) {
+            throw new \DomainException('Не найден почтовый адрес администратора');
+            //$email  = $this->adminEmail;
+        }
         $send = $this->mailer->compose()
-            ->setTo($this->adminEmail)
-            ->setFrom($this->supportEmail)
+            ->setTo($email)
+            ->setFrom([\Yii::$app->params['supportEmail'] => 'Обращение клиента'])
             ->setReplyTo([$form->email => $form->name])
             ->setSubject($form->subject)
             ->setTextBody($form->body)
@@ -45,9 +50,9 @@ class ContactService
 
     public function sendNoticeOrder(Order $order)
     {
-        $body = 'Заказ № ' . $order->id . '.  На сумму ' . $order->cost . '<br>' .
-            'Текущий статус ' . OrderHelper::statusName($order->current_status) . '<br>' .
-            ' Покупатель ' . ($order->user)->fullname->getFullname() . '<br>' .
+        $body = 'Заказ № ' . $order->id . '.  На сумму ' . $order->cost . "\n" .
+            'Текущий статус ' . OrderHelper::statusName($order->current_status) . "\n"  .
+            ' Покупатель ' . ($order->user)->fullname->getFullname() . "\n"  .
             ' Телефон ' . ($order->user)->phone;
         $message = [
             'subject' => 'Заказ ' . OrderHelper::statusName($order->current_status), 'body' => $body];
@@ -62,12 +67,13 @@ class ContactService
     private function sendEMAILNoticeOrder(array $message)
     {
         if (!$email = ParamsHelper::get('emailOrder')) {
-            $email  = $this->adminEmail;
+            throw new \DomainException('Не найден почтовый адрес администратора');
+            //$email  = $this->adminEmail;
         }
 
         $send = $this->mailer->compose()
             ->setTo($email)
-            ->setFrom($this->supportEmail)
+            ->setFrom([\Yii::$app->params['supportEmail'] => 'Уведомление с сайта'])
             //->setReplyTo()
             ->setSubject($message['subject'])
             ->setTextBody($message['body'])
@@ -110,12 +116,25 @@ class ContactService
 
     private function sendNoticeUser(Order $order)
     {
-        $message = '';
+      /*  $message = '';
         if ($order->current_status == Status::COMPLETED) {
             $message = 'Ваш заказ № ' . $order->id . ' Был завершен';
+        }*/
+        /** @var User $user */
+        //$user = $order->getUser();
+        $send = $this->mailer->compose()
+            ->setTo($order->user->email)
+            ->setFrom([\Yii::$app->params['supportEmail'] => 'kupi41.ru'])
+            //->setReplyTo()
+            ->setSubject('Изменения по Вашему заказу')
+            ->setTextBody('Новый статус ' . OrderHelper::statusName($order->current_status))
+            ->send();
+        if (!$send) {
+            throw new \RuntimeException('Ошибка отправки');
         }
-
         //TODO отправка сообщения клиенту о статусе его заказа (email и SMS)   ДОДЕЛАТЬ!!!!!!!!!!!
+        // сделать красивое сообщение html
+        // СМС после переноса сайта на купи41
     }
 
 

@@ -37,6 +37,12 @@ class m200608_150138_add_shop_params_new_params_key extends Migration
             'value' => '',
             'description' => 'Через сколько дней удалять неоплаченные заказы'
         ]);
+        $this->insert('{{%shop_params}}' ,[
+            'key' => 'emailContact',
+            'value' => '',
+            'description' => 'Email, на который будут приходить обращения клиентов'
+        ]);
+        //
     }
 
     /**

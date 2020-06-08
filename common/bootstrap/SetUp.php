@@ -39,8 +39,8 @@ class SetUp implements BootstrapInterface
 
         $container->setSingleton(ContactService::class, function () use ($app) {
             return new ContactService(
-                [$app->params['supportEmail'] => $app->name . ' robot'],
-                $app->params['adminEmail'],
+              //  [$app->params['supportEmail'] => 'Уведомления с сайта'],
+              //  $app->params['adminEmail'],
                 $app->mailer
             );
         });
