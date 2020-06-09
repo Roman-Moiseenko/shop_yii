@@ -68,13 +68,6 @@ class OrderController extends Controller
         ]);
     }
 
-    public function actionUpdate($id)
-    {
-        //TODO Сделать страницу редактирования заказа
-        // изменения доставки, контактных данных
-        // удаление позиций с заказа .... !?
-    }
-
     public function actionDelete($id)
     {
         if (!$order = $this->orders->findOwn(\Yii::$app->user->id, $id)) {

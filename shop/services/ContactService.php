@@ -34,7 +34,6 @@ class ContactService
     {
         if (!$email = ParamsHelper::get('emailContact')) {
             throw new \DomainException('Не найден почтовый адрес администратора');
-            //$email  = $this->adminEmail;
         }
         $send = $this->mailer->compose()
             ->setTo($email)

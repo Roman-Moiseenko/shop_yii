@@ -39,7 +39,7 @@ return [
                 [
                     'baseUrl'=>'@static',
                     'basePath'=>'@staticRoot',
-                    'path' => 'files',
+                    'path' => 'images',
                     'name' => 'Global'
                 ],
             ],

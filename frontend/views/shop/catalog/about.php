@@ -1,7 +1,6 @@
 <?php
 
-//TODO Отформатировать страничку о Магазине
-// Загрузка текста и режима с базы данных {{%shop_params}}
+//НЕ ИСПОЛЬЗУЕТСЯ
 
 /* @var $this \yii\web\View */
 /* @var $brand \shop\entities\shop\Brand*/

@@ -5,8 +5,6 @@ return [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
-        '@backendHost' => $params['backendHostInfo'],
-        '@frontendHost' => $params['frontendHostInfo'],
     ],
     'bootstrap' => [
         'common\bootstrap\SetUp'

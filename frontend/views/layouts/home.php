@@ -12,7 +12,10 @@ use frontend\widgets\FeaturedProductsWidget; ?>
 <div class="row">
     <!-- -->
     <div id="content" class="col-sm-12">
+        <!-- БАННЕРЫ -->
+        <div class="hidden-xs">
         <?= BannersWidget::widget(); ?>
+        </div>
         <!-- РЕКОМЕНДУЕМ -->
         <h3>Рекомендуем</h3>
         <?= FeaturedProductsWidget::widget(['limit' => 4]); ?>
@@ -23,7 +26,6 @@ use frontend\widgets\FeaturedProductsWidget; ?>
         <div class="hidden-xs">
         <?= BrandWidget::widget(['limit' => 10]); ?>
         </div>
-
     </div>
 </div>
 

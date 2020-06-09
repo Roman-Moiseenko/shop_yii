@@ -1,5 +1,8 @@
 <?php
 /* @var $banners array */
+
+use yii\helpers\Html;
+
 ?>
 
 <div class="swiper-viewport">
@@ -7,7 +10,7 @@
         <div class="swiper-wrapper">
             <?php foreach ($banners as $banner): ?>
             <div class="swiper-slide text-center">
-                <img src="<?=$banner?>" alt="ООО Кам-юнити. г.Елизово, 31 км. Мы вас ждем!" class="img-responsive" />
+                <img src="<?= Html::encode($banner) ?>" alt="ООО Кам-юнити. г.Елизово, 31 км. Мы вас ждем!" class="img-responsive" />
             </div>
             <?php endforeach;?>
         </div>
