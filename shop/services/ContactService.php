@@ -56,32 +56,27 @@ class ContactService
             ' Телефон ' . ($order->user)->phone;
         $message = [
             'subject' => 'Заказ ' . OrderHelper::statusName($order->current_status), 'body' => $body];
-        if (ParamsHelper::get('sendEmail') == 1) $this->sendEMAILNoticeOrder($message);
+        if (ParamsHelper::get('sendEmail') == 1) $this->sendEMAILNoticeOrder($order);
         if (ParamsHelper::get('sendPhone') == 1) $this->sendSMSNoticeOrder($message);
         if (ParamsHelper::get('sendTelegram') == 1) $this->sendTELEGRAMNoticeOrder($message);
 
         $this->sendNoticeUser($order);
-
     }
 
-    private function sendEMAILNoticeOrder(array $message)
+    private function sendEMAILNoticeOrder(Order $order)
     {
         if (!$email = ParamsHelper::get('emailOrder')) {
             throw new \DomainException('Не найден почтовый адрес администратора');
-            //$email  = $this->adminEmail;
         }
 
-        $send = $this->mailer->compose()
+        $send = $this->mailer->compose('noticeAdmin', ['order' => $order])
             ->setTo($email)
             ->setFrom([\Yii::$app->params['supportEmail'] => 'Уведомление с сайта'])
-            //->setReplyTo()
-            ->setSubject($message['subject'])
-            ->setTextBody($message['body'])
+            ->setSubject('Заказ ' . OrderHelper::statusName($order->current_status))
             ->send();
         if (!$send) {
             throw new \RuntimeException('Ошибка отправки');
         }
-
     }
 
     private function sendSMSNoticeOrder(array $message)
@@ -116,25 +111,15 @@ class ContactService
 
     private function sendNoticeUser(Order $order)
     {
-      /*  $message = '';
-        if ($order->current_status == Status::COMPLETED) {
-            $message = 'Ваш заказ № ' . $order->id . ' Был завершен';
-        }*/
-        /** @var User $user */
-        //$user = $order->getUser();
-        $send = $this->mailer->compose()
+        $send = $this->mailer->compose('noticeClient', ['order' => $order])
             ->setTo($order->user->email)
             ->setFrom([\Yii::$app->params['supportEmail'] => 'kupi41.ru'])
-            //->setReplyTo()
-            ->setSubject('Изменения по Вашему заказу')
-            ->setTextBody('Новый статус ' . OrderHelper::statusName($order->current_status))
+            ->setSubject('Информация по Вашему заказу')
             ->send();
         if (!$send) {
             throw new \RuntimeException('Ошибка отправки');
         }
-        //TODO отправка сообщения клиенту о статусе его заказа (email и SMS)   ДОДЕЛАТЬ!!!!!!!!!!!
-        // сделать красивое сообщение html
-        // СМС после переноса сайта на купи41
+        //TODO  СМС после переноса сайта на купи41
     }
 
 
