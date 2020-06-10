@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = 'Изменить';
 
                 <?= $form->field($model, 'username')->textInput()->label('Логин') ?>
                 <?= $form->field($model, 'email')->textInput()->label('Эл.почта') ?>
+                <?= $form->field($model, 'password')->textInput()->label('Пароль')->hint('Оставьте пустым, если не хотите менять.') ?>
                 <?= $form->field($model, 'role')->dropDownList(UserHelper::rolesList())->label('Уровень доступа') ?>
 
                 <div class="form-group">

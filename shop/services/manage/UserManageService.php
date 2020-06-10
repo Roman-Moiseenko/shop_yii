@@ -57,6 +57,7 @@ class UserManageService
         $user = $this->users->get($id);
         $user->edit($form->username, $form->email);
         $this->transaction->wrap(function () use($user, $form) {
+            if (!empty($form->password)) $user->setPassword($form->password);
             $this->users->save($user);
             $this->roles->assign($user->id, $form->role);
         });

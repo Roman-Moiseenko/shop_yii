@@ -14,6 +14,7 @@ class UserEditForm extends Model
     public $email;
     public $_user;
     public $role;
+    public $password;
     public $id;
 
     public function __construct(User $user, $config = [])
@@ -23,6 +24,7 @@ class UserEditForm extends Model
         $roles = \Yii::$app->authManager->getRolesByUser($user->id);
         $this->role = $roles ? reset($roles)->name : null;
         $this->_user = $user;
+        $this->password = '';
         parent::__construct($config);
     }
 
@@ -33,6 +35,7 @@ class UserEditForm extends Model
             ['email', 'email'],
             [['username', 'email'], 'string', 'max' => 255],
             [['username', 'email'], 'unique', 'targetClass' => User::class, 'filter' => ['<>', 'id', $this->_user->id]],
+            ['password', 'string', 'min' => 6],
         ];
     }
 
