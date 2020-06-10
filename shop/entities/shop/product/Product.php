@@ -27,7 +27,7 @@ use yii\web\UploadedFile;
  * @property integer $price_old
  * @property integer $price_new
  * @property integer $main_photo_id
- * @property integer $rating
+ * @property float $rating
  * @property string $units
  * @property string $code1C
  * @property float $remains

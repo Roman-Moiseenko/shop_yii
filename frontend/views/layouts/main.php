@@ -111,36 +111,36 @@ AppAsset::register($this);
                 <div class="col-sm-3">
                     <h5>Information</h5>
                     <ul class="list-unstyled">
-                        <li><a href="https://demo.opencart.com/index.php?route=information/information&amp;information_id=4">About Us</a></li>
-                        <li><a href="https://demo.opencart.com/index.php?route=information/information&amp;information_id=6">Delivery Information</a></li>
-                        <li><a href="https://demo.opencart.com/index.php?route=information/information&amp;information_id=3">Privacy Policy</a></li>
-                        <li><a href="https://demo.opencart.com/index.php?route=information/information&amp;information_id=5">Terms &amp; Conditions</a></li>
+                        <li><a href="">About Us</a></li>
+                        <li><a href="">Delivery Information</a></li>
+                        <li><a href="">Privacy Policy</a></li>
+                        <li><a href="">Terms &amp; Conditions</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
                     <h5>Customer Service</h5>
                     <ul class="list-unstyled">
-                        <li><a href="https://demo.opencart.com/index.php?route=information/contact">Contact Us</a></li>
-                        <li><a href="https://demo.opencart.com/index.php?route=account/return/add">Returns</a></li>
-                        <li><a href="https://demo.opencart.com/index.php?route=information/sitemap">Site Map</a></li>
+                        <li><a href="">Contact Us</a></li>
+                        <li><a href="">Returns</a></li>
+                        <li><a href="">Site Map</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
                     <h5>Extras</h5>
                     <ul class="list-unstyled">
-                        <li><a href="https://demo.opencart.com/index.php?route=product/manufacturer">Brands</a></li>
-                        <li><a href="https://demo.opencart.com/index.php?route=account/voucher">Gift Certificates</a></li>
-                        <li><a href="https://demo.opencart.com/index.php?route=affiliate/login">Affiliate</a></li>
-                        <li><a href="https://demo.opencart.com/index.php?route=product/special">Specials</a></li>
+                        <li><a href="">Brands</a></li>
+                        <li><a href="">Gift Certificates</a></li>
+                        <li><a href="">Affiliate</a></li>
+                        <li><a href="">Specials</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
-                    <h5>My Account</h5>
+                    <h5>Личный кабинет</h5>
                     <ul class="list-unstyled">
-                        <li><a href="https://demo.opencart.com/index.php?route=account/account">My Account</a></li>
-                        <li><a href="https://demo.opencart.com/index.php?route=account/order">Order History</a></li>
-                        <li><a href="https://demo.opencart.com/index.php?route=account/wishlist">Wish List</a></li>
-                        <li><a href="https://demo.opencart.com/index.php?route=account/newsletter">Newsletter</a></li>
+                        <li><a href="<?= Html::encode(Url::to(['/cabinet/default/index'])) ?>">Кабинет</a></li>
+                        <li><a href="<?= Html::encode(Url::to(['/cabinet/order/index'])) ?>">Заказы</a></li>
+                        <li><a href="<?= Html::encode(Url::to(['/cabinet/wishlist/index'])) ?>">Избранное</a></li>
+                        <li><a href="">Newsletter</a></li>
                     </ul>
                 </div>
             </div>

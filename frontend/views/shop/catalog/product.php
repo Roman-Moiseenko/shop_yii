@@ -6,7 +6,7 @@
 
 use frontend\assets\MagnificPopupAsset;
 use frontend\widgets\RatingWidget;
-use shop\forms\shop\AddToCartForm;
+use frontend\widgets\ReviewsWidget;use shop\forms\shop\AddToCartForm;
 use shop\forms\shop\ReviewForm;
 use shop\helpers\PriceHelper;
 use shop\helpers\ProductHelper;
@@ -96,13 +96,8 @@ MagnificPopupAsset::register($this);
                         </div>
                     <?php ActiveForm::end()?>
                     <?php endif;?>
-                <?php if ($countReveiws > 0): ?>
                 <h2>Отзывы</h2>
-                <?php foreach ($product->reviews as $review): ?>
-                <?= $review->user->fullname->getFullname(); ?>
-                    <?= $review->text; ?>
-                <?php endforeach;?>
-                <?php endif; ?>
+                <?= ReviewsWidget::widget(['product' => $product]); ?>
             </div>
         </div>
     </div>

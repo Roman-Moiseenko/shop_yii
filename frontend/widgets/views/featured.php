@@ -1,6 +1,7 @@
 <?php
 /* @var $products \shop\entities\shop\product\Product */
 
+use frontend\widgets\RatingWidget;
 use shop\helpers\PriceHelper;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
@@ -24,15 +25,20 @@ use yii\helpers\Url;
                 <h4>
                     <a href="<?= Html::encode($url) ?>"><?= Html::encode($product->name) ?></a>
                 </h4>
-                <p><?= Html::encode(StringHelper::truncateWords(strip_tags($product->description), 20)) ?></p>
+                <p><?= Html::encode(StringHelper::truncateWords(strip_tags($product->description), 10)) ?></p>
                 <p class="price">
                     <span class="price-new"><?= PriceHelper::format($product->price_new) ?></span>
                     <?php if ($product->price_old): ?>
                         <span class="price-old"><?= PriceHelper::format($product->price_old) ?></span>
                     <?php endif; ?>
                 </p>
-                <p class="price">
+                <p>
+                <div class="pull-left price">
                     Остаток <?= $product->remains . ' ' . $product->units ?>
+                </div>
+                <div class="pull-right rating">
+                    <?= RatingWidget::widget(['rating' => $product->rating])?>
+                </div>
                 </p>
             </div>
             <div class="button-group">

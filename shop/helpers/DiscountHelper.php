@@ -24,18 +24,10 @@ class DiscountHelper
     private static function getClasses($namespace): array
     {
         $namespaceRelativePath = str_replace('\\', DIRECTORY_SEPARATOR, $namespace);
-        $classArr = [];
-        $path = dirname(__DIR__, 2) . '\\' . $namespaceRelativePath;
-        if (is_dir($path)) {
-            $dir = dir($path);
-            while (false !== ($item = $dir->read())) {
-                $matches = [];
-                if (preg_match('/^(.+EnableDiscount)\.php$/', $item, $matches)) {
-                    $classArr[] = $matches[1];
-                }
-            }
-            $dir->close();
-        }
-        return $classArr;
+        $path = dirname(__DIR__, 2) . '/' . $namespaceRelativePath . '/';
+        return array_map(function (string $item) {
+            $info = pathinfo($item);
+            return $info['filename'];
+        }, glob($path . '*EnableDiscount.php'));
     }
 }

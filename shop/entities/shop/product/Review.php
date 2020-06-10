@@ -1,6 +1,6 @@
 <?php
 
-namespace shop\entities\Shop\Product;
+namespace shop\entities\shop\product;
 
 use shop\entities\user\User;
 use yii\db\ActiveQuery;

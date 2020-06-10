@@ -43,7 +43,7 @@
                     ['label' => 'Страницы', 'icon' => 'paste',
                         'items' => [
                             ['label' => 'Страницы', 'icon' => 'paste', 'url' => ['/page'], 'active' => $this->context->id == 'page'],
-                            ['label' => 'Файлы', 'icon' => 'file-o', 'url' => ['/file/index'], 'active' => $this->context->id == 'file/index'],
+                            ['label' => 'Файлы', 'icon' => 'file-o', 'url' => ['/file'], 'active' => $this->context->id == 'file'],
                         ],
                     ],
                     ['label' => 'Login', 'url' => ['auth/login'], 'visible' => Yii::$app->user->isGuest],
