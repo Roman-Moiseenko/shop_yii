@@ -27,7 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'id',
+            [
+                'attribute' => 'id',
+                'options' => ['width' => '20px',]
+            ],
             [
                 'attribute' => 'username',
                 'format' => 'text',
@@ -63,11 +66,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]),
                 'format' => 'datetime',
                 'label' => 'Создан',
-            ],
-            [
-                'attribute' =>'updated_at',
-                'format' => 'datetime',
-                'label' => 'Изменен'
             ],
             [
                     'attribute' => 'role',

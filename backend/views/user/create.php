@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'username')->textInput()->label('Логин') ?>
                 <?= $form->field($model, 'email')->textInput()->label('Почта') ?>
                 <?= $form->field($model, 'password')->textInput()->label('Пароль') ?>
-                <?= $form->field($model, 'role')->dropDownList(UserHelper::rolesList())->label('Уровень доступа') ?>
+                <?= $form->field($model, 'role')->dropDownList(UserHelper::rolesList(), ['prompt' => ''])->label('Уровень доступа') ?>
 
                 <div class="form-group">
                     <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

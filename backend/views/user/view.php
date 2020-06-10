@@ -31,7 +31,9 @@ $this->params['breadcrumbs'][] = $model->username;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            [
+                    'attribute' => 'id',
+                ],
             [
                 'attribute' => 'username',
                 'format' => 'text',
