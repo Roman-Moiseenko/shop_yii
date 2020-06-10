@@ -2,12 +2,14 @@
 
 namespace backend\controllers;
 
+use shop\entities\user\Rbac;
 use shop\forms\manage\user\UserCreateForm;
 use shop\forms\manage\user\UserEditForm;
 use shop\services\manage\UserManageService;
 use Yii;
 use shop\entities\user\User;
 use backend\forms\UserSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -31,6 +33,15 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::ROLE_ADMIN],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

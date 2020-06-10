@@ -55,6 +55,8 @@ class User extends ActiveRecord implements IdentityInterface
         $user->setPassword(!empty($password) ? $password : Yii::$app->security->generateRandomString());
         $user->generateAuthKey();
         //$user->generateEmailVerificationToken();
+        $user->fullname = new FullName();
+        $user->deliveryData = new DeliveryData();
         return $user;
     }
 
@@ -91,6 +93,8 @@ class User extends ActiveRecord implements IdentityInterface
         $user->setPassword($password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
+        $user->fullname = new FullName();
+        $user->deliveryData = new DeliveryData();
         return $user;
     }
 
@@ -385,6 +389,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function beforeSave($insert): bool
     {
+
         $this->setAttribute('delivery_town', $this->deliveryData->town);
         $this->setAttribute('delivery_address', $this->deliveryData->address);
 

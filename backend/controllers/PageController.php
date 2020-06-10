@@ -2,11 +2,13 @@
 
 namespace backend\controllers;
 
+use shop\entities\user\Rbac;
 use shop\forms\manage\PageForm;
 use shop\services\manage\PageManageService;
 use Yii;
 use shop\entities\Page;
 use backend\forms\PageSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -34,6 +36,15 @@ class PageController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::ROLE_MANAGER],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

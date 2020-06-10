@@ -3,10 +3,12 @@
 namespace backend\controllers\shop;
 
 use shop\entities\shop\product\Product;
+use shop\entities\user\Rbac;
 use shop\forms\manage\shop\product\ModificationForm;
 use shop\services\manage\shop\ProductManageService;
 use Yii;
 use shop\entities\shop\product\Modification;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -34,6 +36,15 @@ class ModificationController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::ROLE_ADMIN],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

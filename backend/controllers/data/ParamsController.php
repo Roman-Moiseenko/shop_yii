@@ -2,11 +2,13 @@
 
 namespace backend\controllers\data;
 
+use shop\entities\user\Rbac;
 use shop\forms\data\ParamsForm;
 use shop\services\manage\ParamsManageService;
 use Yii;
 use shop\entities\Params;
 use backend\forms\data\ParamsSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -34,6 +36,15 @@ class ParamsController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::ROLE_ADMIN],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

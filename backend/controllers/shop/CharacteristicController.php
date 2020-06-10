@@ -2,11 +2,13 @@
 
 namespace backend\controllers\shop;
 
+use shop\entities\user\Rbac;
 use shop\forms\manage\shop\CharacteristicForm;
 use shop\services\manage\shop\CharacteristicManageService;
 use Yii;
 use shop\entities\shop\Characteristic;
 use backend\forms\shop\CharacteristicSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -34,8 +36,17 @@ class CharacteristicController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::ROLE_ADMIN],
+                    ],
+                ],
+            ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],

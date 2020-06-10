@@ -40,7 +40,8 @@
         "aki/yii2-bot-telegram": "^2.0",
       "ext-curl": "*",
         "mihaildev/yii2-ckeditor": "*",
-        "mihaildev/yii2-elfinder": "*"
+        "mihaildev/yii2-elfinder": "*",
+        "fishvision/yii2-migrate": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "*",

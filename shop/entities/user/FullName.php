@@ -10,7 +10,7 @@ class FullName
     public $firstname;
     public $secondname;
 
-    public function __construct($surname, $firstname, $secondname = '')
+    public function __construct($surname = '', $firstname = '', $secondname = '')
     {
         $this->surname = $surname;
         $this->firstname = $firstname;

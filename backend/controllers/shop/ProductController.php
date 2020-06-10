@@ -3,6 +3,7 @@
 namespace backend\controllers\shop;
 
 use shop\entities\shop\product\Modification;
+use shop\entities\user\Rbac;
 use shop\forms\manage\shop\product\PhotosForm;
 use shop\forms\manage\shop\product\PriceForm;
 use shop\forms\manage\shop\product\ProductCreateForm;
@@ -13,6 +14,7 @@ use Yii;
 use shop\entities\shop\product\Product;
 use backend\forms\shop\ProductSearch;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -40,6 +42,15 @@ class ProductController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::ROLE_MANAGER],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

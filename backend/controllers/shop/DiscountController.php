@@ -2,11 +2,13 @@
 
 namespace backend\controllers\shop;
 
+use shop\entities\user\Rbac;
 use shop\forms\shop\DiscountForm;
 use shop\services\shop\DiscountService;
 use Yii;
 use shop\entities\shop\discount\Discount;
 use backend\forms\shop\DiscountSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -34,6 +36,15 @@ class DiscountController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::ROLE_ADMIN],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

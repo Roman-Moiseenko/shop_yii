@@ -2,6 +2,7 @@
 
 use shop\entities\user\User;
 use shop\helpers\UserHelper;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -40,6 +41,11 @@ $this->params['breadcrumbs'][] = $model->username;
                 'attribute' => 'email',
                 'format' => 'email',
                 'label' => 'Почта'
+            ],
+            [
+                'value' => implode(', ', UserHelper::roles($model->id)),
+                'format' => 'raw',
+                'label' => 'Уровень доступа'
             ],
             'password_reset_token',
             [

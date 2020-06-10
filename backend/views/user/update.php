@@ -1,6 +1,7 @@
 <?php
 
 use shop\forms\manage\user\UserEditForm;
+use shop\helpers\UserHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
@@ -22,6 +23,7 @@ $this->params['breadcrumbs'][] = 'Изменить';
 
                 <?= $form->field($model, 'username')->textInput()->label('Логин') ?>
                 <?= $form->field($model, 'email')->textInput()->label('Эл.почта') ?>
+                <?= $form->field($model, 'role')->dropDownList(UserHelper::rolesList())->label('Уровень доступа') ?>
 
                 <div class="form-group">
                     <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

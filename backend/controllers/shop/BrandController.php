@@ -2,11 +2,13 @@
 
 namespace backend\controllers\shop;
 
+use shop\entities\user\Rbac;
 use shop\forms\manage\shop\BrandForm;
 use shop\services\manage\shop\BrandManageService;
 use Yii;
 use shop\entities\shop\Brand;
 use backend\forms\shop\BrandSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -35,6 +37,15 @@ class BrandController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::ROLE_ADMIN],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

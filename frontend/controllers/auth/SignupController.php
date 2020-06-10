@@ -51,10 +51,11 @@ class SignupController extends Controller
         $form = new SignupForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $user = $this->signupService->signup($form);
-            if (Yii::$app->getUser()->login($user))
+            if (\Yii::$app->getUser()->login($user)) {
+                \Yii::$app->session->setFlash('success', 'Для входа на сайт Подтвердите свой email. Письмо с подтверждением было отправленно Вам на почту!');
                 return $this->goHome();
+            }
         }
-
         return $this->render('signup', [
             'model' => $form,
         ]);

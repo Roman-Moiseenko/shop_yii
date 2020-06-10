@@ -1,5 +1,6 @@
 <?php
 
+use backend\widgets\grid\RoleColumn;
 use kartik\widgets\DatePicker;
 use shop\entities\user\User;
 use yii\helpers\Html;
@@ -67,6 +68,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' =>'updated_at',
                 'format' => 'datetime',
                 'label' => 'Изменен'
+            ],
+            [
+                    'attribute' => 'role',
+                'label' => 'Роль',
+                'class' => RoleColumn::class,
+                'filter' => UserHelper::rolesList(),
             ],
             ['class' => 'yii\grid\ActionColumn'],
         ],

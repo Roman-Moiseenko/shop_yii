@@ -2,11 +2,13 @@
 
 namespace backend\controllers\shop;
 
+use shop\entities\user\Rbac;
 use shop\forms\manage\shop\DeliveryMethodForm;
 use shop\services\manage\shop\DeliveryMethodManageService;
 use Yii;
 use shop\entities\shop\DeliveryMethod;
 use backend\forms\shop\DeliveryMethodSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -34,6 +36,15 @@ class DeliveryMethodController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::ROLE_ADMIN],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

@@ -12,6 +12,8 @@ use shop\forms\manage\user\DeliveryProfileForm;
 use shop\forms\manage\user\UserCreateForm;
 use shop\forms\manage\user\UserEditForm;
 use shop\repositories\UserRepository;
+use shop\services\RoleManager;
+use shop\services\TransactionManager;
 
 class UserManageService
 {
@@ -19,10 +21,20 @@ class UserManageService
      * @var UserRepository
      */
     private $users;
+    /**
+     * @var RoleManager
+     */
+    private $roles;
+    /**
+     * @var TransactionManager
+     */
+    private $transaction;
 
-    public function __construct(UserRepository $users)
+    public function __construct(UserRepository $users, RoleManager $roles, TransactionManager $transaction)
     {
         $this->users = $users;
+        $this->roles = $roles;
+        $this->transaction = $transaction;
     }
 
     public function create(UserCreateForm $form): User
@@ -32,7 +44,11 @@ class UserManageService
             $form->email,
             $form->password
         );
-        $this->users->save($user);
+
+       $this->transaction->wrap(function () use($user, $form) {
+            $this->users->save($user);
+            $this->roles->assign($user->id, $form->role);
+        });
         return $user;
     }
 
@@ -40,7 +56,11 @@ class UserManageService
     {
         $user = $this->users->get($id);
         $user->edit($form->username, $form->email);
-        $this->users->save($user);
+        $this->transaction->wrap(function () use($user, $form) {
+            $this->users->save($user);
+            $this->roles->assign($user->id, $form->role);
+        });
+
         return $user;
     }
 

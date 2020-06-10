@@ -3,10 +3,12 @@
 namespace backend\controllers\blog;
 
 use backend\forms\blog\TagSearch;
+use shop\entities\user\Rbac;
 use shop\forms\manage\blog\TagForm;
 use shop\services\manage\blog\TagManageService;
 use Yii;
 use shop\entities\blog\Tag;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,6 +26,15 @@ class TagController extends Controller
     public function behaviors(): array
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::ROLE_MANAGER],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

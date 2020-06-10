@@ -16,6 +16,7 @@ use shop\repositories\UserRepository;
 use shop\services\ContactService;
 use shop\services\auth\PasswordResetService;
 use shop\services\auth\SignupService;
+use shop\services\RoleManager;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\di\Instance;
@@ -44,10 +45,11 @@ class SetUp implements BootstrapInterface
                 $app->mailer
             );
         });
-
+/*
         $container->setSingleton(SignupService::class, function () {
             return new SignupService();
         });
+        */
         $container->setSingleton('cache', function () use ($app) {
             return $app->cache;
         });
@@ -65,6 +67,10 @@ class SetUp implements BootstrapInterface
                // new CookieStorage('cart', 3600*24*30),
                 new DynamicCost(new SimpleCost())
             );
+        });
+
+        $container->setSingleton(RoleManager::class, function () use ($app) {
+           return new RoleManager($app->get('authManager'));
         });
     }
 }

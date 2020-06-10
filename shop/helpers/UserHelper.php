@@ -44,4 +44,13 @@ class UserHelper
         ]);
     }
 
+    public static function roles($id): array
+    {
+        return ArrayHelper::getColumn(\Yii::$app->authManager->getRolesByUser($id), 'description');
+    }
+
+    public static function rolesList(): array
+    {
+        return ArrayHelper::map(\Yii::$app->authManager->getRoles(), 'name', 'description');
+    }
 }

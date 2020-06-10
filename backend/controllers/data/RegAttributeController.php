@@ -2,11 +2,13 @@
 
 namespace backend\controllers\data;
 
+use shop\entities\user\Rbac;
 use shop\forms\data\RegAttributeForm;
 use shop\services\manage\RegAttributeManageService;
 use Yii;
 use shop\entities\shop\RegAttribute;
 use backend\forms\data\RegAttributeSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -34,6 +36,15 @@ class RegAttributeController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::ROLE_ADMIN],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

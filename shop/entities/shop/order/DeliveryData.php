@@ -10,7 +10,7 @@ class DeliveryData
     public $town;
     public $address;
 
-    public function __construct($town, $address)
+    public function __construct($town = '', $address = '')
     {
         $this->town = $town;
         $this->address = $address;

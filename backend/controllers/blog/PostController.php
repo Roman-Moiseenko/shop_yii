@@ -2,11 +2,13 @@
 
 namespace backend\controllers\blog;
 
+use shop\entities\user\Rbac;
 use shop\forms\manage\blog\post\PostForm;
 use shop\services\manage\blog\PostManageService;
 use Yii;
 use shop\entities\blog\post\Post;
 use backend\forms\blog\PostSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -33,6 +35,15 @@ class PostController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [Rbac::ROLE_MANAGER],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

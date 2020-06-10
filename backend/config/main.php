@@ -86,10 +86,11 @@ return [
         'frontendUrlManager' => require __DIR__ . '/../../frontend/config/urlManager.php',
 
     ],
-    /*'as AccessControl' => [
-        'class' => \yii\filters\AccessControl::className(),
-        'except' => ['site/login','site/error'],
+   /* 'as access' => [
+        'class' => \yii\filters\AccessControl::class,
+       // 'except' => ['auth/login','site/error'],
         'rules' => [
+            //'actions' => ['index'],
             'allow' => true,
             'roles' => ['@'],
         ],

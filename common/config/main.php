@@ -11,11 +11,17 @@ return [
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
 
-
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
             'cachePath' => '@common/runtime/cache',
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            'itemTable' => '{{%auth_items}}',
+            'itemChildTable' => '{{%auth_item_children}}',
+            'assignmentTable' => '{{%auth_assignments}}',
+            'ruleTable' => '{{%auth_rules}}',
         ],
         'telegram' => [
             'class' => 'aki\telegram\Telegram',
@@ -34,9 +40,7 @@ return [
                     'clientId' => '7422954',
                     'clientSecret' => 'ksgOuPFuiTL3Bdt96jud',
                 ],
-
             ],
         ],
-
     ],
 ];
