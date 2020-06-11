@@ -41,7 +41,8 @@
       "ext-curl": "*",
         "mihaildev/yii2-ckeditor": "*",
         "mihaildev/yii2-elfinder": "*",
-        "fishvision/yii2-migrate": "^1.0"
+        "fishvision/yii2-migrate": "^1.0",
+        "alexeevdv/yii2-sms": "~1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "*",

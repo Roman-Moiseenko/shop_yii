@@ -82,7 +82,7 @@ class Order extends ActiveRecord
     public function send(): void
     {
         if ($this->isSent()) {
-            throw new \DomainException('Заказ уже отправлен.');
+            throw new \DomainException('Заказ уже собран.');
         }
         $this->addStatus(Status::SENT);
     }

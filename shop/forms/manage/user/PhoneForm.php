@@ -13,7 +13,8 @@ class PhoneForm extends Model
     public function rules()
     {
         return [
-            [['phone'], 'string'],
+            ['phone', 'string', 'length' => 10],
+            ['phone', 'match', 'pattern' => '/^[0-9]*$/i'],
         ];
     }
 

@@ -28,7 +28,8 @@ class ContactDataForm extends Model
     public function rules()
     {
         return [
-            [['phone'], 'string', 'max' => 15],
+            ['phone', 'string', 'length' => 10],
+            ['phone', 'match', 'pattern' => '/^[0-9]*$/i'],
             [['surname', 'firstname', 'secondname'], 'string', 'max' => 33],
             [['surname', 'firstname', 'phone'], 'required'],
         ];

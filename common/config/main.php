@@ -12,6 +12,13 @@ return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
 
     'components' => [
+        'sms' => [
+            'class' => 'alexeevdv\sms\Sms',
+            'provider' => [
+                'class' => 'alexeevdv\sms\provider\SmsRuProvider',
+                'api_id' => '1ECCA5B2-DAF8-E0EA-88AA-9E47CD456813',
+            ],
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
             'cachePath' => '@common/runtime/cache',

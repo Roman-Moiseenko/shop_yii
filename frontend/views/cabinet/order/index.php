@@ -1,6 +1,7 @@
 <?php
 
 use shop\entities\Shop\Order\Order;
+use shop\entities\shop\order\Status;
 use shop\helpers\OrderHelper;
 use shop\helpers\ParamsHelper;
 use shop\helpers\PriceHelper;
@@ -52,7 +53,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'raw',
                         'label' => 'Текущий статус',
                     ],
-                    ['class' => ActionColumn::class],
+                    ['class' => ActionColumn::class,
+                        'template' =>  '{view} {delete}',
+                            ],
                 ],
             ]); ?>
         </div>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f611c31a93068d90e28d4b7a0019c17c",
+    "content-hash": "f61f1f54a7cbe0ceec17ef648de12ad8",
     "packages": [
         {
             "name": "aki/yii2-bot-telegram",
@@ -45,6 +45,47 @@
                 "yii2"
             ],
             "time": "2020-04-06T20:27:48+00:00"
+        },
+        {
+            "name": "alexeevdv/yii2-sms",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alexeevdv/yii2-sms.git",
+                "reference": "7b348dfecbabfbb7f6f8aa7a04180e30dea59d16"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alexeevdv/yii2-sms/zipball/7b348dfecbabfbb7f6f8aa7a04180e30dea59d16",
+                "reference": "7b348dfecbabfbb7f6f8aa7a04180e30dea59d16",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "^2.0",
+                "yiisoft/yii2-httpclient": "^2.0"
+            },
+            "require-dev": {
+                "codeception/codeception": "^2.3",
+                "yiisoft/yii2-coding-standards": "^2.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "alexeevdv\\sms\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Alekseev",
+                    "email": "mail@alexeevdv.ru"
+                }
+            ],
+            "description": "This extension allows SMS sending via different SMS providers",
+            "time": "2020-06-01T05:46:34+00:00"
         },
         {
             "name": "almasaeed2010/adminlte",

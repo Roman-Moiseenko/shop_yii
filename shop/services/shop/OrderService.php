@@ -128,6 +128,8 @@ class OrderService
     public function remove($id)
     {
         $order = $this->orders->get($id);
+        if ($order->current_status == Status::PAID)
+            throw new \DomainException('Нельзя удалить незавершенный заказ!');
         $this->transaction->wrap(function () use ($order) {
             foreach ($order->items as $orderItem) {
                 $product = $orderItem->getProduct();
@@ -162,6 +164,7 @@ class OrderService
     {
         $order = $this->orders->get($id);
         $order->cancel($reason);
+        //TODO возврат товара на склад?
         $this->orders->save($order);
         $this->contacts->sendNoticeOrder($order);
         UnloaderManageService::unloadStatus($order->id, Status::CANCELLED);

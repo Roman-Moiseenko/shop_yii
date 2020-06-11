@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($model, 'surname')->textInput(['autofocus' => true])->label('Фамилия') ?>
         <?= $form->field($model, 'firstname')->textInput()->label('Имя') ?>
         <?= $form->field($model, 'secondname')->textInput()->label('Отчество') ?>
-        <?= $form->field($model, 'phone')->textInput()->label('Телефон') ?>
+        <?= $form->field($model, 'phone')->textInput()->label('Телефон')->hint('10-значный номер, без кода страны и разделяющих символов, например 9990002030') ?>
         <div class="form-group">
             <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
         </div>

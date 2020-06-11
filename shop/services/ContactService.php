@@ -1,16 +1,12 @@
 <?php
 
-
 namespace shop\services;
-
 
 use shop\entities\shop\order\Order;
 use shop\entities\shop\order\Status;
-use shop\entities\user\User;
 use shop\forms\ContactForm;
 use shop\helpers\OrderHelper;
 use shop\helpers\ParamsHelper;
-use Yii;
 use yii\mail\MailerInterface;
 
 class ContactService
@@ -56,7 +52,7 @@ class ContactService
         $message = [
             'subject' => 'Заказ ' . OrderHelper::statusName($order->current_status), 'body' => $body];
         if (ParamsHelper::get('sendEmail') == 1) $this->sendEMAILNoticeOrder($order);
-        if (ParamsHelper::get('sendPhone') == 1) $this->sendSMSNoticeOrder($message);
+        if (ParamsHelper::get('sendPhone') == 1) $this->sendSMSNoticeOrder($order);
         if (ParamsHelper::get('sendTelegram') == 1) $this->sendTELEGRAMNoticeOrder($message);
 
         $this->sendNoticeUser($order);
@@ -78,10 +74,14 @@ class ContactService
         }
     }
 
-    private function sendSMSNoticeOrder(array $message)
+    private function sendSMSNoticeOrder(Order $order)
     {
-        $phone = ParamsHelper::get('phoneOrder');
-//TODO Сделать отправку СМС через sms.ru
+        if ($order->current_status == Status::PAID) {
+            $result = Yii::$app->sms->send('7' . ParamsHelper::get('phoneOrder'), 'Заказ №' .
+                $order->id . ' ' . OrderHelper::statusName($order->current_status));
+            if (!$result)
+                throw new \DomainException('Ошибка отправки СМС-сообщения');
+        }
     }
 
     private function sendTELEGRAMNoticeOrder(array $message)
@@ -110,16 +110,27 @@ class ContactService
 
     private function sendNoticeUser(Order $order)
     {
-        $send = $this->mailer->compose('noticeClient', ['order' => $order])
-            ->setTo($order->user->email)
-            ->setFrom([\Yii::$app->params['supportEmail'] => 'kupi41.ru'])
-            ->setSubject('Информация по Вашему заказу')
-            ->send();
-        if (!$send) {
-            throw new \RuntimeException('Ошибка отправки');
+        if (!empty($order->user->email)) {
+            $send = $this->mailer->compose('noticeClient', ['order' => $order])
+                ->setTo($order->user->email)
+                ->setFrom([\Yii::$app->params['supportEmail'] => 'kupi41.ru'])
+                ->setSubject('Информация по Вашему заказу')
+                ->send();
+            if (!$send) {
+                throw new \RuntimeException('Ошибка отправки');
+            }
         }
-        //TODO  СМС после переноса сайта на купи41
+
+        if (!empty($phone = $order->user->phone)) {
+            if ($order->current_status == Status::SENT ||
+                $order->current_status == Status::CANCELLED ||
+                $order->current_status == Status::COMPLETED
+            ) {
+                $result = Yii::$app->sms->send('7' . $phone, 'Ваш заказ №' .
+                    $order->id . ' ' . OrderHelper::statusName($order->current_status));
+                if (!$result)
+                    throw new \DomainException('Ошибка отправки СМС-сообщения');
+            }
+        }
     }
-
-
 }
