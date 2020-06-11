@@ -56,17 +56,9 @@ class UserRepository
     public function findByNetworkIdentity($network, $identity)
     {
         return User::find()
-            ->joinWith(Network::tableName() . ' n')
-            ->andWhere(['n.identity' => $identity, 'n.network' => $network])
+            ->joinWith('networks n')
+            ->andWhere(['n.network' => $network, 'n.identity' => $identity])
             ->one();
-
-        /*if (!$network = Network::findOne(['identity' => $identity, 'network' => $network])) {
-            return false;
-        }
-        if (!$user = User::findOne(['id' => $network->user_id])) {
-            return false;
-        }
-        return $user;*/
     }
 
     private function getBy(array $condition): User

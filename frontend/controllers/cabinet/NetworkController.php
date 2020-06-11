@@ -38,10 +38,9 @@ class NetworkController extends Controller
         $network = $client->getId();
         $attributes = $client->getUserAttributes();
         $identity = ArrayHelper::getValue($attributes, 'id');
-
         try {
             $this->networkService->attach(Yii::$app->user->id, $network, $identity);
-            Yii::$app->session->setFlash('success', 'Соцсеть присоединена');
+            Yii::$app->session->setFlash('success', 'Соцсеть уже привязана к текущему профилю.');
         } catch (\DomainException $e) {
             Yii::$app->errorHandler->logException($e);
             Yii::$app->session->setFlash('error', $e->getMessage());

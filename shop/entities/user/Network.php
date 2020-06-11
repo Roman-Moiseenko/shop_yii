@@ -21,7 +21,7 @@ class Network extends ActiveRecord
         Assert::notEmpty($identity);
         $item = new static();
         $item->network = $network;
-        $item->identity = $network;
+        $item->identity = $identity;
         return $item;
     }
 

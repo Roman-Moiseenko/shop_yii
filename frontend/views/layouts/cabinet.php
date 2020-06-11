@@ -17,7 +17,7 @@ use yii\helpers\Url; ?>
             <div class="list-group">
                 <?php if (\Yii::$app->user->isGuest): ?>
                     <a href="<?= Html::encode(Url::to(['/auth/auth/login'])) ?>" class="list-group-item">Вход</a>
-                    <a href="<?= Html::encode(Url::to(['/auth/signup/request'])) ?>"
+                    <a href="<?= Html::encode(Url::to(['/auth/signup'])) ?>"
                        class="list-group-item">Регистрация</a>
                 <?php else: ?>
                     <a href="<?= Html::encode(Url::to(['/auth/reset/request'])) ?>" class="list-group-item">Восстановить

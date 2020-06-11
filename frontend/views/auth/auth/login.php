@@ -23,30 +23,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 <p>Создав учетную запись, вы сможете совершать покупки быстрее, быть в курсе состояния заказа и отслеживать ранее сделанные заказы.</p>
                 <a href="/signup" class="btn btn-primary">Продолжить</a>
             </div>
-            <div class="well"><?= yii\authclient\widgets\AuthChoice::widget(['baseAuthUrl' => ['auth/network/auth']]); ?></div>
+            <div class="well">
+                <p><strong>Войти через социальные сети</strong></p>
+                <p>Зарегистрировавшись через социальные сети, не забудьте добавить email и телефон для оповещения о статусе Ваших заказов.</p>
+                <?= yii\authclient\widgets\AuthChoice::widget(['baseAuthUrl' => ['auth/network/auth']]); ?></div>
         </div>
         <div class="col-sm-6">
             <div class="well">
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true])->label('Логин') ?>
-
                 <?= $form->field($model, 'password')->passwordInput()->label('Пароль') ?>
-
                 <?= $form->field($model, 'rememberMe')->checkbox()->label('Запомнить меня') ?>
-
                 <div style="color:#999;margin:1em 0">
-                    Если Вы забыли пароль, о вы можете <?= Html::a('сбросить его', ['auth/reset/request']) ?>.
+                    Если Вы забыли пароль, то вы можете <?= Html::a('сбросить его', ['auth/reset/request']) ?>.
                     <br>
                     Необходимо подтверждение почты? <?= Html::a('Отправить', ['auth/reset/resend']) ?>
                 </div>
-
                 <div class="form-group">
                     <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 </div>
-
             <?php ActiveForm::end(); ?>
-
             </div>
         </div>
     </div>

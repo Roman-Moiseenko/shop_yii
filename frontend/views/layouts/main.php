@@ -109,11 +109,11 @@ AppAsset::register($this);
         <div class="container">
             <div class="row">
                 <div class="col-sm-3">
-                    <h5>Information</h5>
+                    <h5>Информация</h5>
                     <ul class="list-unstyled">
-                        <li><a href="">About Us</a></li>
-                        <li><a href="">Delivery Information</a></li>
-                        <li><a href="">Privacy Policy</a></li>
+                        <li><a href="<?=Html::encode(Url::to(['/about']))?>">О Магазине</a></li>
+                        <li><a href="<?=Html::encode(Url::to(['/delivery']))?>">Доставка</a></li>
+                        <li><a href="<?=Html::encode(Url::to(['/policy']))?>">Политика конфиденциальности</a></li>
                         <li><a href="">Terms &amp; Conditions</a></li>
                     </ul>
                 </div>
