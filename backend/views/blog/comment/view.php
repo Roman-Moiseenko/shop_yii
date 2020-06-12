@@ -1,6 +1,8 @@
 <?php
 
+use shop\entities\blog\post\Comment;
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -40,13 +42,35 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $comment,
                 'attributes' => [
                     'id',
-                    'created_at:boolean',
-                    'active:boolean',
-                    'user_id',
-                    'parent_id',
+                    [
+                        'attribute' => 'created_at',
+                        'label' => 'Дата',
+                        'format' => 'datetime',
+                    ],
+                    [
+                        'attribute' => 'active',
+                        'format' => 'boolean',
+                        'label' => 'Статус'
+                    ],
+                    [
+                            'attribute' => 'user_id',
+                        'label' => 'Пользователь',
+                        'value' => function (Comment $model) {
+                            return $model->user->username;
+                        }
+                        ],
+                    [
+                        'attribute' => 'parent_id',
+                        'label' => 'Родительский Комментарий',
+                        'value' => function (Comment $model) {
+                            if (empty($model->parent_id)) return '';
+                            return StringHelper::truncate(strip_tags((Comment::findOne($model->parent_id))->text), 40);
+                        },
+                        ],
                     [
                         'attribute' => 'post_id',
                         'value' => $post->title,
+                        'label' => 'Статья',
                     ],
                 ],
             ]) ?>

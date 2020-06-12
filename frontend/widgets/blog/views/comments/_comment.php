@@ -5,6 +5,14 @@
 
 <div class="comment-item" data-id="<?= $item->comment->id ?>">
     <div class="panel panel-default">
+        <div class="panel-heading" style="height: 36px">
+                <div class="pull-left">
+                    <?= $item->comment->user->username; ?>
+                </div>
+                <div class="pull-right">
+                    <?= Yii::$app->formatter->asDatetime($item->comment->created_at) ?>
+                </div>
+        </div>
         <div class="panel-body">
             <p class="comment-content">
                 <?php if ($item->comment->isActive()): ?>
@@ -15,7 +23,7 @@
             </p>
             <div>
                 <div class="pull-left">
-                    <?= Yii::$app->formatter->asDatetime($item->comment->created_at) ?>
+                    <?= '';//Yii::$app->formatter->asDatetime($item->comment->created_at) ?>
                 </div>
                 <div class="pull-right">
                     <span class="comment-reply">Ответить</span>

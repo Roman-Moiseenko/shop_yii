@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $post shop\entities\blog\post\Post */
 /* @var $model shop\forms\manage\blog\post\CommentEditForm */
 
-$this->title = 'Редактирование Комментария: ' . $post->title;
+$this->title = 'Изменить: ' . $post->title;
 $this->params['breadcrumbs'][] = ['label' => 'Статьи', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $post->title, 'url' => ['view', 'id' => $post->id]];
 $this->params['breadcrumbs'][] = 'Изменить';

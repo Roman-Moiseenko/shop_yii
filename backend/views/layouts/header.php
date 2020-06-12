@@ -1,6 +1,7 @@
 <?php
 
 use backend\widgets\OrderHeaderWidget;
+use backend\widgets\ReviewHeaderWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -16,6 +17,7 @@ use yii\helpers\Url;
         </a>
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
+                <?= ReviewHeaderWidget::widget() ?>
                 <?= OrderHeaderWidget::widget() ?>
                 <li class="user user-menu">
                     <a href="<?= Html::encode(Url::to(['auth/logout'])) ?>" data-method="post">Выйти</a>

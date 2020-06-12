@@ -20,18 +20,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'id',
-            'created_at:datetime',
+            [
+                    'attribute' => 'id',
+                'options' => ['width' => '20px'],
+                ],
+            [
+                    'attribute' => 'created_at',
+                'label' => 'Дата',
+                'format' => 'datetime',
+                ],
             [
                 'attribute' => 'text',
                 'value' => function (Comment $model) {
                     return StringHelper::truncate(strip_tags($model->text), 100);
                 },
+                'label' => 'Текст',
             ],
             [
                 'attribute' => 'active',
                 'filter' => $searchModel->activeList(),
                 'format' => 'boolean',
+                'label' => 'Статус'
             ],
             ['class' => ActionColumn::class],
         ],
