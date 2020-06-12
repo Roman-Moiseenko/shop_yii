@@ -100,7 +100,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php if ($order->canBePaid()): ?>
         <p>
-        <H1>ВНИМАНИЕ! ТЕСТОВЫЙ РЕЖИМ!</H1>
             <?= Html::a('Оплатить', ['/yandexkassa/payorder', 'id' => $order->id], ['class' => 'btn btn-success']) ?>
         </p>
     <?php endif; ?>

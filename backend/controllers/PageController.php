@@ -87,11 +87,13 @@ class PageController extends Controller
         $this->service->moveDown($id);
         return $this->redirect(['index']);
     }
+
     public function actionMoveUp($id)
     {
         $this->service->moveUp($id);
         return $this->redirect(['index']);
     }
+
     /**
      * Creates a new Page model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -153,8 +155,12 @@ class PageController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        try {
+            $this->service->remove($id);
+        } catch (\DomainException $e) {
+            Yii::$app->errorHandler->logException($e);
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
         return $this->redirect(['index']);
     }
 

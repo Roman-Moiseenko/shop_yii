@@ -30,11 +30,21 @@ class OrderHelper
     public static function statusLabel($status): string
     {
         switch ($status) {
-            case Product::STATUS_DRAFT:
-                $class = 'label label-default';
+            case Status::NEW:
+                $class = 'label label-primary';
                 break;
-            case Product::STATUS_ACTIVE:
+            case Status::PAID:
+                $class = 'label label-danger';
+                break;
+            case Status::SENT:
+                $class = 'label label-warning';
+                break;
+            case Status::COMPLETED:
                 $class = 'label label-success';
+                break;
+            case Status::CANCELLED_BY_CUSTOMER:
+            case Status::CANCELLED:
+                $class = 'label label-default';
                 break;
             default:
                 $class = 'label label-default';

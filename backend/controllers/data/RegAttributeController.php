@@ -107,6 +107,7 @@ class RegAttributeController extends Controller
             'model' => $form,
         ]);
     }
+
     public function actionCopy($id)
     {
         $reg = $this->findModel($id);
@@ -123,9 +124,10 @@ class RegAttributeController extends Controller
 
         return $this->render('create', [
             'model' => $form,
-          //  'reg' => $reg,
+            //  'reg' => $reg,
         ]);
     }
+
     /**
      * Updates an existing RegAttribute model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -162,7 +164,12 @@ class RegAttributeController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->service->remove($id);
+        try {
+            $this->service->remove($id);
+        } catch (\DomainException $e) {
+            Yii::$app->errorHandler->logException($e);
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
         return $this->redirect(['index']);
     }
 

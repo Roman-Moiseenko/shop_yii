@@ -133,19 +133,6 @@ class ParamsController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Params model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        //$params = $this->findModel($id);
-        $this->service->remove($id);
-        return $this->redirect(['index']);
-    }
 
     /**
      * Finds the Params model based on its primary key value.

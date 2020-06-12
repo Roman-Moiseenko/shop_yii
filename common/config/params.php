@@ -3,7 +3,7 @@ return [
    // 'adminEmail' => 'admin@kupi41.ru',
     'user.passwordResetTokenExpire' => 3600,
     'user.rememberMeDuration' => 3600 * 24 * 30,
-    'cookieDomain' => '.example.com',
+    'cookieDomain' => '.example.com.my',
     'frontendHostInfo' => 'http://shop.loc',
     'backendHostInfo' => 'http://dev.shop.loc',
     'staticHostInfo' => 'http://static.shop.loc',

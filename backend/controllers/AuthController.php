@@ -84,7 +84,7 @@ class AuthController extends Controller
      */
     public function actionLogout()
     {
-        Yii::$app->user->logout();
+        Yii::$app->user->logout(true);
 
         return $this->goHome();
     }

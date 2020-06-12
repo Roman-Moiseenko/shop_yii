@@ -25,7 +25,10 @@ class CustomerForm extends Model
     {
         return [
             [['phone', 'name'], 'required'],
-            [['phone', 'name'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 255],
+            ['phone', 'string', 'length' => 10],
+            ['phone', 'match', 'pattern' => '/^[0-9]*$/i'],
+
         ];
     }
 }

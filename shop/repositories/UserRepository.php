@@ -69,4 +69,11 @@ class UserRepository
         return $user;
     }
 
+    public function remove(User $user)
+    {
+        if (!$user->delete()) {
+            throw new \RuntimeException('Ошибка сохранения.');
+        }
+    }
+
 }

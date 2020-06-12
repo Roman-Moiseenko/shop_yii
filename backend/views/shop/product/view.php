@@ -26,13 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Изменить', ['update', 'id' => $product->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Удалить', ['delete', 'id' => $product->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Удалить данный Товар?',
-                'method' => 'post',
-            ],
-        ]) ?>
+
     </p>
 
     <div class="row">

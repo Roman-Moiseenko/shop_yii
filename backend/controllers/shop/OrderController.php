@@ -38,11 +38,28 @@ class OrderController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['index', 'view', 'update', 'delete'],
                 'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => [Rbac::ROLE_TRADER],
-                    ],
+                    'delete' =>
+                        [
+                            'allow' => true,
+                            'roles' => [Rbac::ROLE_ADMIN],
+                        ],
+                    'index' =>
+                        [
+                            'allow' => true,
+                            'roles' => [Rbac::ROLE_TRADER],
+                        ],
+                    'view' =>
+                        [
+                            'allow' => true,
+                            'roles' => [Rbac::ROLE_TRADER],
+                        ],
+                    'update' =>
+                        [
+                            'allow' => true,
+                            'roles' => [Rbac::ROLE_TRADER],
+                        ],
                 ],
             ],
             'verbs' => [
@@ -119,8 +136,12 @@ class OrderController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        try {
+            $this->service->remove($id);
+        } catch (\DomainException $e) {
+            Yii::$app->errorHandler->logException($e);
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
         return $this->redirect(['index']);
     }
 

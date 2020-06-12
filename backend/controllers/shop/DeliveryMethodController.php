@@ -94,8 +94,7 @@ class DeliveryMethodController extends Controller
             try {
                 $delivery = $this->service->create($form);
                 return $this->redirect(['view', 'id' => $delivery->id]);
-            } catch (\DomainException $e)
-            {
+            } catch (\DomainException $e) {
                 \Yii::$app->errorHandler->logException($e);
                 \Yii::$app->session->setFlash('error', $e);
             }
@@ -124,8 +123,7 @@ class DeliveryMethodController extends Controller
             try {
                 $this->service->edit($id, $form);
                 return $this->redirect(['view', 'id' => $delivery->id]);
-            } catch (\DomainException $e)
-            {
+            } catch (\DomainException $e) {
                 \Yii::$app->errorHandler->logException($e);
                 \Yii::$app->session->setFlash('error', $e);
             }
@@ -146,9 +144,13 @@ class DeliveryMethodController extends Controller
      */
     public function actionDelete($id)
     {
-        /* @var DeliveryMethod $delivery*/
-        $delivery = $this->findModel($id);
-        $this->service->remove($delivery->id);
+        /* @var DeliveryMethod $delivery */
+        try {
+            $this->service->remove($id);
+        } catch (\DomainException $e) {
+            Yii::$app->errorHandler->logException($e);
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
         return $this->redirect(['index']);
     }
 

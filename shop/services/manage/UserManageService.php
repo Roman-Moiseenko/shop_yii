@@ -96,4 +96,10 @@ class UserManageService
         return mb_strtoupper(mb_substr($name, 0, 1)) . mb_substr($name, 1, mb_strlen($name) - 1);
     }
 
+    public function remove(int $id)
+    {
+        $user = $this->users->get($id);
+        $this->users->remove($user);
+    }
+
 }

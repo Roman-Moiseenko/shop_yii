@@ -71,7 +71,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="panel panel-default">
                 <div class="panel-heading">Данные клиента</div>
                 <div class="panel-body">
-                    <?= $form->field($model->customer, 'phone')->textInput()->label('Телефон') ?>
+                    <?= $form->field($model->customer, 'phone')
+                        ->textInput()->label('Телефон')
+                        ->hint('10-значный номер, без кода страны и разделяющих символов, например 9990002030') ?>
                     <?= $form->field($model->customer, 'name')->textInput()->label('Ф.И.О.') ?>
                 </div>
             </div>

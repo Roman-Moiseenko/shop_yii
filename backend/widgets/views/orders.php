@@ -22,7 +22,7 @@ use yii\helpers\Url;
                     <li>
                         <a href="<?= Html::encode(Url::to(['shop/order/view', 'id' => $order->id])) ?>">
                             <?php if ($order->current_status == Status::NEW): ?>
-                                <i class="fa fa-cart-plus text-green"></i><?= $text ?>
+                                <i class="fa fa-cart-plus text-blue"></i><?= $text ?>
                             <?php endif; ?>
                             <?php if ($order->current_status == Status::PAID): ?>
                                 <i class="fa fa-shopping-cart text-red"></i><?= $text ?>

@@ -14,13 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="params-view">
     <p>
         <?= Html::a('Изменить', ['update', 'id' => $params->key], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Удалить', ['delete', 'id' => $params->key], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
     </p>
 
     <?= DetailView::widget([

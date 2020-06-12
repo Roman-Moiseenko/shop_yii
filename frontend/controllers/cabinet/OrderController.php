@@ -73,7 +73,6 @@ class OrderController extends Controller
         if (!$order = $this->orders->findOwn(\Yii::$app->user->id, $id)) {
             throw new NotFoundHttpException('Заказ не найден!');
         }
-
         try {
             $this->service->remove($order->id);
 

@@ -19,8 +19,9 @@ use yii\filters\VerbFilter;
  */
 class UserController extends Controller
 {
-    public  $layout = 'main';
+    public $layout = 'main';
     private $service;
+
     /**
      * {@inheritdoc}
      */
@@ -93,8 +94,7 @@ class UserController extends Controller
             try {
                 $user = $this->service->create($form);
                 return $this->redirect(['view', 'id' => $user->id]);
-            } catch (\DomainException $e)
-            {
+            } catch (\DomainException $e) {
                 Yii::$app->errorHandler->logException($e);
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
@@ -113,8 +113,6 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-
-        //$model = $this->findModel($id);
         $user = $this->findModel($id);
         $form = new UserEditForm($user);
 
@@ -122,14 +120,11 @@ class UserController extends Controller
             try {
                 $this->service->update($id, $form);
                 return $this->redirect(['view', 'id' => $user->id]);
-            } catch (\DomainException $e)
-            {
+            } catch (\DomainException $e) {
                 Yii::$app->errorHandler->logException($e);
                 Yii::$app->session->setFlash('error', $e->getMessage());
             }
-
         }
-
         return $this->render('update', [
             'model' => $form,
             'user' => $user,
@@ -145,7 +140,13 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->service->remove($id);
+
+        } catch (\DomainException $e) {
+            Yii::$app->errorHandler->logException($e);
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
 
         return $this->redirect(['index']);
     }
