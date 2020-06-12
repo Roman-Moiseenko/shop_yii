@@ -4,6 +4,7 @@
 namespace frontend\controllers;
 
 
+use shop\entities\shop\order\Order;
 use shop\entities\user\User;
 use shop\readModels\shop\OrderReadRepository;
 use shop\services\shop\OrderService;
@@ -16,6 +17,9 @@ use YandexCheckout\Common\Exceptions\NotFoundException;
 use YandexCheckout\Common\Exceptions\ResponseProcessingException;
 use YandexCheckout\Common\Exceptions\TooManyRequestsException;
 use YandexCheckout\Common\Exceptions\UnauthorizedException;
+use YandexCheckout\Model\Notification\NotificationSucceeded;
+use YandexCheckout\Model\Notification\NotificationWaitingForCapture;
+use YandexCheckout\Model\NotificationEventType;
 use YandexCheckout\Model\PaymentInterface;
 use yii\web\Controller;
 
@@ -61,29 +65,32 @@ class YandexkassaController extends Controller
         $items = [];
         foreach ($order->items as $orderItem) {
             $product = $orderItem->getProduct();
-            $items[] = array('description' => addslashes($product->name),
+            $items[] = [
+                'description' => addslashes($product->name),
                 'quantity' => $orderItem->quantity,
-                'amount' => array('value' => $orderItem->price, 'currency' => 'RUB'),
-                'vat_code' => 1);
+                'amount' => ['value' => 1/*$orderItem->price*/, 'currency' => 'RUB'],
+                'vat_code' => 1
+            ];
         }
-        $this->yandexkassa['confirmation']['return_url'] .= $order->id;
-        /** -> */
-        // TODO Заглушка для dev-режима
-        if (YII_DEBUG) return $this->redirect(['/yandexkassa/responce', 'id' => $order->id]);
-        /** <- */
+       // $this->yandexkassa['confirmation']['return_url'] .= $order->id;
         try {
             $payment = $this->client->createPayment(
                 [
                     'amount' => [
-                        'value' => $order->cost,
+                        'value' => 1,//$order->cost,
                         'currency' => 'RUB',
                     ],
                     'payment_method_data' => $this->yandexkassa['payment_method_data'],
-                    'receipt' => array(
+                    'receipt' => [
                         'email' => $user->email,
+                       // 'phone' => '7' . $user->phone,
                         'items' => $items,
-                    ),
-                    'confirmation' => $this->yandexkassa['confirmation'],
+                    ],
+                    'confirmation' => [
+                        'type' => 'redirect',
+                        'return_url' => 'https://kupi41.ru/yandexkassa/responce?id=' . $order->id,
+                    ],
+                    //$this->yandexkassa['confirmation'],
                     'capture' => true,
                     'description' => 'Заказ № ' . $order->id,
                 ],
@@ -101,17 +108,34 @@ class YandexkassaController extends Controller
             \Yii::$app->session->setFlash('error', $e->getMessage());
             return $this->redirect(['/cabinet/order/view', 'id' => $id]);
         }
+        //echo '<pre>';
+        $order->payment_id = $payment->id;
+        $order->save();
+        $redirect = $payment->getConfirmation()->getConfirmationUrl();
+        //print_r($payment); //exit();
         $_SESSION['paymentid'] = $payment->id;
+        return $this->redirect($redirect);
+    }
+
+    public function actionAutonotice()
+    {
+        $source = file_get_contents('php://input');
+        $requestBody = json_decode($source, true);
+        try {
+            $notification = ($requestBody['event'] === NotificationEventType::PAYMENT_SUCCEEDED)
+                ? new NotificationSucceeded($requestBody)
+                : new NotificationWaitingForCapture($requestBody);
+            $payment = $notification->getObject();
+            $order = Order::find()->andWhere(['payment_id' => $payment->id]);
+            $payment_method = $payment->payment_method->getType();
+            $this->service->pay($order->id, $payment_method);
+        } catch (\Exception $e) {
+            // Обработка ошибок при неверных данных
+        }
     }
 
     public function actionResponce($id)
     {
-        /** -> */
-        if (YII_DEBUG) {  // TODO Заглушка для dev-режима
-            $this->succeeded($id, null);
-            return;
-        };
-        /** <-  */
         try {
             $payment = $this->client->getPaymentInfo($_SESSION['paymentid']);
             unset($_SESSION['paymentid']);
@@ -129,10 +153,9 @@ class YandexkassaController extends Controller
         \Yii::$app->session->setFlash(
             'error',
             'Платеж не прошел! Попробуйте позже. ' .
-                   'Отмена ' .  $payment->getCancellationDetails()->getParty() . '. ' .
-                   'По причине ' .  $payment->getCancellationDetails()->getReason() . '.'
+            'Отмена ' . $payment->getCancellationDetails()->getParty() . '. ' .
+            'По причине ' . $payment->getCancellationDetails()->getReason() . '.'
         );
-        if (YII_DEBUG) return $this->redirect(['/cabinet/order/view', 'id' => $id]);
     }
 
     private function waiting_for_capture($id, PaymentInterface $payment = null)
@@ -142,35 +165,18 @@ class YandexkassaController extends Controller
             'Платеж ждет подтверждения!' .
             'Как только магазин подтвердит наличие товара, платеж будет списан.' .
             'Дождись завершения операции, не оплачивайте повторно!');
-        if (YII_DEBUG) return $this->redirect(['/cabinet/order/view', 'id' => $id]);
     }
 
     private function pending($id, PaymentInterface $payment = null)
     {
-        /*
-        \Yii::$app->session->setFlash('error',
-            'Платеж не прошел! Какая-то хрень. Попробуйте стандартный способ оплаты по карте.');
-        if (!YII_ENV_TEST) return $this->redirect(['/cabinet/order/view', 'id' => $id]); */
         return $this->redirect([$payment->getConfirmation()->getConfirmationUrl()]);
     }
 
     private function succeeded($id, PaymentInterface $payment = null)
     {
-        $user = User::findOne(\Yii::$app->user->id);
-        //$order = $this->orders->findOwn($user->id, $id);
-
-        if (!YII_DEBUG) { /** <-- */
-            $payment_method = $payment->payment_method->getType();
-            $payment_amount = $payment->amount->getValue();
-            /**   -> */
-        } else {
-            $payment_method = 'bank-card';          // TODO Заглушка для dev-режима
-            $payment_amount = '000-000' . ' руб.';
-        }
-        /** <- */
-
+        $payment_method = $payment->payment_method->getType();
+        $payment_amount = $payment->amount->getValue();
         try {
-
             $this->service->pay($id, $payment_method);
             \Yii::$app->session->setFlash('success',
                 'Платеж успешно оплачен. Сумма платежа составила ' . $payment_amount);
@@ -178,6 +184,5 @@ class YandexkassaController extends Controller
             \Yii::$app->errorHandler->logException($e);
             \Yii::$app->session->setFlash('error', $e->getMessage());
         }
-        if (YII_DEBUG) return $this->redirect(['/cabinet/order/view', 'id' => $id]);
     }
 }

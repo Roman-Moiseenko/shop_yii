@@ -3,9 +3,6 @@
 
 namespace console\controllers;
 
-
-
-
 use shop\entities\shop\product\Product;
 use yii\console\Controller;
 

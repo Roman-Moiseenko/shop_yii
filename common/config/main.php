@@ -13,9 +13,9 @@ return [
 
     'components' => [
         'sms' => [
-            'class' => 'alexeevdv\sms\Sms',
+            'class' => alexeevdv\sms\Sms::class,
             'provider' => [
-                'class' => 'alexeevdv\sms\provider\SmsRuProvider',
+                'class' => alexeevdv\sms\provider\SmsRuProvider::class,
                 'api_id' => '1ECCA5B2-DAF8-E0EA-88AA-9E47CD456813',
             ],
         ],

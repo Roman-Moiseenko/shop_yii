@@ -1,5 +1,6 @@
 <?php
 
+use shop\entities\shop\DeliveryMethod;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -24,7 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'id',
             ['attribute' => 'name',
-                'label' => 'Название'],
+                'label' => 'Название',
+                'value' => function (DeliveryMethod $model) {
+                    return Html::a(Html::encode($model->name), ['view', 'id' => $model->id]);
+                },
+                'format' => 'raw',
+                ],
             ['attribute' => 'cost',
                 'label' => 'Стоимость'],
             ['attribute' => 'amount_cart_min',

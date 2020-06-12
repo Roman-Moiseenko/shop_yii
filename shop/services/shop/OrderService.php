@@ -177,4 +177,12 @@ class OrderService
         $this->orders->save($order);
         $this->contacts->sendNoticeOrder($order);
     }
+
+    public function send($id)
+    {
+        $order = $this->orders->get($id);
+        $order->send();
+        $this->orders->save($order);
+        $this->contacts->sendNoticeOrder($order);
+    }
 }

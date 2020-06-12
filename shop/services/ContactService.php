@@ -16,14 +16,10 @@ class ContactService
      * @var MailerInterface
      */
     private $mailer;
-  //  private $supportEmail;
- //   private $adminEmail;
 
-    public function __construct(/*$supportEmail, $adminEmail, */MailerInterface $mailer)
+    public function __construct(MailerInterface $mailer)
     {
         $this->mailer = $mailer;
-       // $this->supportEmail = $supportEmail;
-       // $this->adminEmail = $adminEmail;
     }
 
     public function contact(ContactForm $form): void
@@ -45,16 +41,11 @@ class ContactService
 
     public function sendNoticeOrder(Order $order)
     {
-        $body = 'Заказ № ' . $order->id . '.  На сумму ' . $order->cost . "\n" .
-            'Текущий статус ' . OrderHelper::statusName($order->current_status) . "\n"  .
-            ' Покупатель ' . ($order->user)->fullname->getFullname() . "\n"  .
-            ' Телефон ' . ($order->user)->phone;
-        $message = [
-            'subject' => 'Заказ ' . OrderHelper::statusName($order->current_status), 'body' => $body];
+        //Уведомления в магазин
         if (ParamsHelper::get('sendEmail') == 1) $this->sendEMAILNoticeOrder($order);
         if (ParamsHelper::get('sendPhone') == 1) $this->sendSMSNoticeOrder($order);
-        if (ParamsHelper::get('sendTelegram') == 1) $this->sendTELEGRAMNoticeOrder($message);
-
+        if (ParamsHelper::get('sendTelegram') == 1) $this->sendTELEGRAMNoticeOrder($order);
+        //Отправка клиенту
         $this->sendNoticeUser($order);
     }
 
@@ -76,20 +67,21 @@ class ContactService
 
     private function sendSMSNoticeOrder(Order $order)
     {
+        if (\Yii::$app->params['notSendSMS']) return;
         if ($order->current_status == Status::PAID) {
-            $result = Yii::$app->sms->send('7' . ParamsHelper::get('phoneOrder'), 'Заказ №' .
+            $result = \Yii::$app->sms->send('7' . ParamsHelper::get('phoneOrder'), 'Заказ №' .
                 $order->id . ' ' . OrderHelper::statusName($order->current_status));
             if (!$result)
                 throw new \DomainException('Ошибка отправки СМС-сообщения');
         }
     }
 
-    private function sendTELEGRAMNoticeOrder(array $message)
+    private function sendTELEGRAMNoticeOrder(Order $order)
     {
 //TODO Сделать отправку  Telegram
    \Yii::$app->telegram->sendMessage([
             'chat_id' => 371289480,
-            'text' => $message['body'],
+            'text' => '',
         ]);
        /* $ch = curl_init();
         curl_setopt_array(
@@ -120,14 +112,26 @@ class ContactService
                 throw new \RuntimeException('Ошибка отправки');
             }
         }
-
+        if (\Yii::$app->params['notSendSMS']) return;
         if (!empty($phone = $order->user->phone)) {
-            if ($order->current_status == Status::SENT ||
-                $order->current_status == Status::CANCELLED ||
-                $order->current_status == Status::COMPLETED
-            ) {
-                $result = Yii::$app->sms->send('7' . $phone, 'Ваш заказ №' .
-                    $order->id . ' ' . OrderHelper::statusName($order->current_status));
+            /** СОБРАН */
+            if ($order->current_status == Status::SENT) {
+                $result = \Yii::$app->sms->send('7' . $phone, 'kupi41.ru. Ваш заказ №' .
+                    $order->id . ' собран');
+                if (!$result)
+                    throw new \DomainException('Ошибка отправки СМС-сообщения');
+            }
+            /** ОТМЕНЕН */
+            if ($order->current_status == Status::CANCELLED) {
+                $result = \Yii::$app->sms->send('7' . $phone, 'kupi41.ru. Ваш заказ №' .
+                    $order->id . ' отменен. ' . $order->cancel_reason);
+                if (!$result)
+                    throw new \DomainException('Ошибка отправки СМС-сообщения');
+            }
+            /** ОПЛАЧЕН */
+            if ($order->current_status == Status::PAID) {
+                $result = \Yii::$app->sms->send('7' . $phone, 'kupi41.ru. Ваш заказ №' .
+                    $order->id . ' оплачен. Дождитесь сборки заказа.');
                 if (!$result)
                     throw new \DomainException('Ошибка отправки СМС-сообщения');
             }

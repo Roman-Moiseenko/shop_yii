@@ -35,7 +35,6 @@ class OrderManageService
 
     public function setStatusForm($id, SetStatusOrderForm $form)
     {
-        //$order = $this->orders->get($id);
         switch ($form->current_status) {
             case Status::PAID:
                 $this->service->pay($id,'Admin_pay'); break;
@@ -50,9 +49,7 @@ class OrderManageService
             case Status::WAIT:
                 $this->service->wait($id); break;
             default:
-                    throw new \DomainException('Неизвестный статус заказа');
+                    throw new \DomainException('Неизвестный статус заказа!. Или нельзя менять на "НОВЫЙ"');
         }
-       /* $order->addStatus($form->current_status);
-        if (!empty($form->cancel_reason)) $order->cancel_reason = $form->cancel_reason;*/
     }
 }

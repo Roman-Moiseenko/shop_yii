@@ -30,6 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'id',
                 'label' => '№',
                 'options' => ['width' => '50px'],
+                'value' => function (Order $model) {
+                    return Html::a(Html::encode($model->id), ['view', 'id' => $model->id]);
+                },
+                'format' => 'raw',
             ],
             [
                 'attribute' => 'created_at',
@@ -47,7 +51,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => 'yyyy-mm-dd',
                     ],
                 ]),
-                'format' => 'datetime',
+                'value' => function (Order $model) {
+                    return Html::a(Html::encode(date('d-m-Y', $model->created_at)), ['view', 'id' => $model->id]);
+                },
+                'format' => 'raw',
+
                 ],
             [
                 'attribute' => 'firstname',
