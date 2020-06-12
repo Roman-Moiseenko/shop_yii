@@ -1,6 +1,6 @@
 <?php
 return [
-    'adminEmail' => 'admin@example.com',
+    'adminEmail' => 'admin@kupi41.ru',
     'language' => 'ru-RU',
     'breadcrumbs' => [
         'Home' => [

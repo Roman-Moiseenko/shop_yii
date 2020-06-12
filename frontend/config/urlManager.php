@@ -12,6 +12,7 @@ return [
         'reset/<_a:[\w-]+>' => 'auth/reset/<_a>',
         '<_a:login|logout>' => 'auth/auth/<_a>',
         'site/login' => 'auth/auth/login',
+        //'<_a:about>' => 'site/<_a>',
 
         'blog' => 'blog/post/index',
         'blog/tag/<slug:[\w\-]+>' => 'blog/post/tag',
@@ -23,11 +24,9 @@ return [
         'cabinet/<_c:[\w\-]+>/<_a:[\w-]+>' => 'cabinet/<_c>/<_a>',
         'cabinet/<_c:[\w\-]+>/<id:\d+>/<_a:[\w\-]+>' => 'cabinet/<_c>/<_a>',
         'catalog' => 'shop/catalog/index',
-        ['class' => 'frontend\urls\CategoryUrlRule'],
+       // ['class' => 'frontend\urls\CategoryUrlRule'],
         'catalog/<id:\d+>' => 'shop/catalog/product',
-
         ['class' => 'frontend\urls\PageUrlRule'],
-
         '<_c:[\w\-]+>' => '<_c>/index',
         '<_c:[\w\-]+>/<id:\d+>' => '<_c>/view',
         '<_c:[\w\-]+>/<_a:[\w\-]+' => '<_c>/<_a>',

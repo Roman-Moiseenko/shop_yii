@@ -24,7 +24,7 @@ return [
         'backend\bootstrap\SetUp',
     ],
     'modules' => [],
-    'controllerMap' => [
+        'controllerMap' => [
         'elfinder' => [
             'class' => 'mihaildev\elfinder\Controller',
             'access' => ['@'],
@@ -86,11 +86,10 @@ return [
         'frontendUrlManager' => require __DIR__ . '/../../frontend/config/urlManager.php',
 
     ],
-   /* 'as access' => [
-        'class' => \yii\filters\AccessControl::class,
-       // 'except' => ['auth/login','site/error'],
+    /*'as AccessControl' => [
+        'class' => \yii\filters\AccessControl::className(),
+        'except' => ['site/login','site/error'],
         'rules' => [
-            //'actions' => ['index'],
             'allow' => true,
             'roles' => ['@'],
         ],

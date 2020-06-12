@@ -66,7 +66,7 @@ class AuthController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $user = $this->authService->auth($form);
-                Yii::$app->user->login($user, $form->rememberMe ? 3600 * 24 * 30 : 0);
+                \Yii::$app->user->login($user, $form->rememberMe ? 3600 * 24 * 30 : 0);
                 return $this->goHome();// $this->goBack();
             } catch (\DomainException $e) {
                 Yii::$app->session->setFlash('error', $e->getMessage());
@@ -84,7 +84,7 @@ class AuthController extends Controller
      */
     public function actionLogout()
     {
-        Yii::$app->user->logout(true);
+        Yii::$app->user->logout();
 
         return $this->goHome();
     }
