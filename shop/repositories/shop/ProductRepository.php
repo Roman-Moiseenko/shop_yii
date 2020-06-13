@@ -50,4 +50,5 @@ class ProductRepository
     {
         return Product::find()->andWhere(['category_id' => $id])->exists();
     }
+
 }

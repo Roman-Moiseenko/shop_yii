@@ -139,7 +139,8 @@ class CatalogController extends Controller
         if ($reviewForm->load(Yii::$app->request->post()) && $reviewForm->validate()) {
             try {
                 $this->service->addReview($id, \Yii::$app->user->id, $reviewForm->vote, $reviewForm->text);
-                $this->redirect(['shop/catalog/product', 'id' => $id]);
+                \Yii::$app->session->setFlash('success', 'Ваш отзыв был отправлен на модерацию. В ближащее время мы его опубликуем. Спасибо!');
+                return $this->redirect(['shop/catalog/product', 'id' => $id]);
             } catch (\DomainException $e) {
                 \Yii::$app->session->setFlash('error', $e->getMessage());
             }

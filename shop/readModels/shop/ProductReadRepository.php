@@ -58,7 +58,14 @@ class ProductReadRepository
 
     public function getFeatured($limit)
     {
-        return Product::find()->active()->notEmpty()->andWhere(['featured' => true])->limit($limit)->all();
+        $all = Product::find()->active()->notEmpty()->andWhere(['featured' => true])->all();
+        $limit = (count($all) < $limit) ? count($all) : $limit;
+        $items =  array_rand($all, $limit);
+        $result = [];
+        foreach ($items as $item) {
+            $result[] = $all[$item];
+        }
+        return $result;
     }
 
     private function getProvider(ActiveQuery $query): ActiveDataProvider

@@ -399,7 +399,7 @@ class LoaderManageService
             $product->name = $data['name'];
             $this->regProduct($product);
         }
-        if ($product->code1C !== $data['code1C']) $product->code1C = $data['code1C'];
+      //  if ($product->code1C !== $data['code1C']) $product->code1C = $data['code1C'];
         if ($product->units !== $data['unit']) $product->units = $data['unit'];
 
         $product->setRemains($data['remains']);
@@ -412,8 +412,6 @@ class LoaderManageService
 
     private function regProduct(Product $product): void
     {
-
-        //TODO Переделать под ООП, см.ответ с форума
         /** Низкоуровневый запрос */
         $sql = 'SELECT r.* FROM ' . RegAttribute::tableName() . ' AS r ' .
             'LEFT JOIN ' . Category::tableName() . ' c ON c.id=r.category_id WHERE ' .

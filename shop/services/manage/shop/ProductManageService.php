@@ -5,9 +5,7 @@ namespace shop\services\manage\shop;
 
 
 use shop\entities\Meta;
-use shop\entities\shop\Category;
 use shop\entities\shop\product\Product;
-use shop\entities\shop\product\TagAssignment;
 use shop\entities\shop\Tag;
 use shop\forms\manage\shop\product\CategoriesForm;
 use shop\forms\manage\shop\product\ModificationForm;
@@ -18,6 +16,7 @@ use shop\forms\manage\shop\product\ProductEditForm;
 use shop\repositories\shop\BrandRepository;
 use shop\repositories\shop\CategoryRepository;
 use shop\repositories\shop\ProductRepository;
+use shop\repositories\shop\ReviewRepository;
 use shop\repositories\shop\TagRepository;
 use shop\services\TransactionManager;
 
@@ -44,13 +43,18 @@ class ProductManageService
      * @var TransactionManager
      */
     private $transaction;
+    /**
+     * @var ReviewRepository
+     */
+    private $reviews;
 
     public function __construct(
         ProductRepository $products,
         BrandRepository $brands,
         CategoryRepository $categories,
         TagRepository $tags,
-        TransactionManager $transaction
+        TransactionManager $transaction,
+        ReviewRepository $reviews
 )
     {
         $this->products = $products;
@@ -58,6 +62,7 @@ class ProductManageService
         $this->categories = $categories;
         $this->tags = $tags;
         $this->transaction = $transaction;
+        $this->reviews = $reviews;
     }
 
     public function create(ProductCreateForm $form): Product
@@ -241,20 +246,7 @@ class ProductManageService
         $product = $this->products->get($id);
         $this->products->remove($product);
     }
-/*    public function activate($id): void
-    {
-        $product = $this->products->get($id);
-        $product->activate();
-        $this->products->save($product);
-    }
 
-    public function draft($id): void
-    {
-        $product = $this->products->get($id);
-        $product->draft();
-        $this->products->save($product);
-    }
-*/
     public function addModification(int $id, ModificationForm $form)
     {
         $product = $this->products->get($id);
@@ -287,6 +279,30 @@ class ProductManageService
     {
         $product = $this->products->get($id);
         $product->addReview($userId, $vote, $text);
+        $this->products->save($product);
+    }
+
+    public function activateReview($reviewId)
+    {
+        $review = $this->reviews->get($reviewId);
+        $product = $this->products->get($review->product_id);
+        $product->activateReview($reviewId);
+        $this->products->save($product);
+    }
+
+    public function draftReview($reviewId)
+    {
+        $review = $this->reviews->get($reviewId);
+        $product = $this->products->get($review->product_id);
+        $product->draftReview($reviewId);
+        $this->products->save($product);
+    }
+
+    public function removeReview($reviewId)
+    {
+        $review = $this->reviews->get($reviewId);
+        $product = $this->products->get($review->product_id);
+        $product->removeReview($reviewId);
         $this->products->save($product);
     }
 }

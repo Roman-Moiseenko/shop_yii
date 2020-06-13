@@ -56,12 +56,14 @@ MagnificPopupAsset::register($this);
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab-description" data-toggle="tab">Описание</a></li>
             <li><a href="#tab-specification" data-toggle="tab">Характеристики</a></li>
-            <li><a href="#tab-review" data-toggle="tab">Отзывы (<?= $countReveiws = count($product->reviews) ?>)</a></li>
+            <li><a href="#tab-review" data-toggle="tab">Отзывы (<?= $countReveiws = ProductHelper::countReviews($product) ?>)</a></li>
         </ul>
         <div class="tab-content">
+            <!-- ОПИСАНИЕ -->
             <div class="tab-pane active" id="tab-description"><p>
                     <?=Yii::$app->formatter->asNtext($product->description)?></p>
             </div>
+            <!-- ХАРАКТЕРИСТИКИ -->
             <div class="tab-pane" id="tab-specification">
                 <table class="table table-bordered">
                     <tbody>
@@ -76,6 +78,7 @@ MagnificPopupAsset::register($this);
                     </tbody>
                 </table>
             </div>
+            <!-- ОТЗЫВЫ -->
             <div class="tab-pane" id="tab-review">
                     <div id="review"></div>
                     <h2>Оставить отзыв</h2>

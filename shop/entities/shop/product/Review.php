@@ -13,6 +13,7 @@ use yii\db\ActiveRecord;
  * @property int $vote
  * @property string $text
  * @property bool $active
+ * @property integer $product_id
  */
 class Review extends ActiveRecord
 {
@@ -23,7 +24,7 @@ class Review extends ActiveRecord
         $review->vote = $vote;
         $review->text = $text;
         $review->created_at = time();
-        $review->active = true;
+        $review->active = false;
         return $review;
     }
 

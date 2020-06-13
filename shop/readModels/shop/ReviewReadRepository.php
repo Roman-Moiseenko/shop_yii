@@ -11,6 +11,9 @@ class ReviewReadRepository
 
     public function getByProduct($id): array
     {
-        return Review::find()->andWhere(['product_id' => $id])->orderBy(['created_at' => SORT_DESC])->all();
+        return Review::find()
+            ->andWhere(['product_id' => $id])
+            ->andWhere(['active' => true])
+            ->orderBy(['created_at' => SORT_DESC])->all();
     }
 }

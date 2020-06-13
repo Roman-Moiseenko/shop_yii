@@ -1,3 +1,8 @@
+<?php
+
+use dmstr\widgets\Menu;
+
+?>
 <aside class="main-sidebar">
 
     <section class="sidebar">
@@ -12,13 +17,13 @@
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
-        <?= dmstr\widgets\Menu::widget(
+        <?= Menu::widget(
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
                 'items' => [
                     ['label' => 'Меню', 'options' => ['class' => 'header']],
-                    ['label' => 'Заказы', 'icon' => 'cart-plus', 'url' => ['/shop/order'], 'active' => Yii::$app->controller->id == 'shop/order'],
-                    ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['/user/index'], 'active' => $this->context->id == 'user'],
+                    ['label' => 'Заказы', 'icon' => 'cart-plus', 'url' => ['/shop/order'], 'active' => Yii::$app->controller->id == 'shop/order','badge' => '<span class="badge badge-info right">123</span>'],
+                    ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['/user/index'], 'active' => $this->context->id == 'user', 'badge' => '99',],
                     ['label' => 'Параметры', 'icon' => 'info', 'url' => ['/data/params'], 'active' => $this->context->id == 'data/params'],
                     ['label' => 'Магазин', 'icon' => 'building-o',
                         'items' => [
