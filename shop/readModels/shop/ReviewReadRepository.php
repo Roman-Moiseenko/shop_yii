@@ -3,8 +3,7 @@
 
 namespace shop\readModels\shop;
 
-
-use shop\entities\Shop\Product\Review;
+use shop\entities\shop\product\Review;
 
 class ReviewReadRepository
 {

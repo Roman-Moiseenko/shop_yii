@@ -18,6 +18,7 @@ use shop\repositories\shop\CategoryRepository;
 use shop\repositories\shop\ProductRepository;
 use shop\repositories\shop\ReviewRepository;
 use shop\repositories\shop\TagRepository;
+use shop\services\ContactService;
 use shop\services\TransactionManager;
 
 class ProductManageService
@@ -47,6 +48,10 @@ class ProductManageService
      * @var ReviewRepository
      */
     private $reviews;
+    /**
+     * @var ContactService
+     */
+    private $contactService;
 
     public function __construct(
         ProductRepository $products,
@@ -54,7 +59,8 @@ class ProductManageService
         CategoryRepository $categories,
         TagRepository $tags,
         TransactionManager $transaction,
-        ReviewRepository $reviews
+        ReviewRepository $reviews,
+        ContactService $contactService
 )
     {
         $this->products = $products;
@@ -63,6 +69,7 @@ class ProductManageService
         $this->tags = $tags;
         $this->transaction = $transaction;
         $this->reviews = $reviews;
+        $this->contactService = $contactService;
     }
 
     public function create(ProductCreateForm $form): Product
@@ -278,8 +285,10 @@ class ProductManageService
     public function addReview($id, $userId, $vote, $text)
     {
         $product = $this->products->get($id);
-        $product->addReview($userId, $vote, $text);
+        $review = $product->addReview($userId, $vote, $text);
         $this->products->save($product);
+        $this->contactService->sendNoticeReview($review);
+
     }
 
     public function activateReview($reviewId)

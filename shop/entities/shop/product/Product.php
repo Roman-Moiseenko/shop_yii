@@ -197,11 +197,13 @@ class Product extends ActiveRecord
     }
 //Review
 
-    public function addReview($userId, $vote, $text): void
+    public function addReview($userId, $vote, $text): Review
     {
         $reviews = $this->reviews;
-        $reviews[] = Review::create($userId, $vote, $text);
+        $review = Review::create($userId, $vote, $text);
+        $reviews[] = $review;
         $this->updateReviews($reviews);
+        return $review;
     }
 
     public function editReview($id, $vote, $text): void

@@ -4,6 +4,7 @@ namespace shop\services;
 
 use shop\entities\shop\order\Order;
 use shop\entities\shop\order\Status;
+use shop\entities\shop\product\Review;
 use shop\forms\ContactForm;
 use shop\helpers\OrderHelper;
 use shop\helpers\ParamsHelper;
@@ -49,6 +50,23 @@ class ContactService
         $this->sendNoticeUser($order);
     }
 
+    public function sendNoticeReview(Review $review)
+    {
+        //Уведомления в магазин
+        if (!$email = ParamsHelper::get('emailOrder')) {
+            throw new \DomainException('Не найден почтовый адрес администратора');
+        }
+
+        $send = $this->mailer->compose('noticeAdminReview', ['review' => $review])
+            ->setTo($email)
+            ->setFrom([\Yii::$app->params['supportEmail'] => 'Новый отзыв'])
+            ->setSubject('Новый отзыв о товаре')
+            ->send();
+        if (!$send) {
+            throw new \RuntimeException('Ошибка отправки');
+        }
+    }
+
     private function sendEMAILNoticeOrder(Order $order)
     {
         if (!$email = ParamsHelper::get('emailOrder')) {
@@ -57,7 +75,7 @@ class ContactService
 
         $send = $this->mailer->compose('noticeAdmin', ['order' => $order])
             ->setTo($email)
-            ->setFrom([\Yii::$app->params['supportEmail'] => 'Уведомление с сайта'])
+            ->setFrom([\Yii::$app->params['supportEmail'] => 'Уведомление о Заказе'])
             ->setSubject('Заказ ' . OrderHelper::statusName($order->current_status))
             ->send();
         if (!$send) {

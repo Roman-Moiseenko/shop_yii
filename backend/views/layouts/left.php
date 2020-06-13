@@ -1,8 +1,7 @@
 <?php
 
-use dmstr\widgets\Menu;
 
-?>
+use dmstr\widgets\Menu; ?>
 <aside class="main-sidebar">
 
     <section class="sidebar">
@@ -22,8 +21,8 @@ use dmstr\widgets\Menu;
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
                 'items' => [
                     ['label' => 'Меню', 'options' => ['class' => 'header']],
-                    ['label' => 'Заказы', 'icon' => 'cart-plus', 'url' => ['/shop/order'], 'active' => Yii::$app->controller->id == 'shop/order','badge' => '<span class="badge badge-info right">123</span>'],
-                    ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['/user/index'], 'active' => $this->context->id == 'user', 'badge' => '99',],
+                    ['label' => 'Заказы', 'icon' => 'cart-plus', 'url' => ['/shop/order'], 'active' => Yii::$app->controller->id == 'shop/order'],
+                    ['label' => 'Пользователи', 'icon' => 'users', 'url' => ['/user/index'], 'active' => $this->context->id == 'user'],
                     ['label' => 'Параметры', 'icon' => 'info', 'url' => ['/data/params'], 'active' => $this->context->id == 'data/params'],
                     ['label' => 'Магазин', 'icon' => 'building-o',
                         'items' => [

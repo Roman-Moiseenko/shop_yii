@@ -32,7 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'product_id',
                         'label' => 'Товар',
-                        'value' => Html::a($review->product->name, Url::to(['product/view', 'id' => $review->user_id])),
+                        'value' => Html::a($review->product->name,
+                            \Yii::$app->params['frontendHostInfo'] . '/catalog/'. $review->product_id),
                         'format' => 'raw',
                     ],
                     'id',
