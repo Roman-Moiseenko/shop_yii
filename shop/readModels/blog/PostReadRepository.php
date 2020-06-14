@@ -23,13 +23,13 @@ class PostReadRepository
 
     public function getAll(): DataProviderInterface
     {
-        $query = Post::find()->active()->with('category');
+        $query = Post::find()->active()->with('category')->orderBy(['created_at' => SORT_DESC]);
         return $this->getProvider($query);
     }
 
     public function getAllByCategory(Category $category): DataProviderInterface
     {
-        $query = Post::find()->active()->andWhere(['category_id' => $category->id])->with('category');
+        $query = Post::find()->active()->andWhere(['category_id' => $category->id])->with('category')->orderBy(['created_at' => SORT_DESC]);
         return $this->getProvider($query);
     }
 
@@ -44,7 +44,7 @@ class PostReadRepository
 
     public function getLast($limit): array
     {
-        return Post::find()->with('category')->orderBy(['id' => SORT_DESC])->limit($limit)->all();
+        return Post::find()->andWhere(['status' => Post::STATUS_ACTIVE])->with('category')->orderBy(['id' => SORT_DESC])->limit($limit)->all();
     }
 
     public function getPopular($limit): array
