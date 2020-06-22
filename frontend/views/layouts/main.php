@@ -159,7 +159,7 @@ AppAsset::register($this);
                 </div>
             </div>
             <hr>
-            <p>Разработано <a href="http://www.mycraft.ru">Моисеенко Роман Александрович</a> &copy; 2020</p>
+            <p>Разработано <a href="http://www.mycraft.site" target="_blank">Моисеенко Роман Александрович</a> &copy; 2020</p>
         </div>
     </footer>
 

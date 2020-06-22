@@ -54,8 +54,8 @@ use dmstr\widgets\Menu; ?>
                     ['label' => 'Login', 'url' => ['auth/login'], 'visible' => Yii::$app->user->isGuest],
                     ['label' => 'Загрузка данных', 'icon' => 'cloud-upload',
                         'items' => [
-                          //  ['label' => 'Загрузка каталогов', 'icon' => 'upload', 'url' => ['/data/load/catalog']],
-                           // ['label' => 'Загрузка товаров', 'icon' => 'upload', 'url' => ['/data/load/products']],
+                            ['label' => 'Загрузка каталогов', 'icon' => 'upload', 'url' => ['/data/load/catalog']],
+                            ['label' => 'Загрузка товаров', 'icon' => 'upload', 'url' => ['/data/load/products']],
                             ['label' => 'Обновить бренды', 'icon' => 'save', 'url' => ['/data/load/brands']],
                             ['label' => 'Обновить атрибуты', 'icon' => 'save', 'url' => ['/data/load/attributes']],
                         ],

@@ -4,21 +4,29 @@
 namespace console\controllers;
 
 
+use shop\entities\shop\loaddata\File;
 use shop\entities\shop\order\Status;
 use shop\helpers\ParamsHelper;
+use shop\services\manage\FileManageService;
 use shop\services\manage\UnloaderManageService;
 use yii\console\Controller;
 
-class ClearorderController extends Controller
+class ClearController extends Controller
 {
 
 
-    public function __construct($id, $module, $config = [])
+    /**
+     * @var FileManageService
+     */
+    private $files;
+
+    public function __construct($id, $module, FileManageService $files, $config = [])
     {
         parent::__construct($id, $module, $config);
+        $this->files = $files;
     }
 
-    public function actionClear()
+    public function actionOrders()
     {
         echo 'Начало очистки заказов' . "\n";
         $sql = 'SELECT id FROM shop_orders WHERE current_status=' .
@@ -31,5 +39,16 @@ class ClearorderController extends Controller
            // $this->service->remove($order->id);
             echo 'Заказ №' . $order['id'] . ' удален.' . "\n";
         }
+    }
+
+    public function actionFiles()
+    {
+        echo 'Начало очистки файлов' . "\n";
+        $files = File::find()->andWhere(['<=', 'created_at', time() - 3600 * 24 * 30])->all();
+        foreach ($files as $file) {
+            echo 'Удалем данные по файлу: ' . $file->file_name;
+            $this->files->remove($file->id);
+        }
+
     }
 }

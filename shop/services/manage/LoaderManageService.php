@@ -9,6 +9,8 @@ use shop\entities\shop\Brand;
 use shop\entities\shop\Category;
 use shop\entities\shop\Characteristic;
 use shop\entities\shop\Hidden;
+use shop\entities\shop\loaddata\File;
+use shop\entities\shop\loaddata\Row;
 use shop\entities\shop\order\Status;
 use shop\entities\shop\product\Photo;
 use shop\entities\shop\product\Product;
@@ -54,6 +56,15 @@ class LoaderManageService
      * @var OrderRepository
      */
     private $orders;
+    /**
+     * @var FileManageService
+     */
+    private $files;
+
+    /**
+     * @var File
+     */
+    private $file = null;
 
     public function __construct(
         ProductRepository $products,
@@ -62,7 +73,8 @@ class LoaderManageService
         TagRepository $tags,
         HiddenRepository $hidden,
         TransactionManager $transaction,
-        OrderRepository $orders
+        OrderRepository $orders,
+        FileManageService $files
     )
     {
         $this->products = $products;
@@ -72,6 +84,7 @@ class LoaderManageService
         $this->hidden = $hidden;
         $this->transaction = $transaction;
         $this->orders = $orders;
+        $this->files = $files;
     }
 
 
@@ -121,9 +134,12 @@ class LoaderManageService
     /** Процесс загрузки категории в базу */
     private function processLoadCategory($file): array
     {
+        $this->file = File::create(pathinfo($file, PATHINFO_FILENAME), File::TYPEDATA_CATEGORY);
+        /* */
         $errors = [];
         foreach ($this->readLineFromFile($file) as $row) {
             $data = (array)json_decode($row);
+            /** Если parent_id = null */
             if ($this->isEmpty($data)) continue;
             /** В отдельную функцию */
             if ($category = $this->categories->getByCode1C($data['code1C'])) { //Категория есть в базе
@@ -139,7 +155,6 @@ class LoaderManageService
                     $this->toHidden($category);
                     continue;
                 }
-                //$errors[] = $data;
             }
 
             if ($this->hidden->isFind($data['code1C'])) { //Категория в скрытых сейчас
@@ -169,9 +184,12 @@ class LoaderManageService
             //Родительская не найдена
             $errors[] = $data;
         }
+        $this->files->save($this->file);
+        $this->file = null;
         return $errors;
     }
 
+    /** Если родительский каталог пустой */
     private function isEmpty(array $data): bool
     {
         if (!empty($data['code1C_parent'])) return false;
@@ -184,6 +202,7 @@ class LoaderManageService
             }
             if ($this->hidden->isFind($data['code1C'])) { //была в скрытых, удалить из Hidden
                 $this->hidden->remove($data['code1C']);
+                //return true;
             }
             //Создать в категории
             $this->createCategory($name, 1, $data['code1C']);
@@ -205,23 +224,36 @@ class LoaderManageService
     private function updateCategory(int $id, string $name, int $parentId)
     {
         $category = $this->categories->get($id);
-        $category->edit(
-            $name,
-            $category->slug,
-            $category->title,
-            $category->description,
-            new Meta(
-                $category->meta->title,
-                $category->meta->description,
-                $category->meta->keywords
-            ),
-            $category->code1C
-        );
+        $change = [];
+        if ($name != $category->name) {
+            $change['id'] = $id;
+            $change['name_old'] = $category->name;
+            $change['name_new'] = $name;
+            $category->edit(
+                $name,
+                $category->slug,
+                $category->title,
+                $category->description,
+                new Meta(
+                    $category->meta->title,
+                    $category->meta->description,
+                    $category->meta->keywords
+                ),
+                $category->code1C
+            );
+        }
         if ($parentId !== $category->parent->id) {
+            $change['parent_id_old'] = $category->parent->id;
+            $change['parent_id_new'] = $parentId;
             $parent = $this->categories->get($parentId);
             $category->appendTo($parent);
         }
-        $this->categories->save($category);
+        if (count($change) != 0) $this->categories->save($category);
+        if ($this->file != null && count($change) != 0)
+            $this->file->addRow(
+                Row::TYPEDATA_UPDATE,
+                json_encode($change, JSON_UNESCAPED_UNICODE)
+            );
     }
 
     private function createCategory(string $name, int $parentId, $code1C)
@@ -237,11 +269,15 @@ class LoaderManageService
         $category->appendTo($parent);
         $category->slug = $this->checkSlug($category, $parentId);
         $this->categories->save($category);
+        if ($this->file != null)
+            $this->file->addRow(
+                Row::TYPEDATA_CREATE,
+                json_encode(['name' => $name, 'parent_id' => $parentId, 'code1C' => $code1C], JSON_UNESCAPED_UNICODE)
+            );
     }
 
     private function toHidden(Category $_category)
     {
-        //var_dump($_category);
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             /** Скрыть все вложенные категории */
@@ -268,7 +304,11 @@ class LoaderManageService
             $transaction->rollBack();
             \Yii::$app->errorHandler->logException($e);
         }
-
+        if ($this->file != null)
+            $this->file->addRow(
+                Row::TYPEDATA_HIDE,
+                json_encode(['name' => $_category->name, 'code1C' => $_category->code1C], JSON_UNESCAPED_UNICODE)
+            );
     }
 
     private function productsToHiddenByCategory($category_id)
@@ -311,9 +351,11 @@ class LoaderManageService
 
     private function processLoadProducts($file)
     {
+        $this->file = File::create(pathinfo($file, PATHINFO_FILENAME), File::TYPEDATA_PRODUCT);
         $errors = [];
         foreach ($this->readLineFromFile($file) as $row) {
             $data = (array)json_decode($row);
+            //echo '<pre>'; print_r($data); //exit();
             if ($product = $this->products->getByCode1C($data['code1C'])) {
                 //Товар есть в базе
                 if ($category = $this->categories->getByCode1C($data['code1C_parent'])) {
@@ -343,6 +385,8 @@ class LoaderManageService
                 $errors[] = $data;
             }
         }
+        $this->files->save($this->file);
+        $this->file = null;
         return $errors;
     }
 
@@ -365,13 +409,12 @@ class LoaderManageService
             $data['remains']
         );
         $product->updatePrice($data['price'], 0);
-        $idImage = $data['id'];
+       // $idImage = $data['id'];
         $path = dirname(__DIR__, 3) . '/static/products/';
-        if (!file_exists($filePhoto = $path . $idImage . '.jpg')) {
+        //if (!file_exists($filePhoto = $path . $idImage . '.jpg'))
             $filePhoto = $path . 'no-image.jpg';
-        }
-        $this->products->save($product);
 
+        $this->products->save($product);
         ///Загрузка фотографий
         $idProduct = $product->id;
         $photo = new Photo();
@@ -391,23 +434,53 @@ class LoaderManageService
 
         unset($photo);
         unset($product);
+
+        if ($this->file != null) {
+            $this->file->addRow(
+                Row::TYPEDATA_CREATE,
+                json_encode($data, JSON_UNESCAPED_UNICODE)
+            );
+        }
     }
 
     private function updateProduct(Product $product, int $id, array $data)
     {
+        $change = [];
+        //Изменилось наименование товара
         if ($product->name !== $data['name']) {
+            $change['name_old'] = $product->name;
+            $change['name_new'] = $data['name'];
             $product->name = $data['name'];
             $this->regProduct($product);
         }
-      //  if ($product->code1C !== $data['code1C']) $product->code1C = $data['code1C'];
-        if ($product->units !== $data['unit']) $product->units = $data['unit'];
+        //Изменилась ед.изм. товара
+        if ($product->units !== $data['unit']) {
+            $change['units_old'] = $product->units;
+            $change['units_new'] = $data['unit'];
+            $product->units = $data['unit'];
+        }
+        //Изменился остаток
+        if ($product->remains != $data['remains']) {
+            $change['remains_old'] = $product->remains;
+            $change['remains_new'] = $data['remains'];
+            $product->setRemains($data['remains']);
+        }
+        //Изменилась цена
+        if ($product->price_new != (float)$data['price']) {
+            $change['price_old'] = $product->price_new;
+            $change['price_new'] = $data['price'];
+            $price_old = ($product->price_new > (float)$data['price']) ? $product->price_new : 0;
+            $product->updatePrice($data['price'], $price_old);
+        }
 
-        $product->setRemains($data['remains']);
-
-        $price_old = ($product->price_new > (float)$data['price']) ? $product->price_new : 0;
-        $product->updatePrice($data['price'], $price_old);
-
-        $this->products->save($product);
+        if (count($change) != 0) $this->products->save($product);
+        if ($this->file != null && count($change) != 0) {
+            $change['id'] = $product->id;
+            $this->file->addRow(
+                Row::TYPEDATA_UPDATE,
+                json_encode($change, JSON_UNESCAPED_UNICODE)
+            );
+        }
     }
 
     private function regProduct(Product $product): void
@@ -444,7 +517,6 @@ class LoaderManageService
 
     public function updateBrand()
     {
-
         $brands = Brand::find()->andWhere(['<>', 'name', 'NONAME'])->all();
         $idNoName = Brand::findOne(['name' => 'NONAME']);
         foreach ($brands as $brand) {
@@ -461,6 +533,11 @@ class LoaderManageService
         $product->changeMainCategory(1);
         $product->draft();
         $this->products->save($product);
+        if ($this->file != null)
+            $this->file->addRow(
+                Row::TYPEDATA_HIDE,
+                json_encode(['name' => $product->name, 'id' => $product->id], JSON_UNESCAPED_UNICODE)
+            );
     }
 
     public function updateAttributes()

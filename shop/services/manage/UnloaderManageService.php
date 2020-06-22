@@ -28,7 +28,7 @@ class UnloaderManageService
             . $user->email;
         $info_order = $order->id.';'
             . $order->current_status . ';'
-            . $order->deliveryData->town . ',' . $order->deliveryData->address . ';'
+            . $order->delivery_cost . ';'
             . $order->note . ';'
             . date('YmdHis', $order->created_at) . ';'
             . $order->discount;
