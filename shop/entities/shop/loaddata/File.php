@@ -1,11 +1,8 @@
 <?php
 
-
 namespace shop\entities\shop\loaddata;
 
-
 use lhs\Yii2SaveRelationsBehavior\SaveRelationsBehavior;
-use shop\entities\behaviors\MetaBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 

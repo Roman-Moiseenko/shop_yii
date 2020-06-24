@@ -4,13 +4,17 @@
 namespace shop\entities\shop\loaddata;
 
 
+use shop\entities\shop\Category;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
  * Class Row
  * @package shop\entities\shop\loaddata
+ * @property integer $parent_id
  * @property int $type_data
  * @property string $load_row
+ * @property Category $category
  */
 
 class Row extends ActiveRecord

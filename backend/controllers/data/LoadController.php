@@ -3,14 +3,12 @@
 
 namespace backend\controllers\data;
 
-
 use shop\entities\user\Rbac;
 use shop\forms\data\BrandLoadForm;
 use shop\forms\data\FilesForm;
 use shop\services\manage\LoaderManageService;
 use Yii;
 use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\UploadedFile;
 

@@ -139,6 +139,10 @@ class LoaderManageService
         $errors = [];
         foreach ($this->readLineFromFile($file) as $row) {
             $data = (array)json_decode($row);
+            if (count($data) == 0) {
+                //echo $row; exit();
+                continue;
+            }
             /** Если parent_id = null */
             if ($this->isEmpty($data)) continue;
             /** В отдельную функцию */
@@ -192,6 +196,11 @@ class LoaderManageService
     /** Если родительский каталог пустой */
     private function isEmpty(array $data): bool
     {
+        if (!isset($data['name'])) {
+            echo '<pre>';
+            print_r($data);
+            exit();
+        }
         if (!empty($data['code1C_parent'])) return false;
         if (substr($data['name'], 0, 1) == '+') { //Перемещена в общие
             $name = str_replace('+', '', $data['name']);
