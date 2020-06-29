@@ -17,55 +17,37 @@ return [
         '@staticRoot' => $params['staticPath'],
         '@static' => $params['staticHostInfo'],
     ],
-    'controllerNamespace' => 'backend\controllers',
+    'controllerNamespace' => 'api\controllers',
     'bootstrap' => [
         'log',
         'common\bootstrap\SetUp',
-        'backend\bootstrap\SetUp',
+        [
+            'class' => 'yii\filters\ContentNegotiator',
+            'formats' => [
+                'application/json' => 'json',
+            ]
+        ],
     ],
     'modules' => [],
-        'controllerMap' => [
-        'elfinder' => [
-            'class' => 'mihaildev\elfinder\Controller',
-            'access' => ['@'],
-            'plugin' => [
-                [
-                    'class'=>'\mihaildev\elfinder\plugin\Sluggable',
-                    'lowercase' => true,
-                    'replacement' => '-'
-                ]
+    'components' => [
+        'request' => [
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
             ],
-            'roots' => [
-                [
-                    'baseUrl'=>'@static',
-                    'basePath'=>'@staticRoot',
-                    'path' => 'images',
-                    'name' => 'Global'
+        ],
+        'response' => [
+            'formatters' => [
+                'json' => [
+                    'class' => 'yii\web\JsonResponseFormatter',
+                    'prettyPrint' => YII_DEBUG,
+                    'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
                 ],
             ],
         ],
-    ],
-    'components' => [
-        'request' => [
-            'csrfParam' => '_csrf-backend',
-            'cookieValidationKey' => $params['cookieValidationKey'],
-        ],
         'user' => [
             'identityClass' => 'shop\entities\user\User',
-            'enableAutoLogin' => true,
-            'identityCookie' => [
-                'name' => '_identity-backend',
-                'httpOnly' => true,
-                'domain' => $params['cookieDomain']
-            ],
-        ],
-        'session' => [
-            // this is the name of the session cookie used for login on the backend
-            'name' => 'advanced',
-            'cookieParams' => [
-                'domain' => $params['cookieDomain'],
-                'httpOnly' => true,
-            ]
+            'enableAutoLogin' => false,
+            'enableSession' => false,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -76,23 +58,34 @@ return [
                 ],
             ],
         ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
-        'urlManager' => function () {
-            return Yii::$app->get('backendUrlManager');
-        },
-        'backendUrlManager' => require __DIR__ . '/../../backend/config/urlManager.php',
-        'frontendUrlManager' => require __DIR__ . '/../../frontend/config/urlManager.php',
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
+            'showScriptName' => false,
+            'rules' => [
+                '' => 'site/index',
+                'profile' => 'user/profile/index',
+                //'POST oauth2/<action:\w+>' => 'oauth2/rest/<action>',
 
-    ],
-    /*'as AccessControl' => [
-        'class' => \yii\filters\AccessControl::className(),
-        'except' => ['site/login','site/error'],
-        'rules' => [
-            'allow' => true,
-            'roles' => ['@'],
+                'GET shop/products/<id:\d+>' => 'shop/product/view',
+                'GET shop/products/category/<id:\d+>' => 'shop/product/category',
+                'GET shop/products/brand/<id:\d+>' => 'shop/product/brand',
+                'GET shop/products/tag/<id:\d+>' => 'shop/product/tag',
+                'GET shop/products' => 'shop/product/index',
+                'shop/products/<id:\d+>/cart' => 'shop/cart/add',
+                'shop/products/<id:\d+>/wish' => 'shop/wishlist/add',
+
+                'GET shop/cart' => 'shop/cart/index',
+                'DELETE shop/cart' => 'shop/cart/clear',
+                'PUT shop/cart/<id:\d+>/quantity' => 'shop/cart/quantity',
+                'DELETE shop/cart/<id:\d+>' => 'shop/cart/delete',
+                'shop/cart/checkout' => 'shop/checkout/index',
+
+                'GET shop/wishlist' => 'shop/wishlist/index',
+                'DELETE shop/wishlist/<id:\d+>' => 'shop/wishlist/delete',
+            ],
         ],
-    ],*/
+    ],
+
     'params' => $params,
 ];
