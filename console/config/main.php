@@ -34,7 +34,8 @@ return [
     'components' => [
         'user' => [
             'class' => 'yii\web\User',
-            'identityClass' => 'shop\entities\user\User',
+            //'identityClass' => 'shop\entities\user\User',
+            'identityClass' => 'common\auth\Identity',
         ],
         'log' => [
             'targets' => [

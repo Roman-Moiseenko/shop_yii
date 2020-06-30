@@ -1,5 +1,6 @@
 <?php
 
+use shop\entities\user\Rbac;
 use yii\filters\AccessControl;
 
 $params = array_merge(
@@ -51,7 +52,8 @@ return [
             'cookieValidationKey' => $params['cookieValidationKey'],
         ],
         'user' => [
-            'identityClass' => 'shop\entities\user\User',
+            //'identityClass' => 'shop\entities\user\User',
+            'identityClass' => 'common\auth\Identity',
             'enableAutoLogin' => true,
             'identityCookie' => [
                 'name' => '_identity-backend',
@@ -86,13 +88,15 @@ return [
         'frontendUrlManager' => require __DIR__ . '/../../frontend/config/urlManager.php',
 
     ],
-    /*'as AccessControl' => [
-        'class' => \yii\filters\AccessControl::className(),
-        'except' => ['site/login','site/error'],
+    'as access' => [
+        'class' => 'yii\filters\AccessControl',
+        'except' => ['auth/login', 'site/error'],
         'rules' => [
-            'allow' => true,
-            'roles' => ['@'],
+            [
+                'allow' => true,
+                'roles' => [Rbac::ROLE_TRADER],
+            ],
         ],
-    ],*/
+    ],
     'params' => $params,
 ];

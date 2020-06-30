@@ -28,7 +28,23 @@ return [
             ]
         ],
     ],
-    'modules' => [],
+    'modules' => [
+        'oauth2' => 'filsh\yii2\oauth2server\Module',
+        'tokenParamName' => 'accessToken',
+        'tokenAccessLifetime' => 3600 * 24,
+        'storageMap' => [
+            'user_credentials' => 'common\auth\Identity',
+        ],
+        'grantTypes' => [
+            'user_credentials' => [
+                'class' => 'OAuth2\GrantType\UserCredentials',
+            ],
+            'refresh_token' => [
+                'class' => 'OAuth2\GrantType\RefreshToken',
+                'always_issue_new_refresh_token' => true,
+            ],
+        ],
+    ],
     'components' => [
         'request' => [
             'parsers' => [
@@ -65,7 +81,7 @@ return [
             'rules' => [
                 '' => 'site/index',
                 'profile' => 'user/profile/index',
-                //'POST oauth2/<action:\w+>' => 'oauth2/rest/<action>',
+                'POST oauth2/<action:\w+>' => 'oauth2/rest/<action>',
 
                 'GET shop/products/<id:\d+>' => 'shop/product/view',
                 'GET shop/products/category/<id:\d+>' => 'shop/product/category',
@@ -86,6 +102,26 @@ return [
             ],
         ],
     ],
-
+    'as authenticator' => [
+        'class' => 'filsh\yii2\oauth2server\filters\auth\CompositeAuth',
+        'except' => ['site/index', 'oauth2/rest/token'],
+        'authMethods' => [
+            ['class' => 'yii\filters\auth\HttpBearerAuth'],
+            ['class' => 'yii\filters\auth\QueryParamAuth', 'tokenParam' => 'accessToken'],
+        ]
+    ],
+    'as access' => [
+        'class' => 'yii\filters\AccessControl',
+        'except' => ['site/index', 'oauth2/rest/token'],
+        'rules' => [
+            [
+                'allow' => true,
+                'roles' => ['@'],
+            ],
+        ],
+    ],
+    'as exceptionFilter' => [
+        'class' => 'filsh\yii2\oauth2server\filters\ErrorToExceptionFilter',
+    ],
     'params' => $params,
 ];
