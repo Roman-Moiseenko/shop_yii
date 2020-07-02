@@ -376,15 +376,7 @@ class User extends ActiveRecord implements IdentityInterface
             $this->getAttribute('delivery_town'),
             $this->getAttribute('delivery_address')
         );
-/*
-        $st = Json::encode([
-            'surname' => 'Петров',
-            'firstname' => 'Петр',
-            'secondname' => 'Петрович'
-        ]);
-*/
         $fullname = Json::decode($this->getAttribute('fullname_json'));
-        //print_r($fullname); exit();
         $this->fullname = new FullName($fullname['surname'], $fullname['firstname'], $fullname['secondname']);
         parent::afterFind();
     }
@@ -401,6 +393,24 @@ class User extends ActiveRecord implements IdentityInterface
             'secondname' =>$this->fullname->secondname
         ]));
         return parent::beforeSave($insert);
+    }
+
+    public function fields()
+    {
+        return [
+            'id' => 'id',
+            'username' => 'username',
+            'email' => 'email',
+            'data' => function (self $model) {
+            return date('Y-m-d', $model->created_at);
+            },
+        ];
+    }
+    public function extraFields()
+    {
+        return [
+            'networks' => 'networks'
+        ];
     }
 
 }
