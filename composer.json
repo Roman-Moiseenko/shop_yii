@@ -56,7 +56,9 @@
         "codeception/module-filesystem": "*",
         "codeception/verify": "~0.5.0 || ~1.1.0",
         "symfony/browser-kit": ">=2.7 <=4.2.4",
-        "codeception/module-phpbrowser": "*"
+        "codeception/module-phpbrowser": "*",
+        "codeception/module-rest": "^1.2",
+        "flow/jsonpath": "^0.5.0"
     },
     "config": {
         "process-timeout": 1800,

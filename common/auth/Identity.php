@@ -17,12 +17,10 @@ use yii\web\IdentityInterface;
 class Identity implements IdentityInterface, UserCredentialsInterface
 {
     private $user;
-    //public $username;
 
     public function __construct(User $user)
     {
         $this->user = $user;
-       // $this
     }
 
     public static function findIdentity($id)

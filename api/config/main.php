@@ -1,21 +1,17 @@
 <?php
-
-use yii\filters\AccessControl;
-
 $params = array_merge(
-    require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/../../common/config/params-local.php',
-    require __DIR__ . '/params.php',
-    require __DIR__ . '/params-local.php'
+    require(__DIR__ . '/../../common/config/params.php'),
+    require(__DIR__ . '/../../common/config/params-local.php'),
+    require(__DIR__ . '/params.php'),
+    require(__DIR__ . '/params-local.php')
 );
 
 return [
-    'id' => 'app-backend',
-    'name' => 'Администратор',
+    'id' => 'app-api',
     'basePath' => dirname(__DIR__),
     'aliases' => [
         '@staticRoot' => $params['staticPath'],
-        '@static' => $params['staticHostInfo'],
+        '@static'   => $params['staticHostInfo'],
     ],
     'controllerNamespace' => 'api\controllers',
     'bootstrap' => [
@@ -25,25 +21,36 @@ return [
             'class' => 'yii\filters\ContentNegotiator',
             'formats' => [
                 'application/json' => 'json',
-            ]
+                'application/xml' => 'xml',
+            ],
         ],
     ],
     'modules' => [
-        'oauth2' => 'filsh\yii2\oauth2server\Module',
-        'tokenParamName' => 'accessToken',
-        'tokenAccessLifetime' => 3600 * 24,
-        'storageMap' => [
-            'user_credentials' => 'common\auth\Identity',
-        ],
-        'grantTypes' => [
-            'user_credentials' => [
-                'class' => 'OAuth2\GrantType\UserCredentials',
+        'oauth2' => [
+            'class' => 'filsh\yii2\oauth2server\Module',
+            'components' => [
+                'request' => function () {
+                    return \filsh\yii2\oauth2server\Request::createFromGlobals();
+                },
+                'response' => [
+                    'class' => \filsh\yii2\oauth2server\Response::class,
+                ],
             ],
-            'refresh_token' => [
-                'class' => 'OAuth2\GrantType\RefreshToken',
-                'always_issue_new_refresh_token' => true,
+            'tokenParamName' => 'accessToken',
+            'tokenAccessLifetime' => 3600 * 24,
+            'storageMap' => [
+                'user_credentials' => 'common\auth\Identity',
             ],
-        ],
+            'grantTypes' => [
+                'user_credentials' => [
+                    'class' => 'OAuth2\GrantType\UserCredentials',
+                ],
+                'refresh_token' => [
+                    'class' => 'OAuth2\GrantType\RefreshToken',
+                    'always_issue_new_refresh_token' => true
+                ]
+            ]
+        ]
     ],
     'components' => [
         'request' => [
@@ -61,7 +68,7 @@ return [
             ],
         ],
         'user' => [
-            'identityClass' => 'shop\entities\user\User',
+            'identityClass' => 'common\auth\Identity',
             'enableAutoLogin' => false,
             'enableSession' => false,
         ],

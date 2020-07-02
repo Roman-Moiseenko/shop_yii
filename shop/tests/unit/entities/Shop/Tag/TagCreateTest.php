@@ -1,7 +1,7 @@
 <?php
 
 
-namespace shop\tests\unit\entities\Shop\Tag;
+namespace shop\tests\unit\entities\shop\Tag;
 
 
 use Codeception\Test\Unit;

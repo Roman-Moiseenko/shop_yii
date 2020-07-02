@@ -4,6 +4,7 @@ include:
     - frontend
     - backend
     - shop
+    - api
 paths:
     log: console/runtime/logs
 settings:
