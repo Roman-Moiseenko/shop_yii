@@ -395,22 +395,6 @@ class User extends ActiveRecord implements IdentityInterface
         return parent::beforeSave($insert);
     }
 
-    public function fields()
-    {
-        return [
-            'id' => 'id',
-            'username' => 'username',
-            'email' => 'email',
-            'data' => function (self $model) {
-            return date('Y-m-d', $model->created_at);
-            },
-        ];
-    }
-    public function extraFields()
-    {
-        return [
-            'networks' => 'networks'
-        ];
-    }
+
 
 }

@@ -21,7 +21,7 @@ class ProductReadRepository
 {
     public function getAll(): DataProviderInterface
     {
-        $query = Product::find()->alias('p')->active('p')/*->NotEmpty('p')*/->with('mainPhoto');
+        $query = Product::find()->alias('p')->active('p')->with('mainPhoto');
         return $this->getProvider($query);
     }
 

@@ -5,16 +5,30 @@ namespace api\controllers\user;
 
 
 use shop\entities\user\User;
+use shop\helpers\UserHelper;
 use yii\rest\Controller;
 
 class ProfileController extends Controller
 {
-    public function actionIndex(): User
+    /**
+     * @SWG\Get(
+     *     path="/user/profile",
+     *     tags={"Profile"},
+     *     description="Returns profile info",
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success response",
+     *         @SWG\Schema(ref="#/definitions/Profile")
+     *     ),
+     *     security={{"Bearer": {}, "OAuth2": {}}}
+     * )
+     */
+    public function actionIndex()
     {
-        return $this->findModel();
+        return $this->serializeUser($this->findModel());
     }
 
-    protected function verbs()
+    public function verbs(): array
     {
         return [
             'index' => ['get'],
@@ -24,5 +38,22 @@ class ProfileController extends Controller
     private function findModel(): User
     {
         return User::findOne(\Yii::$app->user->id);
+    }
+
+    private function serializeUser(User $user): array
+    {
+        return [
+            'id' => $user->id,
+            'name' => $user->username,
+            'email' => $user->email,
+            'date' => [
+                'created' => date(DATE_RFC3339, $user->created_at),
+                'updated' => date(DATE_RFC3339, $user->updated_at),
+            ],
+            'status' => [
+                'code' => $user->status,
+                'name' => UserHelper::statusName($user->status),
+            ],
+        ];
     }
 }
